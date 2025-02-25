@@ -3,6 +3,7 @@
 {% block title %}Inicio{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <h1>Hola, {{ request.user }}</h1>
 <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
     <div class="carousel-inner">
@@ -25,5 +26,104 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+<div class="assistant-container position-fixed bottom-0 end-0 mb-3 me-3">
+    <div class="card shadow-sm assistant-card" id="assistantCard" style="display: block; max-width: 300px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <span>Asistente virtual</span>
+            <button type="button" class="btn-close btn-close-white" onclick="toggleAssistant()"></button>
+        </div>
+        <div class="card-body">
+            <div class="assistant-messages mb-2" style="height: 200px; overflow-y: auto;">
+                <!-- <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user }}! ¿En qué puedo ayudarte?</div> -->
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Escribe tu respuesta...">
+                <button class="btn btn-primary">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <button class="btn btn-primary rounded-circle" onclick="toggleAssistant()">
+        <i class="bi bi-robot" style="font-size: 1.5rem;"></i>
+    </button>
+</div>
+<script>
+
+function toggleAssistant() {
+        const assistantCard = document.getElementById('assistantCard');
+        assistantCard.style.display = assistantCard.style.display === 'none' ? 'block' : 'none';
+    }
+    const questions = [
+    "¿Qué tanto dolor de cabeza sientes? (0 = Nada, 5 = Insoportable)",
+    "¿Cómo calificarías tu fatiga en los últimos días? (0 = Ninguna, 5 = Incapacitante)",
+    "¿Cuánta dificultad tienes para respirar? (0 = Normal, 5 = Asfixia)",
+    "¿Qué tan alta es tu temperatura corporal? (0 = Normal, 5 = Fiebre muy alta [>39°C])",
+    "¿Qué tanto dolor articular/muscular experimentas? (0 = Nada, 5 = Severo)",
+    "¿Cómo es tu apetito? (0 = Normal, 5 = Nulo)",
+    "¿Has tenido tos persistente? (0 = No, 5 = Constante con flemas)",
+    "¿Sientes opresión en el pecho? (0 = No, 5 = Intensa)",
+    "¿Tienes mareos o desmayos? (0 = No, 5 = Frecuentes)",
+    "¿Has notado cambios en la piel? (0 = No, 5 = Erupciones graves)"
+];
+
+let currentQuestionIndex = 0;
+let responses = [];
+
+function scrollToBottom() {
+    const chatContainer = document.querySelector(".assistant-messages");
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function askNextQuestion() {
+    if (currentQuestionIndex < questions.length) {
+        const questionText = questions[currentQuestionIndex];
+        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>${questionText}</div>`;
+    } else {
+        sendResponses();
+    }
+    scrollToBottom();
+}
+
+function sendResponses() {
+    fetch('/tu-endpoint/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ respuestas: responses })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+        scrollToBottom();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function handleResponse() {
+    const inputField = document.querySelector(".input-group input");
+    const answer = inputField.value.trim();
+    if (answer !== "" && currentQuestionIndex < questions.length) {
+        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${answer}</div>`;
+        responses.push({ pregunta: questions[currentQuestionIndex], respuesta: answer });
+        inputField.value = "";
+        currentQuestionIndex++;
+        askNextQuestion();
+    }
+    scrollToBottom();
+}
+
+document.querySelector(".input-group button").addEventListener("click", handleResponse);
+
+document.querySelector(".input-group input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        handleResponse();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", askNextQuestion);
+
+</script>
 <!-- <script src="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script> -->
 {% endblock %}

@@ -9,3 +9,14 @@
 body{
     background: #DBE0EE !important;
 }
+ .assistant-container {
+    z-index: 1000;
+}
+
+.assistant-card {
+    transition: all 0.3s ease;
+}
+
+.rounded-circle {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
