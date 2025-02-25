@@ -33,96 +33,91 @@
             <button type="button" class="btn-close btn-close-white" onclick="toggleAssistant()"></button>
         </div>
         <div class="card-body">
-            <div class="assistant-messages mb-2" style="height: 200px; overflow-y: auto;">
-                <!-- <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user }}! ¿En qué puedo ayudarte?</div> -->
+            <div class="assistant-messages mb-2" style="height: 265px; overflow-y: auto;">
+                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user }}! Soy un asistente virtual que te puede ayudar a ubicar con que especialista dirigirte</div>
             </div>
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input type="text" class="form-control" placeholder="Escribe tu respuesta...">
                 <button class="btn btn-primary">
                     <i class="bi bi-send"></i>
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
-    
+
     <button class="btn btn-primary rounded-circle" onclick="toggleAssistant()">
         <i class="bi bi-robot" style="font-size: 1.5rem;"></i>
     </button>
 </div>
 <script>
-
-function toggleAssistant() {
+    function toggleAssistant() {
         const assistantCard = document.getElementById('assistantCard');
         assistantCard.style.display = assistantCard.style.display === 'none' ? 'block' : 'none';
     }
+</script>
+<script>
     const questions = [
-    "¿Qué tanto dolor de cabeza sientes? (0 = Nada, 5 = Insoportable)",
-    "¿Cómo calificarías tu fatiga en los últimos días? (0 = Ninguna, 5 = Incapacitante)",
-    "¿Cuánta dificultad tienes para respirar? (0 = Normal, 5 = Asfixia)",
-    "¿Qué tan alta es tu temperatura corporal? (0 = Normal, 5 = Fiebre muy alta [>39°C])",
-    "¿Qué tanto dolor articular/muscular experimentas? (0 = Nada, 5 = Severo)",
-    "¿Cómo es tu apetito? (0 = Normal, 5 = Nulo)",
-    "¿Has tenido tos persistente? (0 = No, 5 = Constante con flemas)",
-    "¿Sientes opresión en el pecho? (0 = No, 5 = Intensa)",
-    "¿Tienes mareos o desmayos? (0 = No, 5 = Frecuentes)",
-    "¿Has notado cambios en la piel? (0 = No, 5 = Erupciones graves)"
-];
+        { text: "¿Qué tanto dolor de cabeza sientes?", labels: "(0 = Nada, 5 = Insoportable)" },
+        { text: "¿Cómo calificarías tu fatiga en los últimos días?", labels: "(0 = Ninguna, 5 = Incapacitante)" },
+        { text: "¿Cuánta dificultad tienes para respirar?", labels: "(0 = Normal, 5 = Asfixia)" },
+        { text: "¿Qué tan alta es tu temperatura corporal?", labels: "(0 = Normal, 5 = Fiebre muy alta [>39°C])" },
+        { text: "¿Qué tanto dolor articular/muscular experimentas?", labels: "(0 = Nada, 5 = Severo)" },
+        { text: "¿Cómo es tu apetito?", labels: "(0 = Normal, 5 = Nulo)" },
+        { text: "¿Has tenido tos persistente?", labels: "(0 = No, 5 = Constante con flemas)" },
+        { text: "¿Sientes opresión en el pecho?", labels: "(0 = No, 5 = Intensa)" },
+        { text: "¿Tienes mareos o desmayos?", labels: "(0 = No, 5 = Frecuentes)" },
+        { text: "¿Has notado cambios en la piel?", labels: "(0 = No, 5 = Erupciones graves)" }
+    ];
 
-let currentQuestionIndex = 0;
-let responses = [];
+    let currentQuestionIndex = 0;
+    let responses = [];
 
-function scrollToBottom() {
-    const chatContainer = document.querySelector(".assistant-messages");
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+    const colors = ["#0000FF", "#4B75FF", "#9696FF", "#FFA07A", "#FF4500", "#FF0000"]; // Azul a rojo progresivo
 
-function askNextQuestion() {
-    if (currentQuestionIndex < questions.length) {
-        const questionText = questions[currentQuestionIndex];
-        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>${questionText}</div>`;
-    } else {
-        sendResponses();
+    function scrollToBottom() {
+        const chatContainer = document.querySelector(".assistant-messages");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-    scrollToBottom();
-}
 
-function sendResponses() {
-    fetch('/tu-endpoint/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ respuestas: responses })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+    function askNextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            const question = questions[currentQuestionIndex];
+            let buttonsHtml = "";
+            for (let i = 0; i <= 5; i++) {
+                buttonsHtml += `<button class='btn btn-sm response-btn' style='background-color: ${colors[i]}; color: white; margin: 2px;' onclick='handleResponse(${i})'>${i}</button>`;
+            }
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>${question.text}</div><div class='response-buttons'>${buttonsHtml}</div><div class='text-center mt-1' style='font-size: 0.9em;'>${question.labels}</div>`;
+        } else {
+            sendResponses();
+        }
         scrollToBottom();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function handleResponse() {
-    const inputField = document.querySelector(".input-group input");
-    const answer = inputField.value.trim();
-    if (answer !== "" && currentQuestionIndex < questions.length) {
-        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${answer}</div>`;
-        responses.push({ pregunta: questions[currentQuestionIndex], respuesta: answer });
-        inputField.value = "";
-        currentQuestionIndex++;
-        askNextQuestion();
     }
-    scrollToBottom();
-}
 
-document.querySelector(".input-group button").addEventListener("click", handleResponse);
-
-document.querySelector(".input-group input").addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        handleResponse();
+    function sendResponses() {
+        fetch('/tu-endpoint/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ respuestas: responses })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+                scrollToBottom();
+            })
+            .catch(error => console.error('Error:', error));
     }
-});
 
-document.addEventListener("DOMContentLoaded", askNextQuestion);
+    function handleResponse(answer) {
+        if (currentQuestionIndex < questions.length) {
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${answer}</div>`;
+            responses.push({ pregunta: questions[currentQuestionIndex].text, respuesta: answer });
+            currentQuestionIndex++;
+            askNextQuestion();
+        }
+        scrollToBottom();
+    }
+
+    document.addEventListener("DOMContentLoaded", askNextQuestion);
 
 </script>
 <!-- <script src="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script> -->
