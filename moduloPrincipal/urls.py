@@ -17,6 +17,7 @@ from moduloPrincipal.views.viewPatologia import *
 from moduloPrincipal.views.viewPerfilClinico import *
 from moduloPrincipal.views.viewToxicomania import *
 from moduloPrincipal.views.viewVacuna import *
+from moduloPrincipal.views.viewChatbot import *
 from moduloNutricion.views.viewAlimentos import *
 from moduloNutricion.views.viewMenuPaciente import *
 from moduloNutricion.views.viewListaAlimentos import *
@@ -99,6 +100,9 @@ urlpatterns = [
     path('api/types/', fetch_tipo_data, name='fetch_tipo_data'),
     path('api/units/', fetch_unidades_data, name='fetch_unidades_data'),
     path('mapa/', visualizarMapa, name='mapa'),
+     
+     path('reglasDifusas/', reglasDifusas, name='reglasDifusas'),
+
 
     # Urls del administrador
     path('inicio/admin/', InicioAdmin.as_view(), name='inicio_admin'),
