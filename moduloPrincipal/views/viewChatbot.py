@@ -34,11 +34,15 @@ especialistas = {
 
 
 for sintoma in sintomas.values():
-    sintoma.automf(3, names=['bajo', 'medio', 'alto'])
+    sintoma['bajo'] = fuzz.trimf(sintoma.universe, [0, 0, 2])
+    sintoma['medio'] = fuzz.trimf(sintoma.universe, [1, 2.5, 4])
+    sintoma['alto'] = fuzz.trimf(sintoma.universe, [3, 5, 5])
 
-
+# Funciones de pertenencia para especialistas
 for esp in especialistas.values():
-    esp.automf(3, names=['bajo', 'medio', 'alto'])
+    esp['bajo'] = fuzz.trimf(esp.universe, [0, 0, 4])
+    esp['medio'] = fuzz.trimf(esp.universe, [2, 5, 8])
+    esp['alto'] = fuzz.trimf(esp.universe, [6, 10, 10])
 
 
 
