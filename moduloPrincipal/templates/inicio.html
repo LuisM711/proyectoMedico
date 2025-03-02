@@ -104,9 +104,13 @@
         })
             .then(response => response.json())
             .then(data => {
-                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+                // document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+                //show response as txt
+                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>${JSON.stringify(data.especialistas_recomendados)}</div>`;
+                
                 scrollToBottom();
             })
+
             .catch(error => console.error('Error:', error));
     }
 
