@@ -177,6 +177,11 @@
         </tr>
     </table>
     <div id="botonesConte">
+        <!-- boton para recomendaciones IA con icono de magic wand -->
+
+        <button type="button" class="btn btn-primary" id="recomendaciones" onclick="gemini()"><i
+                class=""></i> Generar recomendaciones</button>
+
         <button type="button" class="btn btn-primary" id="lista" onclick="openIngredientDialog()">Lista de
             Alimentos</button>
         <input type="button" class="btn btn-primary" id="" onclick="siguiente('menu')" value="Siguiente">
@@ -224,17 +229,52 @@
         </section>
     </div>
     <script>
-        var modal = document.getElementById("alimentos");
-        var span = modal.querySelector(".close");
-        span.onclick = function () {
-            modal.close();
-            modal.style.display = 'none';
-        }
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.close();
-                modal.style.display = 'none';
+        gemini = () => {
+            let tabla = document.getElementById('tabla');
+            let datos = {};
+            for (let i = 1; i < tabla.rows.length; i++) {
+                let fila = tabla.rows[i];
+                let nombreComida = fila.cells[0].textContent.trim();  
+                datos[nombreComida] = {};
+                for (let j = 1; j < fila.cells.length; j++) {
+                    let nombreCategoria = tabla.rows[0].cells[j].textContent.trim();
+                    let valor = fila.cells[j].querySelector('input').value;
+                    datos[nombreComida][nombreCategoria] = valor;
+                }
             }
+
+
+            console.log(JSON.stringify(datos, null, 2));
+            let prompt = "Recomienda un menú basado en las siguientes porciones (maximo 50 palabras):\n";
+            for (let comida in datos) {
+                prompt += `\n${comida}:\n`;
+                for (let categoria in datos[comida]) {
+                    prompt += `- ${categoria}: ${datos[comida][categoria]} porciones\n`;
+                }
+            }
+
+            // Mostrar el prompt en la consola
+            console.log("Prompt enviado:", prompt);
+
+            fetch(`/gemini/${encodeURIComponent(prompt)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Respuesta de Gemini:", data.candidates[0].content.parts[0].text );
+
+                textarea.value = data.candidates[0].content.parts[0].text;
+                document.querySelectorAll('.recomendacion').forEach(element => {
+                    element.disabled = false;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error); // Manejar errores
+            });
         }
         onload = (event) => {
             /*
@@ -327,13 +367,13 @@
                 let alerta1 = document.createElement('div');
 
                 alerta1.innerHTML = `
-                <input type="button" class="btn btn-primary" onclick="agregarAlTextArea(this.value);this.disabled = true;" value = "Actividad física 150 minutos a la semana leve a moderada">
+                <input type="button" class="btn btn-primary recomendacion" onclick="agregarAlTextArea(this.value);this.disabled = true;" value = "Actividad física 150 minutos a la semana leve a moderada">
             `;
                 botonesRecomendacion.appendChild(alerta1);
                 let alerta2 = document.createElement('div');
 
                 alerta2.innerHTML = `
-                <input type="button" class="btn btn-primary" onclick="agregarAlTextArea(this.value);this.disabled = true;" value = "Bajar de peso">
+                <input type="button" class="btn btn-primary recomendacion" onclick="agregarAlTextArea(this.value);this.disabled = true;" value = "Bajar de peso">
                 `;
                 botonesRecomendacion.appendChild(alerta2);
             }

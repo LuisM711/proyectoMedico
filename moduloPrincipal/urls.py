@@ -18,6 +18,7 @@ from moduloPrincipal.views.viewPerfilClinico import *
 from moduloPrincipal.views.viewToxicomania import *
 from moduloPrincipal.views.viewVacuna import *
 from moduloPrincipal.views.viewChatbot import *
+from moduloPrincipal.views.viewGemini import *
 from moduloNutricion.views.viewAlimentos import *
 from moduloNutricion.views.viewMenuPaciente import *
 from moduloNutricion.views.viewListaAlimentos import *
@@ -102,6 +103,7 @@ urlpatterns = [
     path('mapa/', visualizarMapa, name='mapa'),
      
      path('reglasDifusas/', reglasDifusas, name='reglasDifusas'),
+     path('gemini/<str:prompt>', gemini, name='gemini'),
 
 
     # Urls del administrador
