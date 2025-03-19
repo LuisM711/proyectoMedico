@@ -104,6 +104,7 @@ urlpatterns = [
      
      path('reglasDifusas/', reglasDifusas, name='reglasDifusas'),
      path('gemini/<str:prompt>', gemini, name='gemini'),
+     path('unidades', unidades , name='unidades'),
 
 
     # Urls del administrador

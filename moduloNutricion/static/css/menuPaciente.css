@@ -47,8 +47,10 @@ margin-top: 2%;
     left: 10%;
 }
 .recomendaciones{
-    width: 40%;
     margin-left: 10%;
+    display: flex;
+    flex-direction: row;
+    gap: 120px;
 }
 .recomendacion{
     text-align: center;

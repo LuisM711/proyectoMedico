@@ -1,0 +1,179 @@
+{% extends 'layouts/nav.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .nav-flotante {
+        position: fixed;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        background: #007bff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-flotante ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-flotante ul li {
+        margin: 10px 0;
+    }
+
+    .nav-flotante ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        padding: 8px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .nav-flotante ul li a:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+    }
+
+    .seccion {
+        background: white;
+        padding: 40px;
+        margin-top: 100px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .seccion h2 {
+        color: #007bff;
+    }
+
+    .seccion img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+
+    .seccion p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .seccion ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .seccion ul li {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container">
+    <h1>Lista de unidades de medida</h1>
+
+    <!-- Navegación flotante -->
+    <div class="nav-flotante">
+        <ul>
+            <li><a href="#taza">Taza</a></li>
+            <li><a href="#libra">Libra</a></li>
+            <li><a href="#gramos">Gramos</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Taza -->
+    <div id="taza" class="seccion">
+        <h2>Taza</h2>
+        <img src="{% static 'images/taza_medicion.jpg' %}" alt="Medida Taza">
+        <p>La <strong>taza</strong> es una unidad de medida de volumen utilizada en la cocina, especialmente en recetas de repostería.</p>
+        <p>Se usa para medir ingredientes líquidos y secos con facilidad.</p>
+        <h3>Equivalencias:</h3>
+        <ul>
+            <li>1 taza = 240 ml</li>
+            <li>1 taza = 16 cucharadas</li>
+            <li>1/2 taza = 120 ml</li>
+            <li>1/4 taza = 60 ml</li>
+        </ul>
+    </div>
+
+    <!-- Sección Libra -->
+    <div id="libra" class="seccion">
+        <h2>Libra</h2>
+        <img src="{% static 'images/libra_peso.jpg' %}" alt="Medida Libra">
+        <p>La <strong>libra</strong> es una unidad de peso común en países anglosajones. Se usa para medir productos como carnes, harinas y frutas.</p>
+        <p>En supermercados de Estados Unidos y Reino Unido, los precios de los alimentos suelen expresarse en libras.</p>
+        <h3>Equivalencias:</h3>
+        <ul>
+            <li>1 libra = 453.59 gramos</li>
+            <li>1 libra = 16 onzas</li>
+            <li>1/2 libra = 226.8 gramos</li>
+            <li>1/4 libra = 113.4 gramos</li>
+        </ul>
+    </div>
+
+    <!-- Sección Gramos -->
+    <div id="gramos" class="seccion">
+        <h2>Gramos</h2>
+        <img src="{% static 'images/gramos_peso.png' %}" alt="Medida Gramos">
+        <p>El <strong>gramo</strong> es la unidad base de la masa en el sistema métrico. Es ampliamente usado en todo el mundo para medir ingredientes de cocina y productos comerciales.</p>
+        <p>Los gramos permiten una medición precisa y son ideales para pesar especias, azúcar, sal y otros ingredientes pequeños.</p>
+        <h3>Equivalencias:</h3>
+        <ul>
+            <li>1 gramo = 0.035 onzas</li>
+            <li>1000 gramos = 1 kilogramo</li>
+            <li>500 gramos = 0.5 kilogramos</li>
+            <li>250 gramos = 0.25 kilogramos</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const enlaces = document.querySelectorAll(".nav-flotante ul li a");
+    
+    enlaces.forEach(enlace => {
+        enlace.addEventListener("click", function(event) {
+            event.preventDefault(); 
+            const idDestino = this.getAttribute("href");
+            const elementoDestino = document.querySelector(idDestino);
+            
+            if (elementoDestino) {
+                window.scrollTo({
+                    top: elementoDestino.offsetTop - 20,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

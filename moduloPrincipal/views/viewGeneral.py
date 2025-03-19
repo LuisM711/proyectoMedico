@@ -193,7 +193,10 @@ class Configuracion(View):
             return render(request, 'configuracion.html', {"datos": {'usuario': request.user.id, 'nombre': request.user.username, 'correo': request.user.email}})
         else:
             return redirect('login')
-        
+
+def unidades(request):
+    if request.method == 'GET':
+        return render(request, 'unidades.html')
 # class Configuracion(View):
 #     @method_decorator(login_required(login_url='login'), name='dispatch')
 #     def get(self, request):
