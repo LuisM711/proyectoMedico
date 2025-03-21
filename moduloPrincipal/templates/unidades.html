@@ -95,12 +95,17 @@
         margin: 5px 0;
         border-radius: 5px;
     }
+
+    @media (max-width: 768px) {
+        .nav-flotante {
+            display: none;
+        }
+    }
 </style>
 
 <div class="container">
     <h1>Lista de unidades de medida</h1>
 
-    <!-- Navegación flotante -->
     <div class="nav-flotante">
         <ul>
             <li><a href="#taza">Taza</a></li>
@@ -109,10 +114,9 @@
         </ul>
     </div>
 
-    <!-- Sección Taza -->
     <div id="taza" class="seccion">
         <h2>Taza</h2>
-        <img src="{% static 'images/taza_medicion.jpg' %}" alt="Medida Taza">
+        <img src="{% static 'images/proporciones/taza_medicion.jpg' %}" alt="Medida Taza">
         <p>La <strong>taza</strong> es una unidad de medida de volumen utilizada en la cocina, especialmente en recetas de repostería.</p>
         <p>Se usa para medir ingredientes líquidos y secos con facilidad.</p>
         <h3>Equivalencias:</h3>
@@ -122,12 +126,15 @@
             <li>1/2 taza = 120 ml</li>
             <li>1/4 taza = 60 ml</li>
         </ul>
+        <img src="{% static 'images/proporciones/taza_litros.png' %}" class="aftermarket" alt="Taza en litros">
+        <img src="{% static 'images/proporciones/taza_equivalencia.png' %}" class="aftermarket" alt="Equivalencia de taza">
+        <img src="{% static 'images/proporciones/taza_cucharada.png' %}" class="aftermarket" alt="Equivalencia de taza en cucharadas">
+
     </div>
 
-    <!-- Sección Libra -->
     <div id="libra" class="seccion">
         <h2>Libra</h2>
-        <img src="{% static 'images/libra_peso.jpg' %}" alt="Medida Libra">
+        <img src="{% static 'images/proporciones/libra_peso.jpg' %}" alt="Medida Libra">
         <p>La <strong>libra</strong> es una unidad de peso común en países anglosajones. Se usa para medir productos como carnes, harinas y frutas.</p>
         <p>En supermercados de Estados Unidos y Reino Unido, los precios de los alimentos suelen expresarse en libras.</p>
         <h3>Equivalencias:</h3>
@@ -137,12 +144,19 @@
             <li>1/2 libra = 226.8 gramos</li>
             <li>1/4 libra = 113.4 gramos</li>
         </ul>
+        <img src="{% static 'images/proporciones/mano1.png' %}" class="aftermarket" alt="Mano1">
+        <img src="{% static 'images/proporciones/mano2.png' %}" class="aftermarket" alt="Mano2">
+        <img src="{% static 'images/proporciones/mano3.png' %}" class="aftermarket" alt="Mano3">
+        <img src="{% static 'images/proporciones/mano4.png' %}" class="aftermarket" alt="Mano4">
+        <img src="{% static 'images/proporciones/mano5.png' %}" class="aftermarket" alt="Mano5">
+        <img src="{% static 'images/proporciones/mano6.png' %}" class="aftermarket" alt="Mano6">
+
+        
     </div>
 
-    <!-- Sección Gramos -->
     <div id="gramos" class="seccion">
         <h2>Gramos</h2>
-        <img src="{% static 'images/gramos_peso.png' %}" alt="Medida Gramos">
+        <img src="{% static 'images/proporciones/gramos_peso.png' %}" alt="Medida gramos">
         <p>El <strong>gramo</strong> es la unidad base de la masa en el sistema métrico. Es ampliamente usado en todo el mundo para medir ingredientes de cocina y productos comerciales.</p>
         <p>Los gramos permiten una medición precisa y son ideales para pesar especias, azúcar, sal y otros ingredientes pequeños.</p>
         <h3>Equivalencias:</h3>
@@ -152,6 +166,9 @@
             <li>500 gramos = 0.5 kilogramos</li>
             <li>250 gramos = 0.25 kilogramos</li>
         </ul>
+        <img src="{% static 'images/proporciones/mano0.png' %}" class="aftermarket" alt="Gramos en la mano">
+        <img src="{% static 'images/proporciones/mano7.png' %}" class="aftermarket" alt="Mano7">
+        <img src="{% static 'images/proporciones/mano8.png' %}" class="aftermarket" alt="Mano8">
     </div>
 </div>
 
