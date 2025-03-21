@@ -1,0 +1,310 @@
+[
+    {
+        "paciente": "Doctor, he tenido tos persistente durante más de tres semanas. A veces es seca, pero otras veces expulso flema amarilla. Además, siento un silbido en el pecho cuando respiro profundamente. ¿Podría ser algo grave como bronquitis o asma?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Últimamente, siento una opresión fuerte en el pecho, especialmente cuando hago ejercicio o subo escaleras. También me mareo y siento que el corazón late muy rápido. ¿Podría ser un problema cardíaco?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Doctor, tengo un dolor intenso en las articulaciones de las manos y las rodillas, especialmente por las mañanas. Me cuesta moverme durante los primeros 30 minutos del día. Además, me siento muy cansado todo el tiempo. ¿Podría ser artritis reumatoide?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me han salido unas manchas rojas en la piel que pican mucho, especialmente en los brazos y las piernas. También tengo fiebre baja desde hace dos días. ¿Podría ser una reacción alérgica o algo más serio?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Doctor, he perdido completamente el apetito y siento náuseas constantemente, especialmente después de comer. También tengo dolor en la parte superior del abdomen. ¿Podría ser gastritis o algo relacionado con el hígado?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He tenido dolores de cabeza muy fuertes en los últimos días, acompañados de visión borrosa y mareos. A veces siento que voy a desmayarme. ¿Podría ser algo neurológico como migraña o algo más grave?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo fiebre alta desde hace tres días, acompañada de escalofríos y dolor de garganta con pus. También me duele el cuerpo como si tuviera gripe, pero no mejoro con medicamentos comunes. ¿Podría ser una infección bacteriana?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Doctor, no puedo oír bien del oído izquierdo y siento un zumbido constante. Además, me duele al tragar y tengo la nariz congestionada. ¿Podría ser una infección en el oído o algo más?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento extremadamente cansado todo el día, incluso después de dormir bien. También tengo escalofríos y un malestar general que no mejora. ¿Podría ser algo serio o solo estrés?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tengo tos con flema desde hace más de un mes. A veces la flema tiene rastros de sangre. También siento dolor en el pecho al respirar profundamente. ¿Podría ser tuberculosis o algo similar?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Últimamente, siento que mi corazón late muy rápido sin razón aparente. A veces siento que me falta el aire y me mareo. ¿Podría ser arritmia o algo relacionado con el estrés?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Tengo un dolor intenso en las rodillas y los tobillos, especialmente después de caminar o estar de pie por mucho tiempo. También noto que las articulaciones están hinchadas. ¿Podría ser artrosis?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me han salido unas ampollas dolorosas en los labios y alrededor de la boca. También tengo fiebre y malestar general. ¿Podría ser herpes labial o algo más?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Doctor, tengo diarrea constante desde hace una semana, acompañada de dolor abdominal y náuseas. A veces veo sangre en las heces. ¿Podría ser colitis o algo más grave?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He tenido episodios de visión doble y pérdida de equilibrio en los últimos días. También siento un hormigueo en las manos y los pies. ¿Podría ser algo neurológico como esclerosis múltiple?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo fiebre alta y ganglios inflamados en el cuello desde hace varios días. También me duele mucho la garganta y tengo dificultad para tragar. ¿Podría ser mononucleosis?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Doctor, tengo la nariz congestionada desde hace semanas y no mejora con descongestionantes. También siento presión en los oídos y dolor de cabeza. ¿Podría ser sinusitis crónica?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento muy débil y cansado todo el tiempo, incluso después de dormir bien. También he perdido peso sin razón aparente. ¿Podría ser anemia o algo más?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tengo tos seca desde hace más de un mes, acompañada de dolor en el pecho al respirar. A veces siento que me falta el aire. ¿Podría ser algo grave como fibrosis pulmonar?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Últimamente, siento un dolor agudo en el pecho que se irradia hacia el brazo izquierdo. También me mareo al hacer esfuerzo. ¿Podría ser un problema cardíaco como angina de pecho?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Tengo un dolor intenso en la cadera que empeora al caminar o estar de pie por mucho tiempo. También siento rigidez en las mañanas. ¿Podría ser artritis o bursitis?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me han salido unas manchas oscuras en la piel que no desaparecen. También pican y se descaman. ¿Podría ser melanoma o algo menos grave?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Doctor, tengo acidez constante después de comer, acompañada de regurgitación y dolor en el pecho. ¿Podría ser reflujo gastroesofágico?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He tenido episodios de pérdida de memoria recientemente, acompañados de confusión y dificultad para concentrarme. ¿Podría ser algo neurológico como Alzheimer?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo fiebre que no baja con medicamentos, acompañada de dolor muscular y fatiga extrema. ¿Podría ser dengue o alguna otra infección viral?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Doctor, tengo un dolor intenso en el oído derecho, acompañado de pérdida de audición y zumbidos. ¿Podría ser una infección o algo más grave?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento muy cansado y con sueño todo el tiempo, incluso después de dormir bien. También tengo dificultad para concentrarme. ¿Podría ser hipotiroidismo?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tos persistente y silbidos en el pecho. ¿Qué podría ser?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Siento opresión en el pecho y dolor en el brazo izquierdo. ¿Es grave?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Tengo rigidez matutina y dolor en las articulaciones. ¿Qué hago?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me salieron manchas rojas en la piel con picazón intensa. ¿Es alergia?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Náuseas después de comer y acidez constante. ¿Qué me recomienda?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Visión borrosa y hormigueo en las extremidades. ¿Debería preocuparme?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Fiebre alta y ganglios inflamados. ¿Será una infección?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Zumbido en los oídos y congestión nasal crónica. ¿Qué podría ser?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Fatiga generalizada y malestar leve. Necesito un chequeo general",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Dificultad para respirar y dolor al inhalar. ¿Es pulmonar?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Palpitaciones frecuentes y mareos al caminar. ¿Es del corazón?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Hinchazón en rodillas y fatiga muscular. ¿Qué especialista me ve?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Erupción con pus en la piel y descamación. ¿Es contagioso?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Dolor abdominal y pérdida de apetito. ¿Será gastritis?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Mareos repentinos y migraña intensa. ¿Necesito estudios?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Escalofríos y dolor de garganta con pus. ¿Es bacterial?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Dificultad para tragar y pérdida de olfato. ¿Qué hago?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Pérdida de peso inexplicable y debilidad. Necesito orientación",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Tos seca por semanas y silbidos al respirar. ¿Es asma?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Dolor en el pecho que irradia a la mandíbula. ¿Es urgente?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Dolor en dedos al moverlos y rigidez. ¿Es artritis?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Picazón intensa en codos y rodillas. ¿Es dermatitis?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Vómitos después de comer y acidez nocturna. ¿Qué será?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Dolor de cabeza con aura visual. ¿Necesito un TAC?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Fiebre que no baja con medicamentos. ¿Qué infección tengo?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Oído tapado y dolor al tragar. ¿Es otitis?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Cansancio extremo y sudores nocturnos. ¿Debo hacerme análisis?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Falta de aire al subir escaleras y tos con flema. ¿Es EPOC?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Mareos al levantarme rápido y visión de túnel. ¿Es cardíaco?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Dolor en cadera al caminar y rigidez. ¿Qué especialista ve esto?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Urticaria en todo el cuerpo sin razón aparente. ¿Es alergia?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Diarrea constante y dolor abdominal. ¿Qué dieta seguir?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Adormecimiento en la cara y migraña. ¿Es neurológico?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Ganglios inflamados en el cuello y fiebre. ¿Es viral?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Ronquera persistente y dolor de oído. ¿Es laringitis?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Pérdida de apetito y sueño excesivo. Necesito un chequeo",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Tos con sangre y dolor torácico. ¿Es neumonía?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Latidos irregulares y ansiedad. ¿Es arritmia?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Dolor en tobillos al correr e hinchazón. ¿Qué hacer?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Ampollas dolorosas en la boca y labios. ¿Es herpes?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Heces con sangre y cólicos. ¿Es urgente?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Pérdida de equilibrio y visión doble. ¿Es grave?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Dolor muscular generalizado y fiebre. ¿Es dengue?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Sangrado nasal frecuente y voz ronca. ¿Qué especialista me ve?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Debilidad general y palidez. ¿Necesito vitaminas?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Sibilancia al respirar y tos nocturna. ¿Es alergia o pulmón?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Dolor en el pecho que empeora al acostarme. ¿Es cardíaco?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Dolor en hombros y cuello con rigidez. ¿Es reumatológico?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Uñas quebradizas y erupción en manos. ¿Es hongos?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Reflujo ácido y eructos constantes. ¿Qué medicamento tomar?",
+        "especialista": "gastroenterologo"
+    }
+]

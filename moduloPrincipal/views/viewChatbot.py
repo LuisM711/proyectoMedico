@@ -4,7 +4,12 @@ import json
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
-
+import joblib
+"""
+pip install scikit-learn spacy pandas numpy
+python -m spacy download es_core_news_sm
+    
+    """
 
 sintomas = {
     'dolor_cabeza': ctrl.Antecedent(np.arange(0, 6, 1), 'dolor_cabeza'),
@@ -102,6 +107,13 @@ sistema_simulacion = ctrl.ControlSystemSimulation(sistema_control)
 def reglasDifusas(request):
     if request.method == 'POST':
         try:
+            
+            modelo_cargado = joblib.load('moduloPrincipal/static/modelo_especialistas.pkl')
+            nueva_consulta = ["Tengo tos seca y dificultad para respirar, ¿qué especialista debo ver?"]
+            prediccion = modelo_cargado.predict(nueva_consulta)
+            print("Especialista recomendado:", prediccion[0])
+
+            
             data = json.loads(request.body)
             respuestas = data.get('respuestas', [])
             if len(respuestas) < 10:
@@ -154,3 +166,4 @@ def reglasDifusas(request):
             return JsonResponse({"error": str(e)}, status=400)
     
     return JsonResponse({"error": "Método no permitido"}, status=405)
+
