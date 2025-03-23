@@ -34,14 +34,16 @@
         </div>
         <div class="card-body">
             <div class="assistant-messages mb-2" style="height: 265px; overflow-y: auto;">
-                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user }}! Soy un asistente virtual que te puede ayudar a ubicar con que especialista dirigirte</div>
+                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user }}! Soy un asistente virtual que te puede
+                    ayudar a ubicar con que especialista dirigirte</div>
             </div>
-            <!-- <div class="input-group">
-                <input type="text" class="form-control" placeholder="Escribe tu respuesta...">
-                <button class="btn btn-primary">
+            <div class="input-group" style="display: none;" id="responseInput">
+                <input type="text" id="txtRespuesta" class="form-control" placeholder="Escribe tu respuesta..."
+                    onkeydown="if (event.key === 'Enter') sendResponses()">
+                <button class="btn btn-primary" onclick="sendResponses()" id="sendButton">
                     <i class="bi bi-send"></i>
                 </button>
-            </div> -->
+            </div>
         </div>
     </div>
 
@@ -72,7 +74,7 @@
     let currentQuestionIndex = 0;
     let responses = [];
 
-    const colors = ["#0000FF", "#4B75FF", "#9696FF", "#FFA07A", "#FF4500", "#FF0000"]; // Azul a rojo progresivo
+    const colors = ["#0000FF", "#4B75FF", "#9696FF", "#FFA07A", "#FF4500", "#FF0000"];
 
     function scrollToBottom() {
         const chatContainer = document.querySelector(".assistant-messages");
@@ -88,26 +90,30 @@
             }
             document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>${question.text}</div><div class='response-buttons'>${buttonsHtml}</div><div class='text-center mt-1' style='font-size: 0.9em;'>${question.labels}</div>`;
         } else {
-            sendResponses();
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>Ahora, con tus propias palabras que es lo que sientes.</div>`;
+            responseInput.style.display = 'flex';
         }
         scrollToBottom();
     }
 
     function sendResponses() {
+
+
         fetch('/reglasDifusas/', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 'X-CSRFToken': '{{ csrf_token }}'
             },
-            body: JSON.stringify({ respuestas: responses })
+            body: JSON.stringify({ respuestas: responses, txtRespuesta: txtRespuesta.value })
         })
             .then(response => response.json())
             .then(data => {
                 // document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
-                //show response as txt
                 document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>${JSON.stringify(data.especialistas_recomendados)}</div>`;
-                
+                sendButton.disabled = true;
+                txtRespuesta.disabled = true;
+                txtRespuesta.value = "";
                 scrollToBottom();
             })
 

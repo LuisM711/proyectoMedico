@@ -306,5 +306,397 @@
     {
         "paciente": "Reflujo ácido y eructos constantes. ¿Qué medicamento tomar?",
         "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Doctor, he tenido tos persistente y flema intermitente durante varias semanas. ¿Podría ser algo pulmonar?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Últimamente, siento una opresión en el pecho al hacer ejercicio y mareos. ¿Se trata de un problema cardiaco?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Tengo dolor y rigidez en las articulaciones, especialmente por las mañanas. ¿Podría ser artritis?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me han aparecido manchas rojas y escamosas en la piel que pican mucho. ¿Es una reacción alérgica o algo más?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Doctor, sufro de dolor abdominal intenso y náuseas después de comer. ¿Podría tratarse de gastritis?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He experimentado dolores de cabeza fuertes con visión borrosa. ¿Necesito un estudio neurológico?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo fiebre alta y escalofríos desde hace días, acompañado de malestar general. ¿Podría ser una infección séria?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Siento dolor agudo en el oído y un zumbido constante. ¿Es posible que tenga una infección de oído?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento muy cansado, sin energía y con una sensación general de malestar. ¿Qué me recomienda?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tengo tos con rastros de sangre y dificultad para respirar. ¿Podría ser algo grave en mis pulmones?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "He notado palpitaciones irregulares y mareos frecuentes cuando descanso. ¿Es un síntoma cardíaco?",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Siento una constante rigidez en las manos y dolor en las rodillas. ¿Debo preocuparme por mis articulaciones?",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me han salido erupciones y sarpullidos en varias zonas del cuerpo que no desaparecen. ¿Qué podría ser?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Después de comer, tengo episodios de vómitos y un fuerte dolor en la parte superior del abdomen.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He notado pérdida de memoria reciente acompañada de confusión. ¿Debe ser evaluado un neurólogo?",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Llevo varios días con fiebre persistente y dolor muscular. ¿Podría ser una infección bacteriana o viral?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Siento congestión nasal severa y dolor punzante en el oído cada vez que tengo un resfriado.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento exhausto, he perdido peso inexplicablemente y no tengo ganas de hacer nada. ¿Qué me recomienda?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tengo un silbido en el pecho al respirar y una tos seca que no cede.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Siento una fuerte presión en el pecho incluso en reposo, junto a palpitaciones constantes.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Mis articulaciones se hinchan y duelen después de períodos prolongados de actividad.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "He observado enrojecimiento y picazón intensa en mis brazos y piernas. ¿Debería preocuparme?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Presento acidez estomacal constante y dolor después de las comidas. ¿Podría ser reflujo gastroesofágico?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Últimamente, sufro episodios de mareos intensos y dificultad para coordinar mis movimientos.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo dolor de garganta, fiebre y malestar general que no mejora con analgésicos simples.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Siento un dolor persistente en el oído junto con una sensación de oido tapado.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento desanimado, con fatiga constante y sin apetito. ¿Qué procedimiento recomienda?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, desde hace varias semanas tengo una tos persistente y dificultad para respirar.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "He experimentado latidos irregulares del corazón y episodios de ansiedad acompañados de mareos.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Las mañanas me despierto con rigidez y dolor en las articulaciones que empeora con el movimiento.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Me preocupa la aparición repentina de manchas y erupciones en mi piel, algunas con picor intenso.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Siento un dolor intermitente en el abdomen inferior, a veces acompañado de náuseas tras comer.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He estado experimentando dolores de cabeza fuertes y, en ocasiones, una ligera alteración en mi visión.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo escalofríos y un malestar general que no disminuye, incluso con descanso.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Desde hace unos días, noto una congestión persistente en mis senos nasales y dolor en el oído.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento muy descompuesto, con fatiga y cansancio extremo, sin una causa aparente.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Últimamente, mi tos se ha vuelto muy intensa, incluso presentando pequeñas hemorragias.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Sufro de dolor en el pecho que se agrava al hacer cualquier esfuerzo físico, junto con palpitaciones.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Las articulaciones de mis rodillas y caderas presentan inflamación y dolor persistente.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Se me ha presentado una erupción en el rostro y el cuello, con enrojecimiento y picores inusuales.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Siento episodios de acidez y ardor en el pecho cuando estoy después de comer, lo que me inquieta.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He tenido episodios de vértigo y hormigueo en mis extremidades, y me preocupa mi coordinación.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Desde hace varios días tengo fiebre, dolor muscular y escalofríos que no terminan.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Presento dolor en el oído y una sensación de presión que me impide oír con claridad.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento generalizado sin energía, con cansancio abrumador y falta de apetito.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, mi tos seca y dificultosa para respirar no cede desde hace un tiempo. ¿Qué podría ser?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "He notado que mi corazón late de forma irregular y siento un incómodo dolor en el pecho.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Sufro de dolor articular y rigidez que empeora con el paso del tiempo, especialmente en las mañanas.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Últimamente me han aparecido erupciones y enrojecimientos en varias partes de mi cuerpo, con picazón.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Tengo dolores abdominales agudos y vómitos repentinos después de las comidas. ¿Qué me recomienda?",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Doctor, tengo dificultad para respirar especialmente durante la noche, y siento un leve silbido al expirar. ¿Qué podría ser?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Últimamente he notado que mi corazón palpita de forma errática, sobre todo al levantarme, lo que me causa preocupación.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Cada mañana tengo las manos rígidas y me duele cada articulación al moverme, incluso después de descansar bien.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "En los últimos días he tenido un brote de erupciones en la cara y me pica constantemente, ¿debería consultar a un especialista?",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Después de las comidas, sucede que tengo un ardor en el pecho y regurgitación, lo que me preocupa constantemente.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Ha habido episodios de confusión y pérdida de coordinación en mi vida diaria, especialmente cuando tengo migraña.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "He tenido fiebre alta y malestar en general, junto con dolores musculares que no ceden, ¿puede ser algo infeccioso?",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Desde hace unos días noto un zumbido en mis oídos que no desaparece y ocasionalmente me duele la cabeza.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "No he tenido mucho apetito y me siento constantemente débil. ¿Es algo simple o debería ver a alguien?",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, tengo dificultad para respirar, acompañado de tos y una leve opresión en el pecho, ¿debería preocuparme?",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Siento palpitaciones que me hacen sentir inseguro, especialmente cuando me esfuerzo físicamente.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "El dolor en mis articulaciones se vuelve insoportable en las mañanas y me limita para realizar mis tareas diarias.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "He observado una erupción rojiza en mis brazos y piernas que me causa picazón y molestias persistentes.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Siento un dolor agudo en la parte superior del abdomen después de cada comida, y la digestión se vuelve difícil.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Últimamente he experimentado mareos y pérdida de equilibrio, lo que afecta mis actividades cotidianas.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Tengo fiebre intermitente acompañada de escalofríos y dolor en mi garganta, lo cual me preocupa.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "He perdido parcialmente la audición en un oído y siento una molesta presión, ¿debería acudir a un especialista?",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Generalmente me siento agotado y sin energía durante todo el día, incluso con un sueño adecuado.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Cada vez que respiro, siento un silbido extraño en mi pecho y cierta dificultad para exhalar.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "He notado que mi corazón a veces se acelera sin motivo, provocando ansiedad y dificultad para respirar.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Las rodillas y codos me duelen al comenzar el día, y la rigidez me impide moverme con normalidad.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "La piel de mis brazos se ha vuelto muy sensible y se irrita fácilmente, mostrando signos de inflamación.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "El dolor estomacal y la acidez me persiguen después de las comidas, afectando mi calidad de vida.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He presentado episodios de vértigo acompañado de un cosquilleo en el cuerpo, especialmente en las extremidades.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Sufro de síntomas fiebriles y malestar general, junto con dolores musculares intensos.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Me acompaña un dolor sordo en los oídos y una sensación de presión interna al respirar profundamente.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "He experimentado una pérdida de peso inexplicada y me siento sin fuerzas para realizar actividades diarias.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Durante la noche, mi tos empeora y siento que me falta el aliento, especialmente al acostarme.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Cuando realizo actividades físicas, mi corazón late de manera irregular y me siento mareado frecuentemente.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "El dolor en mis manos y caderas ha incrementado, limitando mi movilidad y aumentando la rigidez matutina.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "En los últimos días, mi piel ha mostrado cambios bruscos, con manchas y enrojecimientos que me generan molestia.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Tras las comidas, he sentido un ardor intenso en el estómago acompañado de náuseas persistentes.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "Siento episodios de confusión y dificultad para concentrarme, además de un leve temblor en mis manos.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Me preocupa mi estado general ya que tengo fiebre intermitente y malestar corporal sin causa clara.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "He estado presentando molestias en el oído y dificultad para oír conversaciones en ambientes ruidosos.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Me siento fatigado toda la jornada y he notado una disminución considerable en mi apetito.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "Doctor, experimento un claro silbido al respirar y siento que mis pulmones están congestionados.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "A veces, mi corazón late de forma acelerada sin razón alguna, causándome ansiedad.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "El dolor articular se agrava con el frío y dificulta mis movimientos cada mañana.",
+        "especialista": "reumatologo"
+    },
+    {
+        "paciente": "Últimamente, he notado lesiones en mi piel que se irritan y cambian de color, lo que me preocupa.",
+        "especialista": "dermatologo"
+    },
+    {
+        "paciente": "Me asalta un dolor en el abdomen superior después de comer, acompañado de una sensación de ardor constante.",
+        "especialista": "gastroenterologo"
+    },
+    {
+        "paciente": "He tenido episodios en los que mi visión se vuelve borrosa y siento cosquilleo en mis extremidades.",
+        "especialista": "neurologo"
+    },
+    {
+        "paciente": "Hace poco desarrollé fiebre y un aumento en el dolor muscular, situación que no mejora con analgésicos.",
+        "especialista": "infectologo"
+    },
+    {
+        "paciente": "Mi oído derecho presenta molestias persistentes con sensación de presión que empeora con el tiempo.",
+        "especialista": "otorrinolaringologo"
+    },
+    {
+        "paciente": "Siento un marcado cansancio y una debilidad constante que me impide realizar mis actividades cotidianas.",
+        "especialista": "medico_general"
+    },
+    {
+        "paciente": "He notado que al respirar aparecen sibilancias y mi capacidad pulmonar se ve comprometida.",
+        "especialista": "neumologo"
+    },
+    {
+        "paciente": "Experimenté una aceleración súbita en mi ritmo cardíaco mientras caminaba, lo que me inquieta.",
+        "especialista": "cardiologo"
+    },
+    {
+        "paciente": "Cada mañana, el dolor en mis juntas y la rigidez en mis extremidades me impiden realizar actividades simples.",
+        "especialista": "reumatologo"
     }
 ]

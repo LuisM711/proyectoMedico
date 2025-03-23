@@ -107,10 +107,11 @@ sistema_simulacion = ctrl.ControlSystemSimulation(sistema_control)
 def reglasDifusas(request):
     if request.method == 'POST':
         try:
-            
+            # print(request.body)
             modelo_cargado = joblib.load('moduloPrincipal/static/modelo_especialistas.pkl')
-            nueva_consulta = ["Tengo tos seca y dificultad para respirar, ¿qué especialista debo ver?"]
+            nueva_consulta = [json.loads(request.body).get('txtRespuesta', '')]
             prediccion = modelo_cargado.predict(nueva_consulta)
+            print(json.loads(request.body).get('txtRespuesta', ''))
             print("Especialista recomendado:", prediccion[0])
 
             
@@ -135,11 +136,11 @@ def reglasDifusas(request):
             for key, value in inputs.items():
                 sistema_simulacion.input[key] = value
 
-            print("sistema_simulacion")
-            print(sistema_simulacion.input)
+            # print("sistema_simulacion")
+            # print(sistema_simulacion.input)
             
             sistema_simulacion.compute()
-            print("exito")
+            # print("exito")
             resultados = {}
             for esp_nombre, esp_consecuente in especialistas.items():
                 try:
@@ -147,8 +148,8 @@ def reglasDifusas(request):
                 except KeyError:
                     print("Error en " + esp_nombre)
                     resultados[esp_nombre] = 0.0
-            print("resultados")
-            print(resultados)
+            # print("resultados")
+            # print(resultados)
             umbral = 5.0
             recomendaciones = [esp for esp, score in resultados.items() if score >= umbral]
             
