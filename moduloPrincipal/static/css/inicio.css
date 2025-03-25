@@ -9,33 +9,3 @@
 body{
     background: #DBE0EE !important;
 }
- .assistant-container {
-    z-index: 1000;
-}
-
-.assistant-card {
-    transition: all 0.3s ease;
-}
-
-.rounded-circle {
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-.response-buttons {
-    text-align: center;
-}
-.assistant-messages .alert {
-    width: fit-content;
-    max-width: 80%; /* Evita que los textos muy largos se extiendan demasiado */
-    display: block;
-}
-
-.assistant-messages .alert-info { /* Preguntas */
-    text-align: left;
-    margin-left: 0;
-}
-
-.assistant-messages .alert-secondary { /* Respuestas */
-    text-align: right;
-    margin-left: auto;
-    margin-right: 0;
-}

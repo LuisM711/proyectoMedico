@@ -154,11 +154,20 @@ def reglasDifusas(request):
             recomendaciones = [esp for esp, score in resultados.items() if score >= umbral]
             
             if not recomendaciones:
-                recomendaciones.append("Evaluación general recomendada")
+                recomendaciones.append("evaluación general")
+
+            # Construir mensaje amigable para el usuario
+            if len(recomendaciones) == 1:
+                mensajeParaUsuario = f"Con base en tus síntomas, se recomienda consultar al especialista: {recomendaciones[0].replace('_', ' ')}."
+            else:
+                msgEspecialistas = ", ".join([esp.replace('_', ' ') for esp in recomendaciones[:-1]])
+                msgEspecialistas += " y " + recomendaciones[-1].replace('_', ' ')
+                mensajeParaUsuario = f"Con base en tus síntomas, se recomienda consultar a los especialistas: {msgEspecialistas}."
 
             return JsonResponse({
+                "mensaje": mensajeParaUsuario,
                 "especialistas_recomendados": recomendaciones,
-                "puntuaciones_difusas": resultados
+                "puntuaciones_difusas": resultados,
             }, status=200)
 
         except json.JSONDecodeError:

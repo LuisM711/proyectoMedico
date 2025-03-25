@@ -1,0 +1,139 @@
+<div class="assistant-container position-fixed bottom-0 end-0 mb-3 me-3">
+    <div class="card shadow-sm assistant-card" id="assistantCard" style="display: block; max-width: 300px;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <span>Asistente virtual</span>
+            <button type="button" class="btn-close btn-close-white" onclick="toggleAssistant()"></button>
+        </div>
+        <div class="card-body">
+            <div class="assistant-messages mb-2" style="height: 265px; overflow-y: auto;">
+                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user.first_name }}! Soy un asistente virtual que te puede
+                    ayudar a ubicar con que especialista dirigirte</div>
+            </div>
+            <div class="input-group" style="display: none;" id="responseInput">
+                <input type="text" id="txtRespuesta" class="form-control" placeholder="Escribe tu respuesta..."
+                    onkeydown="if (event.key === 'Enter') sendResponses()">
+                <button class="btn btn-primary" onclick="sendResponses()" id="sendButton">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary rounded-circle" onclick="toggleAssistant()">
+        <i class="bi bi-robot" style="font-size: 1.5rem;"></i>
+    </button>
+</div>
+<script>
+    function toggleAssistant() {
+        const assistantCard = document.getElementById('assistantCard');
+        assistantCard.style.display = assistantCard.style.display === 'none' ? 'block' : 'none';
+    }
+    const questions = [
+        { text: "¿Qué tanto dolor de cabeza sientes?", labels: "(0 = Nada, 5 = Insoportable)" },
+        { text: "¿Cómo calificarías tu fatiga en los últimos días?", labels: "(0 = Ninguna, 5 = Incapacitante)" },
+        { text: "¿Cuánta dificultad tienes para respirar?", labels: "(0 = Normal, 5 = Asfixia)" },
+        { text: "¿Qué tan alta es tu temperatura corporal?", labels: "(0 = Normal, 5 = Fiebre muy alta [>39°C])" },
+        { text: "¿Qué tanto dolor articular/muscular experimentas?", labels: "(0 = Nada, 5 = Severo)" },
+        { text: "¿Cómo es tu apetito?", labels: "(0 = Normal, 5 = Nulo)" },
+        { text: "¿Has tenido tos persistente?", labels: "(0 = No, 5 = Constante con flemas)" },
+        { text: "¿Sientes opresión en el pecho?", labels: "(0 = No, 5 = Intensa)" },
+        { text: "¿Tienes mareos o desmayos?", labels: "(0 = No, 5 = Frecuentes)" },
+        { text: "¿Has notado cambios en la piel?", labels: "(0 = No, 5 = Erupciones graves)" }
+    ];
+
+    let currentQuestionIndex = 0;
+    let responses = [];
+
+    const colors = ["#0000FF", "#4B75FF", "#9696FF", "#FFA07A", "#FF4500", "#FF0000"];
+
+    function scrollToBottom() {
+        const chatContainer = document.querySelector(".assistant-messages");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function askNextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            const question = questions[currentQuestionIndex];
+            let buttonsHtml = "";
+            for (let i = 0; i <= 5; i++) {
+                buttonsHtml += `<button class='btn btn-sm response-btn' style='background-color: ${colors[i]}; color: white; margin: 2px;' onclick='handleResponse(${i})'>${i}</button>`;
+            }
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>${question.text}</div><div class='response-buttons'>${buttonsHtml}</div><div class='text-center mt-1' style='font-size: 0.9em;'>${question.labels}</div>`;
+        } else {
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-info p-2 mb-2'>Ahora, con tus propias palabras que es lo que sientes.</div>`;
+            responseInput.style.display = 'flex';
+        }
+        scrollToBottom();
+    }
+
+    function sendResponses() {
+
+        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${txtRespuesta.value}</div>`;
+
+        fetch('/reglasDifusas/', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ respuestas: responses, txtRespuesta: txtRespuesta.value })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
+                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>${data.mensaje}</div>`;                
+                sendButton.disabled = true;
+                txtRespuesta.disabled = true;
+                txtRespuesta.value = "";
+                scrollToBottom();
+            })
+
+            .catch(error => console.error('Error:', error));
+    }
+
+    function handleResponse(answer) {
+        if (currentQuestionIndex < questions.length) {
+            document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${answer}</div>`;
+            responses.push({ pregunta: questions[currentQuestionIndex].text, respuesta: answer });
+            currentQuestionIndex++;
+            askNextQuestion();
+        }
+        scrollToBottom();
+    }
+
+    document.addEventListener("DOMContentLoaded", askNextQuestion);
+</script>
+<style>
+    .assistant-container {
+        z-index: 1000;
+    }
+
+    .assistant-card {
+        transition: all 0.3s ease;
+    }
+
+    .rounded-circle {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .response-buttons {
+        text-align: center;
+    }
+
+    .assistant-messages .alert {
+        width: fit-content;
+        max-width: 80%;
+        display: block;
+    }
+
+    .assistant-messages .alert-info {
+        text-align: left;
+        margin-left: 0;
+    }
+
+    .assistant-messages .alert-secondary {
+        text-align: right;
+        margin-left: auto;
+        margin-right: 0;
+    }
+</style>
