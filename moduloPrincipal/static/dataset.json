@@ -698,5 +698,389 @@
     {
         "paciente": "Cada mañana, el dolor en mis juntas y la rigidez en mis extremidades me impiden realizar actividades simples.",
         "especialista": "reumatologo"
+    },
+    {
+        "paciente": "no siento nada en realidad",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "nada que agregar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro bien, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado normal, sin molestias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo en orden, sin dolencias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento perfectamente bien",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin nada que reportar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no experimento ningún síntoma",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin problemas de salud hoy",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin síntomas notables",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "ningún cambio en mi estado de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "salud normal, sin inconvenientes",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo bien, nada fuera de lo común",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no noto ningún síntoma extraño",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin ninguna molestia presente",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado de salud sin novedades",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento estable y sin problemas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo en calma, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no tengo preocupaciones de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi bienestar es óptimo, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no he notado anomalías en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi estado es normal, sin dolencias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo correcto, sin mensajes de alerta",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "nada inusual en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin reportes de molestias o síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin problemas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no tengo quejas de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado de bienestar, sin complicaciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi salud está en óptimas condiciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no obeservé ningún síntoma",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento bien, nada a destacar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin alteraciones en mi estado general",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi condición es estable y sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no hay señales de enfermedad",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no presento síntomas molestos",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo normal en el día a día",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi cuerpo no muestra señales de alerta",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin ningún síntoma extra",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no se detecta anomalía en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin alteraciones notables",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "bienestar en estado natural",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "como siempre, sin problemas de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin incidencias, todo en orden",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no noto nada fuera de lo común",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin señales de malestar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi salud es estable, sin complicaciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin inquietudes de salud, todo normal",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no siento nada en realidad",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "nada que agregar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro bien, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado normal, sin molestias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo en orden, sin dolencias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento perfectamente bien",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin nada que reportar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no experimento ningún síntoma",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin problemas de salud hoy",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin síntomas notables",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "ningún cambio en mi estado de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "salud normal, sin inconvenientes",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo bien, nada fuera de lo común",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no noto ningún síntoma extraño",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin ninguna molestia presente",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado de salud sin novedades",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento estable y sin problemas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo en calma, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no tengo preocupaciones de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi bienestar es óptimo, sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no he notado anomalías en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi estado es normal, sin dolencias",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo correcto, sin mensajes de alerta",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "nada inusual en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin reportes de molestias o síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin problemas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no tengo quejas de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "estado de bienestar, sin complicaciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi salud está en óptimas condiciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no obeservé ningún síntoma",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me siento bien, nada a destacar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin alteraciones en mi estado general",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi condición es estable y sin síntomas",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no hay señales de enfermedad",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no presento síntomas molestos",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "todo normal en el día a día",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi cuerpo no muestra señales de alerta",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin ningún síntoma extra",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no se detecta anomalía en mi salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "me encuentro sin alteraciones notables",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "bienestar en estado natural",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "como siempre, sin problemas de salud",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin incidencias, todo en orden",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "no noto nada fuera de lo común",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin señales de malestar",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "mi salud es estable, sin complicaciones",
+        "especialista": "ninguno"
+    },
+    {
+        "paciente": "sin inquietudes de salud, todo normal",
+        "especialista": "ninguno"
     }
 ]

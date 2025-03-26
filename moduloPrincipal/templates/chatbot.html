@@ -6,7 +6,8 @@
         </div>
         <div class="card-body">
             <div class="assistant-messages mb-2" style="height: 265px; overflow-y: auto;">
-                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user.first_name }}! Soy un asistente virtual que te puede
+                <div class="alert alert-info p-2 mb-2">¡Hola {{ request.user.first_name }}! Soy un asistente virtual que
+                    te puede
                     ayudar a ubicar con que especialista dirigirte</div>
             </div>
             <div class="input-group" style="display: none;" id="responseInput">
@@ -67,8 +68,12 @@
     }
 
     function sendResponses() {
+        respuesta = txtRespuesta.value;
 
-        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${txtRespuesta.value}</div>`;
+        sendButton.disabled = true;
+        txtRespuesta.disabled = true;
+        txtRespuesta.value = "";
+        document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-secondary p-2 mb-2 text-end'>${respuesta}</div>`;
 
         fetch('/reglasDifusas/', {
             method: 'POST',
@@ -76,15 +81,12 @@
                 "Content-Type": "application/json",
                 'X-CSRFToken': '{{ csrf_token }}'
             },
-            body: JSON.stringify({ respuestas: responses, txtRespuesta: txtRespuesta.value })
+            body: JSON.stringify({ respuestas: responses, txtRespuesta: respuesta })
         })
             .then(response => response.json())
             .then(data => {
                 // document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>Cuestionario enviado con éxito.</div>`;
-                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>${data.mensaje}</div>`;                
-                sendButton.disabled = true;
-                txtRespuesta.disabled = true;
-                txtRespuesta.value = "";
+                document.querySelector(".assistant-messages").innerHTML += `<div class='alert alert-success p-2 mb-2'>${data.mensaje}</div>`;
                 scrollToBottom();
             })
 

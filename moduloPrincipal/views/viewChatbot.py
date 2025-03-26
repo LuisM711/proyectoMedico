@@ -110,9 +110,9 @@ def reglasDifusas(request):
             # print(request.body)
             modelo_cargado = joblib.load('moduloPrincipal/static/modelo_especialistas.pkl')
             nueva_consulta = [json.loads(request.body).get('txtRespuesta', '')]
-            prediccion = modelo_cargado.predict(nueva_consulta)
+            prediccion = modelo_cargado.predict(nueva_consulta)[0]
             print(json.loads(request.body).get('txtRespuesta', ''))
-            print("Especialista recomendado:", prediccion[0])
+            print("Especialista recomendado:", prediccion)
 
             
             data = json.loads(request.body)
@@ -157,7 +157,10 @@ def reglasDifusas(request):
                 recomendaciones.append("evaluación general")
 
             # Construir mensaje amigable para el usuario
-            if len(recomendaciones) == 1:
+            
+            if((len(recomendaciones) == 1 and recomendaciones[0] == 'evaluación general') or prediccion == 'ninguno'):
+                mensajeParaUsuario = "Con base en los datos recabados, no vemos necesario acudir con un especialista, sin embargo puedes acudir con el médico general para un chequeo general."
+            elif len(recomendaciones) == 1:
                 mensajeParaUsuario = f"Con base en tus síntomas, se recomienda consultar al especialista: {recomendaciones[0].replace('_', ' ')}."
             else:
                 msgEspecialistas = ", ".join([esp.replace('_', ' ') for esp in recomendaciones[:-1]])
