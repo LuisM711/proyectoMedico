@@ -14,12 +14,15 @@ from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 from moduloNutricion.models.modelMenuBien import Menu_Bien
 from moduloPrincipal.models.__init__ import *
+from moduloPrincipal.decorators import guest_or_login_required
 
 # Clase para enviar al especialista a su ventana de inicio
 class InicioEspecialista(View):
-    @method_decorator(login_required(login_url='login'), name='dispatch')
-    def get(self, request):
-
+    @method_decorator(guest_or_login_required, name='dispatch')
+    def get(self, request):        
+        if request.session.get('guest'):
+            return render(request, 'inicio.html',{"user_type": 'guest'})
+        
         if (request.user.is_staff == 0):
             aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)
 

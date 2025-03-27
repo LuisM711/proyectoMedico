@@ -32,6 +32,8 @@ urlpatterns = [
     # Urls Generales
     path('', Redirigir.as_view(), name='index'),
     path('login', Login.as_view(), name='login'),
+    #loginInvitado
+     path('loginInvitado', LoginInvitado.as_view(), name='loginInvitado'),
     path('logout', CerrarSesion.as_view(), name='logout'),
     path('cambiar/contra/', Cambiar_Contra.as_view(), name='cambiar_contra'),
     path('acerca/', Acerca.as_view(), name='acerca'),
@@ -55,7 +57,7 @@ urlpatterns = [
     path('configuracion/', Configuracion.as_view(), name='configuracion'),
     # Urls de Paciente
     path('inicio', InicioEspecialista.as_view(), name='inicio_especialista'),
-    path('inicio', InicioPaciente.as_view(), name='inicio_paciente'),
+    path('inicio', InicioEspecialista.as_view(), name='inicio_paciente'),
     path('registrarse/paciente', Registrarse_paciente.as_view(), name='registrarse_paciente'),
     path('listarcitas/paciente/', ListarCitas_Paciente.as_view(), name='listarcitaspaciente'),
     path('listarcitas/paciente/<int:id>', ListarCitas_Paciente.as_view(), name='listarcitaspaciente'),

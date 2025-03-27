@@ -24,6 +24,7 @@ class Login(View):
         # Valida que se encuentre el usuario
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            
             aux_user = User.objects.get(username=username)
             if aux_user.is_staff:
                 # Si es admin, unicamente guarda la sesion y redirige a la ventana de inicio
@@ -55,6 +56,15 @@ class Login(View):
         else:
             datos = {'message': "Correo o contraseña incorrectos"}
             return render(request, 'login.html', {"datos": datos})
+        
+
+class LoginInvitado(View):
+    def get(self, request):
+        # login(request, User.objects.get(username='invitado'))
+        request.session['guest'] = True
+        request.session['user_type'] = 'P'
+        return redirect('inicio_paciente')
+    
 # class UserType(View):
 #     def get(self, request):
 #         user_type = request.session.get('user_type')
@@ -150,7 +160,7 @@ class Cambiar_Contra(View):
             return redirect('cambiar_contra')
 
 class Configuracion(View):
-    @method_decorator(login_required, name='dispatch')
+    @method_decorator(login_required(login_url='login'), name='dispatch')
     def get(self, request, message1="", message2=""):
         if (request.user.is_staff == 0 and request.user_type == 'P'):
             if message1 == "exito":

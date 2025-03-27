@@ -6,7 +6,7 @@ from datetime import date, timezone, timedelta, datetime
 from moduloPrincipal.models.__init__ import *
 # Clase para visualizar la interfaz de perfil clinicio por parte del paciente
 class Perfil_Clinico(View):
-    @method_decorator(login_required, name="dispatch")
+    @method_decorator(login_required(login_url='login'), name='dispatch')
     def get(self, request):
         # Validacion de tipos de usaurio
         if (request.user.is_staff == 0):

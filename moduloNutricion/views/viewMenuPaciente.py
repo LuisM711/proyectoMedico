@@ -4,8 +4,11 @@ from django.http import JsonResponse
 from moduloNutricion.models.modelMenuBien import Menu_Bien
 from moduloPrincipal.models.modelUsuario import Usuario
 from moduloPrincipal.models.modelPaciente import *
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 import json
 class Menu_paciente(View):
+    @method_decorator(login_required(login_url='login'), name='dispatch')
     def get(self, request):
         auxUsuario = Usuario.objects.get(id_usuario=request.user)
         pacienteBien = Paciente.objects.get(id_usuario=auxUsuario)

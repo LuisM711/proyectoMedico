@@ -71,22 +71,24 @@ class Registrarse_paciente(View):
 #         return render(request, 'registro.html', {"datos": datos})
 
 # Clase para enviar al paciente a su ventana de inicio
-class InicioPaciente(View):
-    @method_decorator(login_required(login_url='login'), name='dispatch')
-    def get(self, request):
-        # Validacion de tipos de usaurio
-        if (request.user.is_staff == 0):
-            aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)
 
-            if (aux_usuario.tipo == 'P'):
-                return render(request, 'ventanas_paciente/inicio_paciente.html', {"Nombre": request.user.first_name})
 
-            return redirect('inicio_especialista')
+# class InicioPaciente(View):
+#     # @method_decorator(guest_or_login_required, name='dispatch')
+#     def get(self, request):
+#         print("dfsdfiujbsdiubnsdfiujbnsdfiu")
+#         print(request.session.get('guest'))
+#         if request.session.get('guest'):
+#             return render(request, 'ventanas_paciente/inicio_paciente.html', {"Nombre": "Invitado"})
 
-        else:
-            return redirect('inicio_admin')
+#         if request.user.is_staff == 0:
+#             aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)
+#             if aux_usuario.tipo == 'P':
+#                 return render(request, 'ventanas_paciente/inicio_paciente.html', {"Nombre": request.user.first_name})
+#             return redirect('inicio_especialista')
+#         else:
+#             return redirect('inicio_admin')
 
-# Clase para actualizar el nombre de usuario del paciente
 class CambiarUsernamePaciente(View):
     @method_decorator(login_required, name='dispatch')
     def post(self, request):
@@ -169,7 +171,7 @@ class Especialistas(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(login_required, name='dispatch')
+    @method_decorator(login_required(login_url='login'), name='dispatch')
     def get(self, request):
         # Validacion del tipo de usuario
         if (request.user.is_staff == 0):
@@ -244,20 +246,21 @@ class Informacion_especialista(View):
             return redirect('inicio_admin')
 
 # Clase para enviar al paciente a su ventana de inicio
-class InicioPaciente(View):
-    @method_decorator(login_required(login_url='login'), name='dispatch')
-    def get(self, request):
-        # Validacion de tipos de usaurio
-        if (request.user.is_staff == 0):
-            aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)
 
-            if (aux_usuario.tipo == 'P'):
-                return render(request, 'ventanas_paciente/inicio_paciente.html', {"Nombre": request.user.first_name})
+# class InicioPaciente(View):
+#     @method_decorator(guest_or_login_required(), name='dispatch')
+#     def get(self, request):
+#         # Validacion de tipos de usaurio
+#         if (request.user.is_staff == 0):
+#             aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)
 
-            return redirect('inicio_especialista')
+#             if (aux_usuario.tipo == 'P'):
+#                 return render(request, 'ventanas_paciente/inicio_paciente.html', {"Nombre": request.user.first_name})
 
-        else:
-            return redirect('inicio_admin')
+#             return redirect('inicio_especialista')
+
+#         else:
+#             return redirect('inicio_admin')
 
 # Clase para agendar cita
 class Agendar(View):

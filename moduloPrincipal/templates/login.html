@@ -13,7 +13,7 @@
 		{% endif %}
 
 		<strong>
-			<h1>Inicio de sesion</h1>
+			<h1>Inicio de sesión</h1>
 		</strong>
 		<img style="width: 250px; height: 250px; margin-bottom: 10%;" src="{% static 'images/logo.png' %}">
 
@@ -25,10 +25,11 @@
 			<p style="text-align: right;" class="message"><a href="{% url 'password_reset' %}">¿Olvidaste tu
 					contraseña?</a></p>
 			<br></br>
+			
 			<button>Entrar</button>
 		</form>
 		<br>
-		<!-- <button onclick="alert('usuario: admin, contra: administrador')">contraseña admin</button> -->
+		<a href="{% url 'loginInvitado' %}" class="btn-invitado">Ingresar como invitado</a>
 	</div>
 </div>
 
