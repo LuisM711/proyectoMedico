@@ -43,7 +43,6 @@ for sintoma in sintomas.values():
     sintoma['medio'] = fuzz.trimf(sintoma.universe, [1, 2.5, 4])
     sintoma['alto'] = fuzz.trimf(sintoma.universe, [3, 5, 5])
 
-# Funciones de pertenencia para especialistas
 for esp in especialistas.values():
     esp['bajo'] = fuzz.trimf(esp.universe, [0, 0, 4])
     esp['medio'] = fuzz.trimf(esp.universe, [2, 5, 8])
@@ -156,7 +155,6 @@ def reglasDifusas(request):
             if not recomendaciones:
                 recomendaciones.append("evaluación general")
 
-            # Construir mensaje amigable para el usuario
             
             if((len(recomendaciones) == 1 and recomendaciones[0] == 'evaluación general') or prediccion == 'ninguno'):
                 mensajeParaUsuario = "Con base en los datos recabados, no vemos necesario acudir con un especialista, sin embargo puedes acudir con el médico general para un chequeo general."
