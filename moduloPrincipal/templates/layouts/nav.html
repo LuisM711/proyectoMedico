@@ -8,102 +8,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto médico</title>
     <script defer src="https://kit.fontawesome.com/7c4f6093dd.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/nav.css' %}">
 </head>
 
 <body>
     <script>
-        // function updateUserMenu(user_type) {
-        //     let menuItems = document.getElementById('menuItems');
-        //     //menuItems.innerHTML = ''; // Limpiar elementos existentes
-        //     let html = '';
-        //     if (user_type == "E") {
-        //         html += `<li><a href="{% url 'graficas' %}">Graficas</a></li>`;
-        //         html += `<li><a href="{% url 'listarcitasespecialista' %}">Citas</a></li>`;
-        //         html += `<li><a href="{% url 'listarpacientes' %}">Mostrar Pacientes</a></li>`;
-        //     }
-        //     if (user_type == "P") {
-        //         html += `<li><a href="{% url 'listarcitaspaciente' %}">Mis Citas</a></li>`;
-        //         html += `<li><a href="{% url 'listarespecialistas' %}">Mostrar Especialistas</a></li>`;
-        //         html += `<li><a href="{% url 'perfil_clinico' %}">Perfil Clinico</a></li>`;
-        //     }
-        //     if (user_type == "admin") {
-        //         html += `<li><a href="{% url 'listarespecialistas_admin' %}">Especialistas</a></li>`;
-        //         html += `<li><a href="{% url 'especialidades_admin' %}">Especialidades</a></li>`;
-        //         html += `<li><a href="{% url 'listarpacientes_admin' %}">Pacientes</a></li>`;
-        //     }
-        //     html += `<li><a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesion</a></li>`;
-        //     // <li>
-        //     //         <a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesion</a>
-        //     //     </li>
-        //     console.log((menuItems.innerHTML).length);
-        //     console.log(html.length);
-        //     if ((menuItems.innerHTML).length != html.length) {
-        //         menuItems.innerHTML = '';
-        //         menuItems.innerHTML = html;
-        //         console.log('SI');
-        //     } else console.log('no');
-        // }
 
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     fetch('/user_type')
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Error al obtener el valor de user_type');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             let user_type = data.user_type;
-        //             console.log('Valor de user_type:', user_type);
-        //             updateUserMenu(user_type);
-        //         })
-        //         .catch(error => {
-        //             console.error(error);
-        //         });
-        // });
     </script>
 
 
     <header>
         <nav class="menu">
-            <label for="" class="breand">
-                <a href="{% url 'index' %}">
-                    <img style="width: 50px; height: 50px; margin-left: 20px; line-height: 60px;"
-                        src="{% static 'images/logo.png' %}">
-                </a>
-            </label>
-            <input type="checkbox" id="menu-toggle" class="menu-toggle">
-            <label for="menu-toggle" class="menu-icon">&#9776;</label>
-            <ul id="menuItems">
-                {% if request.user_type == "P" %}
-                <li><a href="{% url 'listarcitaspaciente' %}">Mis Citas</a></li>
-                <li><a href="{% url 'listarespecialistas' %}">Mostrar Especialistas</a></li>
-                <li><a href="{% url 'menu_paciente' %}">Mi Menú</a></li>
-                <li><a href="{% url 'perfil_clinico' %}">Perfil Clinico</a></li>
-                {% endif %}
-                {% if request.user_type == "E" %}
-                <!-- configuracion -->
-                <li><a href="{% url 'listaAlimentos' %}">Lista de Alimentos</a></li>
-                <li><a href="{% url 'mapa' %}">Mapa</a></li>
-                <li><a href="{% url 'graficas' %}">Graficas</a></li>
-                <li><a href="{% url 'listarcitasespecialista' %}">Citas</a></li>
-                <li><a href="{% url 'listarpacientes' %}">Mostrar Pacientes</a></li>
-                
-                {% endif %}
-                {% if request.user_type == "admin" %}
-                <li><a href="{% url 'listarespecialistas_admin' %}">Especialistas</a></li>
-                <li><a href="{% url 'especialidades_admin' %}">Especialidades</a></li>
-                <li><a href="{% url 'listarpacientes_admin' %}">Pacientes</a></li>
-                {% endif %}
-                <li>
-                    <a href="{% url 'configuracion' %}"><i class="fa-solid fa-gear"></i></a>
-                </li>
-                <li><a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesion</a>
-                </li>
-            </ul>
+        <div class="nav-logo">
+            <a href="{% url 'index' %}">
+                <img src="{% static 'images/logo.png' %}" class="logo-img">
+            </a>
+        </div>
+
+
+        <div class="nav-title">Proyecto médico</div>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <ul id="menuItems">
+            {% if request.user_type == "P" %}
+            <li><a href="{% url 'listarcitaspaciente' %}">Mis citas</a></li>
+            <li><a href="{% url 'listarespecialistas' %}">Especialistas</a></li>
+            <li><a href="{% url 'menu_paciente' %}">Mi Menú</a></li>
+            <li><a href="{% url 'perfil_clinico' %}">Perfil clinico</a></li>
+            {% endif %}
+            {% if request.user_type == "E" %}
+            <!-- configuracion -->
+            <li><a href="{% url 'listaAlimentos' %}">Lista de Alimentos</a></li>
+            <li><a href="{% url 'mapa' %}">Mapa</a></li>
+            <li><a href="{% url 'graficas' %}">Graficas</a></li>
+            <li><a href="{% url 'listarcitasespecialista' %}">Citas</a></li>
+            <li><a href="{% url 'listarpacientes' %}">Mostrar Pacientes</a></li>
+
+            {% endif %}
+            {% if request.user_type == "admin" %}
+            <li><a href="{% url 'listarespecialistas_admin' %}">Especialistas</a></li>
+            <li><a href="{% url 'especialidades_admin' %}">Especialidades</a></li>
+            <li><a href="{% url 'listarpacientes_admin' %}">Pacientes</a></li>
+            {% endif %}
+            <li>
+                <a href="{% url 'configuracion' %}"><i class="fa-solid fa-gear"></i></a>
+            </li>
+            <li><a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesión</a>
+            </li>
+        </ul>
         </nav>
     </header>
 
@@ -118,71 +74,8 @@
     <!-- <script src="/moduloPrincipal\static\bootstrap-5.3.3-dist\bootstrap-5.3.3-dist\js\bootstrap.bundle.min.js"></script> -->
     <!-- <script src="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script> -->
 
-    <script type="text/javascript" src="{% static 'bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
-    <style>
-        .menu-toggle {
-            display: none;
-        }
-
-        .menu-icon {
-            display: none;
-            cursor: pointer;
-        }
-
-        @media only screen and (max-width: 768px) {
-            .menu-icon {
-                display: block;
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin-top: 20px;
-                margin-right: 20px;
-                font-size: 24px;
-            }
-
-            #menuItems {
-                display: none;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                background-color: #f9f9f9;
-                width: 100%;
-                padding: 0;
-                z-index: 2;
-            }
-
-            #menuItems li {
-                border-bottom: 0;
-                width: 100%;
-            }
-
-            #menuItems li:last-child {
-                border-bottom: none;
-            }
-
-            #menuItems li a {
-                display: block;
-                padding: 10px 20px;
-                color: #FFF;
-                text-decoration: none;
-                width: 100%;
-            }
-
-            #menuItems li a:hover {
-                background-color: #ddd;
-                cursor: pointer;
-            }
-
-            .menu-toggle:checked~#menuItems {
-                display: flex;
-                background-color: #166088;
-                flex-wrap: wrap;
-                flex-direction: column;
-                text-align: center;
-
-            }
-        }
-    </style>
+    <script type="text/javascript"
+        src="{% static 'bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
     <script>
 
     </script>

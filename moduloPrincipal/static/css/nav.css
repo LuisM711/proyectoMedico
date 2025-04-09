@@ -1,46 +1,108 @@
-.class{
-    width: 50px; 
-    height: 50px; 
-    margin-left: 20px; 
-    line-height: 60px;
+.menu-toggle {
+  display: none;
 }
-header {
-    background-color: #166088;
-    color: #C0D6DF;
-    padding: 10px 0;
-    align-items: center;
-  
+
+.menu-icon {
+  display: none;
+  cursor: pointer;
+}
+
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  position: relative;
+  background-color: #166088;
+  color: white;
+  padding: 0 20px;
+}
+
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  line-height: 60px;
+}
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  pointer-events: none;
+
+}
+
+
+.menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.menu ul li {
+  line-height: 60px;
+  font-size: 18px;
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.menu ul li a:hover {
+  color: #014b46;
+}
+
+
+@media only screen and (max-width: 1408px) {
+  .menu-icon {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 20px;
+      /* font-size: 24px; */
+      cursor: pointer;
+      color: white;
+      z-index: 3;
   }
-  
-  .menu ul {
-    float: right;
-  
-    list-style: none;
-    margin: 0;
-    padding: 3;
-    
+
+  #menuItems {
+      display: none;
+      position: absolute;
+      /* top: 60px; */
+      left: 0;
+      background-color: #166088;
+      width: 100%;
+      flex-direction: column;
+      text-align: center;
+      z-index: 2;
   }
-  
-  .menu ul li {
-    display: inline-block;
-    line-height: 60px;
-    margin-right: 20px;
-    font-size: 20px;
+
+  .menu-toggle:checked~#menuItems {
+      display: flex;
   }
-  
-  .menu ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
+
+  #menuItems li a {
+      /* padding: 10px 0; */
+      display: block;
+      color: #fff;
   }
-  
-  nav ul li a:hover {
-    color: #014b46;
+
+  .nav-title {
+      font-size: 18px;
   }
-  
-  .separador{
-    margin-left: 300px;
-  }
-  body{
-    background-color: #DBE0EE !important;
+}
+
+
+body {
+  background-color: #DBE0EE !important;
 }

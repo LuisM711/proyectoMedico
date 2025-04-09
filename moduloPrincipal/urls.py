@@ -17,7 +17,7 @@ from moduloPrincipal.views.viewPatologia import *
 from moduloPrincipal.views.viewPerfilClinico import *
 from moduloPrincipal.views.viewToxicomania import *
 from moduloPrincipal.views.viewVacuna import *
-from moduloPrincipal.views.viewChatbot import *
+from moduloPrincipal.views.viewAsistenteVirtual import *
 from moduloPrincipal.views.viewGemini import *
 from moduloNutricion.views.viewAlimentos import *
 from moduloNutricion.views.viewMenuPaciente import *

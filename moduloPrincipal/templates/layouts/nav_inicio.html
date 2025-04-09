@@ -1,48 +1,59 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" data-bs-theme="light">
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Proyecto médico</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav_inicio.css' %}">
-    <link rel="stylesheet" href="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css">
-		
+    <script defer src="https://kit.fontawesome.com/7c4f6093dd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+
 </head>
+
 <body>
+
+
     <header>
         <nav class="menu">
-            <label for="" class="breand">
-                <img  style = "width: 50px; height: 50px; margin-left: 20px; line-height: 60px;" src="{% static 'images/logo.png' %}">
+            <div class="nav-logo">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img">
+                </a>
+            </div>
 
-            </label>
-            <ul>
-                <li>
-                    <a href="{% url 'especialistas' %}">Especialistas</a>
-                </li>
-                <li>
-                    <a href="{% url 'acerca' %}">Acerca de</a>
-                </li>
 
-                <li style="margin-left: 400px;" >
-                    <p>|</p>
-                </li>
-                <li >
-                    <a href="{% url 'login' %}">Iniciar sesion</a>
-                </li>
-                <li>
-                    <a href="{% url 'registrarse' %}">Registrarse</a>
-                </li>
+            <div class="nav-title">Proyecto médico</div>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+            <ul id="menuItems">
+                <li><a href="{% url 'especialistas' %}">Especialistas</a></li>
+                <li><a href="{% url 'acerca' %}">Acerca de</a></li>
+                <li><a href="{% url 'login' %}">Iniciar sesión</a></li>
+                <li><a href="{% url 'registrarse' %}">Registrarse</a></li>
             </ul>
         </nav>
+
     </header>
-    
-    <!--<main class="container">-->
+
+
+
+    <form method="post" action="{% url 'logout' %}" id="cerrarSesion">{% csrf_token %}</form>
+    <div class="content">
         {% block content %}
         {% endblock %}
-    <!--</main>-->
-<script src="/moduloPrincipal/static/bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+    <script type="text/javascript"
+        src="{% static 'bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+
+    </script>
 </body>
+
 </html>
