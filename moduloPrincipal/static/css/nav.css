@@ -33,7 +33,7 @@
   font-size: 22px;
   font-weight: bold;
   color: white;
-  pointer-events: none;
+  /* pointer-events: none; */
 
 }
 
@@ -78,7 +78,7 @@
   #menuItems {
       display: none;
       position: absolute;
-      /* top: 60px; */
+      top: 60px;
       left: 0;
       background-color: #166088;
       width: 100%;

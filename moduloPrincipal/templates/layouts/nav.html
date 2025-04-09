@@ -22,44 +22,46 @@
 
     <header>
         <nav class="menu">
-        <div class="nav-logo">
-            <a href="{% url 'index' %}">
-                <img src="{% static 'images/logo.png' %}" class="logo-img">
-            </a>
-        </div>
+            <div class="nav-logo">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img">
+                </a>
+            </div>
 
 
-        <div class="nav-title">Proyecto médico</div>
+            <div class="nav-title"><a href="{% url 'index' %}" style="color: white; text-decoration: red;">Proyecto
+                    médico</a></div>
 
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">&#9776;</label>
-        <ul id="menuItems">
-            {% if request.user_type == "P" %}
-            <li><a href="{% url 'listarcitaspaciente' %}">Mis citas</a></li>
-            <li><a href="{% url 'listarespecialistas' %}">Especialistas</a></li>
-            <li><a href="{% url 'menu_paciente' %}">Mi Menú</a></li>
-            <li><a href="{% url 'perfil_clinico' %}">Perfil clinico</a></li>
-            {% endif %}
-            {% if request.user_type == "E" %}
-            <!-- configuracion -->
-            <li><a href="{% url 'listaAlimentos' %}">Lista de Alimentos</a></li>
-            <li><a href="{% url 'mapa' %}">Mapa</a></li>
-            <li><a href="{% url 'graficas' %}">Graficas</a></li>
-            <li><a href="{% url 'listarcitasespecialista' %}">Citas</a></li>
-            <li><a href="{% url 'listarpacientes' %}">Mostrar Pacientes</a></li>
 
-            {% endif %}
-            {% if request.user_type == "admin" %}
-            <li><a href="{% url 'listarespecialistas_admin' %}">Especialistas</a></li>
-            <li><a href="{% url 'especialidades_admin' %}">Especialidades</a></li>
-            <li><a href="{% url 'listarpacientes_admin' %}">Pacientes</a></li>
-            {% endif %}
-            <li>
-                <a href="{% url 'configuracion' %}"><i class="fa-solid fa-gear"></i></a>
-            </li>
-            <li><a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesión</a>
-            </li>
-        </ul>
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+            <ul id="menuItems">
+                {% if request.user_type == "P" %}
+                <li><a href="{% url 'listarcitaspaciente' %}">Mis citas</a></li>
+                <li><a href="{% url 'listarespecialistas' %}">Especialistas</a></li>
+                <li><a href="{% url 'menu_paciente' %}">Mi Menú</a></li>
+                <li><a href="{% url 'perfil_clinico' %}">Perfil clinico</a></li>
+                {% endif %}
+                {% if request.user_type == "E" %}
+                <!-- configuracion -->
+                <li><a href="{% url 'listaAlimentos' %}">Lista de Alimentos</a></li>
+                <li><a href="{% url 'mapa' %}">Mapa</a></li>
+                <li><a href="{% url 'graficas' %}">Graficas</a></li>
+                <li><a href="{% url 'listarcitasespecialista' %}">Citas</a></li>
+                <li><a href="{% url 'listarpacientes' %}">Mostrar Pacientes</a></li>
+
+                {% endif %}
+                {% if request.user_type == "admin" %}
+                <li><a href="{% url 'listarespecialistas_admin' %}">Especialistas</a></li>
+                <li><a href="{% url 'especialidades_admin' %}">Especialidades</a></li>
+                <li><a href="{% url 'listarpacientes_admin' %}">Pacientes</a></li>
+                {% endif %}
+                <li>
+                    <a href="{% url 'configuracion' %}"><i class="fa-solid fa-gear"></i></a>
+                </li>
+                <li><a href="#" id="salir" onclick="document.getElementById('cerrarSesion').submit()">Cerrar sesión</a>
+                </li>
+            </ul>
         </nav>
     </header>
 
