@@ -1,241 +1,215 @@
-var autocomplete;
-//Array de Coordenadas de los negocios
+let map;
+let service; // <-- Will be our PlacesService instance
+let autocomplete;
+const tableContainer = document.getElementById('tableContainer');
+let table;
+let tbody;
+
+// Array to hold markers for easy clearing
+let markers = [];
+
+// Array de Coordenadas de los negocios (currently unused, but kept from original)
 var destinos = [];
-
-//Array con los nombres de los negocios
+// Array con los nombres de los negocios (currently unused)
 var negocios = [];
-
-//Array con las distancias entre el origen y el negocio
+// Array con las distancias entre el origen y el negocio (currently unused)
 var distancias = [];
 
-var origin;
-var destination;
-var map; // Declaramos la variable map aquí para que sea accesible globalmente dentro de este scope
-var table = document.createElement('table');
-var tBody = table.createTBody();
-var tHeader = table.createTHead();
-let th = document.createElement('th');
-let th2 = document.createElement('th');
-th2.innerText = "Distancia";
-
-th.innerText = "Negocios";
-tHeader.appendChild(th);
-tHeader.appendChild(th2);
-
-function iniciarMap() {
-    var coord = { lat: 25.7690852, lng: -108.9888047 };
-
-    var styles = [
-        { featureType: "all", elementType: "labels", stylers: [{ visibility: "off" }] },
-        { featureType: "road", elementType: "all", stylers: [{ visibility: "on" }] },
-        { featureType: "poi", elementType: "all", stylers: [{ visibility: "off" }] },
-        { featureType: "transit", elementType: "all", stylers: [{ visibility: "off" }] },
-        { featureType: "water", elementType: "all", stylers: [{ visibility: "on" }, { color: "#46bcec" }] },
-        { featureType: "landscape", elementType: "all", stylers: [{ visibility: "on" }, { color: "#f2f2f2" }] }
-    ];
+function initMap() {
+    const Mochis = { lat: 25.7690852, lng: -108.9888047 };
 
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 18,
-        center: coord,
-        styles: styles
+        center: Mochis,
+        zoom: 15
     });
 
-    var marker = new google.maps.Marker({
-        position: coord,
-        map: map,
-        title: "Mi Ubicación",
-        // Para un icono predeterminado con un color diferente, puedes usar símbolos:
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: "blue",
-            fillOpacity: 0.8,
-            strokeWeight: 1,
-            strokeColor: "black",
-        }
-    });
+    // Initialize the PlacesService
+    service = new google.maps.places.PlacesService(map); // <-- MODIFIED: Initialize service
 
-    var service = new google.maps.places.PlacesService(map);
-
-    //Peticion a la API
-    var request = {
-        location: coord,
-        radius: 1000,
-        type: ['restaurant', 'cafe', 'bakery', 'meal_takeaway'],
-        keyword: 'food'
-    };
-
-    service.nearbySearch(request, function (results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                createMarker(results[i]);
-            }
-        }
-    });
-
-    function createMarker(place) {
-        var marker = new google.maps.Marker({
-            position: place.geometry.location,
-            map: map,
-            title: place.name
-        });
-
-        service.getDetails({ placeId: place.place_id }, function (details, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                var infowindow = new google.maps.InfoWindow({
-                    content: '<h3>' + details.name + '</h3>' +
-                        '<p>' + details.formatted_address + '</p>' +
-                        '<p>Rating: ' + (details.rating || 'N/A') + '</p>' +
-                        '<p>Telefono: ' + (details.formatted_phone_number || 'N/A') + '</p>'
-                });
-
-                marker.addListener('click', function () {
-                    infowindow.open(map, marker);
-                });
-            }
-        });
-    }
+    initAutoComplete();
 }
 
 function initAutoComplete() {
     autocomplete = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete'),
         {
-            componentRestrictions:
-            { 'country': ['MX'] },
+            componentRestrictions: { 'country': ['MX'] },
             fields: ['place_id', 'geometry', 'name', 'formatted_address']
         }
     );
 
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+
         if (!place.geometry) {
-            document.getElementById('autocomplete').placeholder
-                = 'Ingrese una direccion';
+            document.getElementById('autocomplete').placeholder = 'Ingrese una direccion';
             return;
         }
 
-        document.getElementById('details').innerHTML = place.formatted_address;
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        iniciarMap2(lat, lng);
-        console.log(lat);
-        console.log(lng);
+        map.setCenter(place.geometry.location);
+        // Clear previous results and markers before adding new ones
+        clearResults(); // <-- ADDED: Clear old results before new search
+        createMarker(place, true); // <-- MODIFIED: Add marker for the searched location, true indicates it's the primary marker
+
+        searchNearby(place.geometry.location);
     });
 }
 
-function iniciarMap2(latitud, longitud) {
-    var coord = { lat: latitud, lng: longitud };
-    var styles = [
-        { featureType: "all", elementType: "labels", stylers: [{ visibility: "off" }] },
-        { featureType: "road", elementType: "all", stylers: [{ visibility: "on" }] },
-        { featureType: "poi", elementType: "all", stylers: [{ visibility: "off" }] },
-        { featureType: "transit", elementType: "all", stylers: [{ visibility: "off" }] },
-        { featureType: "water", elementType: "all", stylers: [{ visibility: "on" }, { color: "#46bcec" }] },
-        { featureType: "landscape", elementType: "all", stylers: [{ visibility: "on" }, { color: "#f2f2f2" }] }
-    ];
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 18,
-        center: coord,
-        styles: styles
-    });
-
-
-    //Creamos Marker de la ubicación actual de una persona
-    var marker = new google.maps.Marker({
-        position: coord,
-        map: map,
-        title: "Mi Ubicación",
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: "red",
-            fillOpacity: 0.8,
-            strokeWeight: 1,
-            strokeColor: "black",
-        }
-    });
-
-    var service = new google.maps.places.PlacesService(map);
-
-    //Peticion a la API
-    var request = {
-        location: coord,
-        radius: 100,
-        type: ['restaurant', 'cafe', 'bakery', 'meal_takeaway'],
-        keyword: 'food'
+function searchNearby(location) {
+    console.log("Entro a buscar negocios cercanos");
+    // Using nearbySearch which is standard.
+    // You can use types: ['restaurant', 'cafe', 'bakery', 'meal_takeaway'] for more specific categories
+    // or keyword for a broader search.
+    const request = {
+        location: location,
+        radius: 500, // MODIFIED: Increased radius to 1.5km for more results
+        keyword: 'comida OR restaurante OR cafe OR panaderia OR para llevar' // MODIFIED: Using keyword for a broader search in Spanish
+        // Alternatively, for more specific types:
+        // types: ['restaurant', 'cafe', 'bakery', 'meal_takeaway', 'food']
     };
 
-    tBody.innerHTML = '';
-    service.nearbySearch(request, function (results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                createMarker(results[i], latitud, longitud); // Pasamos latitud y longitud a createMarker
+    service.nearbySearch(request, (results, status) => { // MODIFIED: Using service.nearbySearch
+        console.log("nearbySearch results:", results, "status:", status);
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            // clearResults(); // Moved to before createMarker for the primary location
+            createTable();
+            console.log("buscando....");
+            results.forEach(place => {
+                createMarker(place); // Create marker for each nearby place
+                addResultToTable(place);
+                console.log("lugar", place);
+            });
+            console.log("resultados", results);
+        } else {
+            console.log('Error en la busqueda de lugares cercanos:', status);
+            // Optional: If no results, clear table or show a message
+            if (!results || results.length === 0) {
+                clearResults(); // Clear table if it was created
+                createTable(); // Create empty table header
+                const row = tBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 2; // Span across both columns
+                cell.textContent = 'No se encontraron negocios cercanos con los criterios especificados.';
+                cell.style.textAlign = 'center';
             }
         }
     });
+}
 
-    function createMarker(place, origenLat, origenLng) {
-        var marker = new google.maps.Marker({
-            position: place.geometry.location,
-            map: map,
-            title: place.name
-        });
-        negocios = [];
-        service.getDetails({ placeId: place.place_id }, function (details, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                negocios.push(details.name);
-                let row = tBody.insertRow();
-                let cell = row.insertCell(0);
-                cell.textContent = details.name;
+function createMarker(place, isPrimary = false) { // Added isPrimary flag
+    if (!place.geometry || !place.geometry.location) {
+        console.log("Cannot create marker, place has no geometry:", place);
+        return;
+    }
+    const marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location,
+        title: place.name,
+        icon: isPrimary ? { // Optional: Different icon/color for primary marker
+            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        } : null
+    });
 
-                var origin = { lat: origenLat, lng: origenLng };
-                var destination = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
-                let distancia = calcularDistancia(origin.lat, origin.lng, destination.lat, destination.lng);
-                let cell2 = row.insertCell(1);
-                cell2.textContent = distancia.toFixed(2) + " Metros";
-                tBody.appendChild(row);
+    markers.push(marker); // MODIFIED: Add marker to array for clearing
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: '<h3>' + details.name + '</h3>' +
-                        '<p>' + details.formatted_address + '</p>' +
-                        '<p>Rating: ' + (details.rating || 'N/A') + '</p>' +
-                        '<p>Telefono: ' + (details.formatted_phone_number || 'N/A') + '</p>'
-                });
-                console.log(negocios);
-                marker.addListener('click', function () {
-                    infowindow.open(map, marker);
-                });
+    const infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(marker, 'click', () => {
+        // Request details for the infowindow
+        // MODIFIED: Using the global 'service' and requesting all necessary fields
+        service.getDetails({
+            placeId: place.place_id,
+            fields: ['name', 'formatted_address', 'rating', 'formatted_phone_number', 'website', 'opening_hours']
+        }, (placeDetails, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && placeDetails) {
+                let content = `<h3>${placeDetails.name || 'N/A'}</h3>`;
+                content += `<p><strong>Dirección:</strong> ${placeDetails.formatted_address || 'N/A'}</p>`;
+                if (placeDetails.rating) {
+                    content += `<p><strong>Rating:</strong> ${placeDetails.rating} (${placeDetails.user_ratings_total || 0} reviews)</p>`;
+                } else {
+                    content += `<p><strong>Rating:</strong> N/A</p>`;
+                }
+                content += `<p><strong>Teléfono:</strong> ${placeDetails.formatted_phone_number || 'N/A'}</p>`;
+                if (placeDetails.website) {
+                    content += `<p><strong>Website:</strong> <a href="${placeDetails.website}" target="_blank">${placeDetails.website}</a></p>`;
+                }
+                if (placeDetails.opening_hours) {
+                    content += `<p><strong>Horario:</strong> ${placeDetails.opening_hours.isOpen() ? 'Abierto ahora' : 'Cerrado ahora'}</p>`;
+                    content += "<ul>";
+                    placeDetails.opening_hours.weekday_text.forEach(day => {
+                        content += `<li>${day}</li>`;
+                    });
+                    content += "</ul>";
+                }
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+            } else {
+                // Fallback if getDetails fails or placeDetails is null
+                infowindow.setContent(`<h3>${place.name || 'N/A'}</h3><p>No se pudieron obtener más detalles.</p>`);
+                infowindow.open(map, marker);
+                console.log('Error al obtener detalles del lugar:', status);
             }
         });
-        let tableContainer = document.getElementById('tableContainer');
-        tableContainer.appendChild(table);
+    });
+}
+
+function createTable() {
+    // Clear existing table content first if any
+    while (tableContainer.firstChild) {
+        tableContainer.removeChild(tableContainer.firstChild);
+    }
+
+    table = document.createElement('table');
+    const tHead = table.createTHead();
+    const headerRow = tHead.insertRow();
+    const nameHeader = document.createElement('th');
+    nameHeader.textContent = 'Negocio';
+    const distanceHeader = document.createElement('th');
+    distanceHeader.textContent = 'Distancia (aprox.)';
+    headerRow.appendChild(nameHeader);
+    headerRow.appendChild(distanceHeader);
+    tBody = table.createTBody();
+    tableContainer.appendChild(table);
+}
+
+function addResultToTable(place) {
+    if (!tBody) { // Ensure tbody exists
+        createTable();
+    }
+    const origin = map.getCenter(); // Usamos el centro del mapa (ubicación buscada) como origen
+    const destination = place.geometry.location;
+    const distance = calculateDistance(origin.lat(), origin.lng(), destination.lat(), destination.lng());
+
+    const row = tBody.insertRow();
+    const nameCell = row.insertCell();
+    nameCell.textContent = place.name;
+    const distanceCell = row.insertCell();
+    distanceCell.textContent = `${distance.toFixed(2)} Metros`;
+}
+
+function clearResults() {
+    // Eliminar marcadores existentes
+    markers.forEach(marker => marker.setMap(null));
+    markers = []; // Limpiar el array de marcadores
+
+    // Limpiar la tabla de resultados
+    if (tableContainer.firstChild) {
+        tableContainer.removeChild(tableContainer.firstChild);
+        table = null;
+        tBody = null;
     }
 }
 
-function calcularDistancia(lat1, lon1, lat2, lon2) {
-    const R = 6371;
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radio de la Tierra en km
     const toRad = angle => angle * (Math.PI / 180);
-
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
-
     const a = Math.sin(dLat / 2) ** 2 +
         Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
         Math.sin(dLon / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    const distancia = R * c * 1000; //Para obtenerla en metros
-
-    return distancia;
+    return R * c * 1000; // Distancia en metros
 }
 
-// La función centerMapOnPlace ya no es necesaria en este flujo,
-// ya que la centrado del mapa y la búsqueda se realizan en iniciarMap2
-// function centerMapOnPlace(lat, lng) { ... }
-
-// Inicializar el autocompletado al cargar la página
-function initMap() { // Renombramos initMap para evitar confusiones con iniciarMap
-    iniciarMap();
-    initAutoComplete();
-}
+// Ensure initMap is called after the Google Maps API script has loaded
+// The "callback=initMap" in your script tag handles this.
