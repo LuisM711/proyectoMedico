@@ -24,15 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%$2pxvf_nuhto6+pebuge+8^fy3%7-p9)=cwt)r%hk!gilea3-'
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["proyectomedico.xyz", "www.proyectomedico.xyz", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["https://proyectomedico.xyz", "https://www.proyectomedico.xyz"]
-from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
@@ -44,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'moduloPrincipal',
     'moduloNutricion'
 ]
