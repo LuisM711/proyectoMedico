@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-%$2pxvf_nuhto6+pebuge+8^fy3%7-p9)=cwt)r%hk!gilea3-
 
 
 DEBUG = True
-ALLOWED_HOSTS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "78.12.167.162:443", "https://78.12.167.162:443"]
-CSRF_TRUSTED_ORIGINS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "78.12.167.162:443", "https://78.12.167.162:443"]
+ALLOWED_HOSTS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "78.12.167.162:443","78.12.167.162" "https://78.12.167.162:443"]
+CSRF_TRUSTED_ORIGINS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "https://78.12.167.162", "https://78.12.167.162:443"]
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
