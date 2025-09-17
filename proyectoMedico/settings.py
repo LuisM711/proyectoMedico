@@ -13,23 +13,23 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
+
+
 SECRET_KEY = 'django-insecure-%$2pxvf_nuhto6+pebuge+8^fy3%7-p9)=cwt)r%hk!gilea3-'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
+ALLOWED_HOSTS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "78.12.167.162:443", "https://78.12.167.162:443"]
+CSRF_TRUSTED_ORIGINS = ["proyectomedico.xyz", "www.proyectomedico.xyz","https://proyectomedico.xyz", "78.12.167.162:443", "https://78.12.167.162:443"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-ALLOWED_HOSTS = ["78.12.167.162:443", "https://proyectomedico.xyz"]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'moduloPrincipal',
     'moduloNutricion'
 ]
@@ -74,8 +75,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'proyectoMedico.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+
 
 DATABASES = {
     'default': {
@@ -85,8 +86,8 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,8 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -114,15 +115,15 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'moduloPrincipal/static/'),
     os.path.join(BASE_DIR, 'moduloNutricion/static/'),
 ]
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
