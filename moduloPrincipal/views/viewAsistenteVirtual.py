@@ -1,180 +1,258 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
+from pathlib import Path
 import json
 import numpy as np
-import skfuzzy as fuzz
-from skfuzzy import control as ctrl
+import pandas as pd
 import joblib
-"""
-pip install scikit-learn spacy pandas numpy
-python -m spacy download es_core_news_sm
-    
+
+# ============================================================
+# Carga de artefactos del modelo (una sola vez por proceso)
+# ============================================================
+BASE_DIR = Path(__file__).resolve().parent.parent     # .../moduloPrincipal
+STATIC_DIR = BASE_DIR / "static" / "tesis"
+ART_DIR = STATIC_DIR / "model_artifacts"
+
+MODEL_PATH = ART_DIR / "risk_profile_model.joblib"
+FEATS_PATH = ART_DIR / "feature_list.txt"
+
+try:
+    PIPE = joblib.load(MODEL_PATH)
+    FEATURES = [l.strip() for l in open(FEATS_PATH, encoding="utf-8").read().splitlines() if l.strip()]
+    MODEL_READY = True
+except Exception as e:
+    print("[perfil_nutricional] Error cargando artefactos:", e)
+    PIPE, FEATURES, MODEL_READY = None, [], False
+
+
+# ============================================================
+# Utilidades de parseo / mapeo
+# ============================================================
+def _to_float(x, default=np.nan):
+    try:
+        if x is None or x == "":
+            return default
+        if isinstance(x, str):
+            x = x.replace(",", ".").strip()
+        return float(x)
+    except Exception:
+        return default
+
+def _map_bool(val):
+    s = str(val).lower().strip()
+    if s in ("1", "true", "si", "sí", "y", "yes"):
+        return 1.0
+    if s in ("0", "false", "no"):
+        return 0.0
+    try:
+        return float(s)
+    except Exception:
+        return np.nan
+
+def _map_sex(value):
+    """ NHANES RIAGENDR: 1=Hombre, 2=Mujer. """
+    if value is None or value == "":
+        return np.nan
+    s = str(value).lower().strip()
+    if s in ("1", "m", "hombre", "male", "masculino"):
+        return 1
+    if s in ("2", "f", "mujer", "female", "femenino"):
+        return 2
+    try:
+        v = int(float(s))
+        if v in (1, 2):
+            return v
+    except Exception:
+        pass
+    return np.nan
+
+def _build_payload_from_data(data: dict, features_expected: list) -> dict:
     """
+    Construye el dict de features que el modelo espera.
+    Soporta:
+      A) JSON plano: {"kcal": 2200, "pct_protein": 20, ...}
+      B) 'respuestas': [ { "clave"/"pregunta": "...", "respuesta": "..." }, ... ]
+    """
+    payload = {feat: np.nan for feat in features_expected}
 
-sintomas = {
-    'dolor_cabeza': ctrl.Antecedent(np.arange(0, 6, 1), 'dolor_cabeza'),
-    'fatiga': ctrl.Antecedent(np.arange(0, 6, 1), 'fatiga'),
-    'dificultad_resp': ctrl.Antecedent(np.arange(0, 6, 1), 'dificultad_resp'),
-    'temperatura': ctrl.Antecedent(np.arange(0, 6, 1), 'temperatura'),
-    'dolor_articular': ctrl.Antecedent(np.arange(0, 6, 1), 'dolor_articular'),
-    'apetito': ctrl.Antecedent(np.arange(0, 6, 1), 'apetito'),
-    'tos': ctrl.Antecedent(np.arange(0, 6, 1), 'tos'),
-    'opresion_pecho': ctrl.Antecedent(np.arange(0, 6, 1), 'opresion_pecho'),
-    'mareos': ctrl.Antecedent(np.arange(0, 6, 1), 'mareos'),
-    'cambios_piel': ctrl.Antecedent(np.arange(0, 6, 1), 'cambios_piel')
-}
+    # 1) Recolectar entradas en índice normalizado
+    pool = {}
+    for k, v in (data or {}).items():
+        if k == "respuestas":
+            continue
+        pool[k.strip().lower()] = v
+
+    if isinstance(data.get("respuestas"), list):
+        for item in data["respuestas"]:
+            name = (item.get("clave") or item.get("campo") or item.get("pregunta") or "").strip().lower()
+            val = item.get("respuesta", "")
+            if name:
+                pool[name] = val
+
+    # 2) Aliases (ajusta si tu front usa otros nombres)
+    aliases = {
+        # Demografía (opcionales)
+        "RIDAGEYR": ["ridageyr", "edad", "age"],
+        "RIAGENDR": ["riagendr", "sexo", "genero", "gender", "sex"],
+
+        # Antropometría / PA (opcionales)
+        "BMI": ["bmi", "imc"],
+        "SBP": ["sbp", "sistolica", "ta_sis", "presion_sistolica"],
+        "DBP": ["dbp", "diastolica", "ta_dia", "presion_diastolica"],
+
+        # Dieta y macros
+        "DR1TKCAL": ["dr1tkcal", "kcal", "calorias"],
+        "pct_protein": ["pct_protein", "porc_proteina", "%proteina"],
+        "pct_carb": ["pct_carb", "porc_carbos", "%carbohidratos"],
+        "pct_fat": ["pct_fat", "porc_grasa", "%grasa"],
+        "DR1TSUGR": ["dr1tsugr", "azucar_g", "azucares_g", "azucar"],
+        "DR1TFIBE": ["dr1tfibe", "fibra_g", "fibra"],
+        "DR1TSODI": ["dr1tsodi", "sodio_mg", "sodio"],
+
+        # Hábitos
+        "is_smoker": ["is_smoker", "fuma", "fumador"],
+        "alcohol_days": ["alcohol_days", "alcohol_dias", "d_alcohol"],
+        "phys_act_days": ["phys_act_days", "act_fisica_dias", "actividad_dias"],
+
+        # Si recolectas peso/talla:
+        "_peso": ["peso", "weight", "kg"],
+        "_talla_cm": ["talla_cm", "altura_cm", "estatura_cm", "cm"],
+        "_talla_m": ["talla_m", "altura_m", "estatura_m", "m"],
+    }
+
+    tmp_store = {}
+
+    for feat, keys in aliases.items():
+        if feat not in payload and not feat.startswith("_"):
+            continue
+        val = None
+        for k in keys:
+            if k in pool:
+                val = pool[k]
+                break
+        if val is None:
+            continue
+
+        if feat == "RIAGENDR":
+            payload[feat] = _map_sex(val)
+        elif feat == "is_smoker":
+            payload[feat] = _map_bool(val)
+        elif feat.startswith("_"):
+            tmp_store[feat] = _to_float(val)
+        else:
+            payload[feat] = _to_float(val)
+
+    # 3) Si falta BMI pero hay peso/talla → calcular
+    if "BMI" in payload and (np.isnan(payload["BMI"]) or payload["BMI"] is None):
+        peso = tmp_store.get("_peso", np.nan)
+        h_m = tmp_store.get("_talla_m", np.nan)
+        if np.isnan(h_m) and not np.isnan(tmp_store.get("_talla_cm", np.nan)):
+            h_m = tmp_store["_talla_cm"] / 100.0
+        if not (np.isnan(peso) or np.isnan(h_m) or h_m == 0):
+            payload["BMI"] = peso / (h_m ** 2)
+
+    return payload
 
 
-especialistas = {
-    'medico_general': ctrl.Consequent(np.arange(0, 11, 1), 'medico_general'),
-    'neumologo': ctrl.Consequent(np.arange(0, 11, 1), 'neumologo'),
-    'cardiologo': ctrl.Consequent(np.arange(0, 11, 1), 'cardiologo'),
-    'reumatologo': ctrl.Consequent(np.arange(0, 11, 1), 'reumatologo'),
-    'dermatologo': ctrl.Consequent(np.arange(0, 11, 1), 'dermatologo'),
-    'gastroenterologo': ctrl.Consequent(np.arange(0, 11, 1), 'gastroenterologo'),
-    'neurologo': ctrl.Consequent(np.arange(0, 11, 1), 'neurologo'),
-    'infectologo': ctrl.Consequent(np.arange(0, 11, 1), 'infectologo'),
-    'otorrinolaringologo': ctrl.Consequent(np.arange(0, 11, 1), 'otorrinolaringologo')
-}
+def _predict(payload: dict):
+    if not MODEL_READY:
+        return None, "Modelo no cargado. Verifica risk_profile_model.joblib/feature_list.txt"
+    X = pd.DataFrame([{k: payload.get(k, np.nan) for k in FEATURES}], columns=FEATURES)
+    pred = PIPE.predict(X)[0]
+    proba = None
+    try:
+        pv = PIPE.predict_proba(X)[0]
+        proba = {cls: float(p) for cls, p in zip(PIPE.classes_, pv)}
+    except Exception:
+        pass
+    return {"risk_label": pred, "proba": proba}, None
+
+def _recomendaciones(risk_label: str):
+    if risk_label == "high":
+        return [
+            "Prioriza verduras, frutas y granos integrales en cada comida.",
+            "Reduce bebidas azucaradas y ultraprocesados; limita sodio.",
+            "Incrementa actividad física semanal de forma progresiva.",
+            "Considera valoración profesional para un plan personalizado."
+        ]
+    if risk_label == "medium":
+        return [
+            "Aumenta fibra (legumbres, integrales) y reduce azúcares añadidos.",
+            "Apunta a 150–300 min/semana de actividad moderada.",
+            "Hidrátate y cuida porciones."
+        ]
+    return [
+        "Buen perfil actual; mantén hábitos y monitoreo periódico.",
+        "Varía fuentes de proteína y prioriza integrales."
+    ]
 
 
-for sintoma in sintomas.values():
-    sintoma['bajo'] = fuzz.trimf(sintoma.universe, [0, 0, 2])
-    sintoma['medio'] = fuzz.trimf(sintoma.universe, [1, 2.5, 4])
-    sintoma['alto'] = fuzz.trimf(sintoma.universe, [3, 5, 5])
-
-for esp in especialistas.values():
-    esp['bajo'] = fuzz.trimf(esp.universe, [0, 0, 4])
-    esp['medio'] = fuzz.trimf(esp.universe, [2, 5, 8])
-    esp['alto'] = fuzz.trimf(esp.universe, [6, 10, 10])
-
-
-
-reglas = [
-
-    ctrl.Rule(
-        sintomas['fatiga']['alto'] | sintomas['temperatura']['alto'] |
-        sintomas['dolor_cabeza']['alto'] | sintomas['apetito']['alto'],
-        especialistas['medico_general']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['dificultad_resp']['alto'] & sintomas['tos']['alto'],
-        especialistas['neumologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['opresion_pecho']['alto'] & sintomas['mareos']['alto'],
-        especialistas['cardiologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['dolor_articular']['alto'] & sintomas['fatiga']['alto'],
-        especialistas['reumatologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['cambios_piel']['alto'] & sintomas['temperatura']['alto'],
-        especialistas['dermatologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['apetito']['alto'],
-        especialistas['gastroenterologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['dolor_cabeza']['alto'] & sintomas['mareos']['alto'],
-        especialistas['neurologo']['alto']
-    ),
-
-    ctrl.Rule(
-        sintomas['temperatura']['alto'] & sintomas['tos']['alto'],
-        especialistas['infectologo']['alto']
-    ),
-    
-    ctrl.Rule(
-        sintomas['dolor_cabeza']['alto'] & sintomas['tos']['alto'],
-        especialistas['otorrinolaringologo']['alto']
-    )
-]
-
-sistema_control = ctrl.ControlSystem(reglas)
-sistema_simulacion = ctrl.ControlSystemSimulation(sistema_control)
-
+# ============================================================
+# View principal del asistente nutricional
+# ============================================================
 @csrf_exempt
-def reglasDifusas(request):
-    if request.method == 'POST':
-        try:
-            # print(request.body)
-            modelo_cargado = joblib.load('moduloPrincipal/static/modelo_especialistas.pkl')
-            nueva_consulta = [json.loads(request.body).get('txtRespuesta', '')]
-            prediccion = modelo_cargado.predict(nueva_consulta)[0]
-            print(json.loads(request.body).get('txtRespuesta', ''))
-            print("Especialista recomendado:", prediccion)
+def perfil_nutricional(request):
+    """
+    POST → devuelve perfil de riesgo (low/medium/high) y recomendaciones.
+    """
+    if request.method != "POST":
+        return HttpResponseBadRequest("Usa POST")
 
-            
-            data = json.loads(request.body)
-            respuestas = data.get('respuestas', [])
-            if len(respuestas) < 10:
-                return JsonResponse({"error": "Faltan respuestas en el cuestionario."}, status=400)
-            
-            inputs = {
-                'dolor_cabeza': float(respuestas[0]['respuesta']),
-                'fatiga': float(respuestas[1]['respuesta']),
-                'dificultad_resp': float(respuestas[2]['respuesta']),
-                'temperatura': float(respuestas[3]['respuesta']),
-                'dolor_articular': float(respuestas[4]['respuesta']),
-                'apetito': float(respuestas[5]['respuesta']),
-                'tos': float(respuestas[6]['respuesta']),
-                'opresion_pecho': float(respuestas[7]['respuesta']),
-                'mareos': float(respuestas[8]['respuesta']),
-                'cambios_piel': float(respuestas[9]['respuesta'])
-            }
+    try:
+        if request.content_type and "application/json" in request.content_type:
+            data = json.loads(request.body.decode("utf-8"))
+        else:
+            data = request.POST.dict()
+    except Exception:
+        data = request.POST.dict()
 
-            for key, value in inputs.items():
-                sistema_simulacion.input[key] = value
+    payload = _build_payload_from_data(data, FEATURES)
+    result, err = _predict(payload)
+    if err:
+        return HttpResponseBadRequest(err)
 
-            # print("sistema_simulacion")
-            # print(sistema_simulacion.input)
-            
-            sistema_simulacion.compute()
-            # print("exito")
-            resultados = {}
-            for esp_nombre, esp_consecuente in especialistas.items():
-                try:
-                    resultados[esp_nombre] = sistema_simulacion.output[esp_consecuente.label]
-                except KeyError:
-                    print("Error en " + esp_nombre)
-                    resultados[esp_nombre] = 0.0
-            # print("resultados")
-            # print(resultados)
-            umbral = 5.0
-            recomendaciones = [esp for esp, score in resultados.items() if score >= umbral]
-            
-            if not recomendaciones:
-                recomendaciones.append("evaluación general")
+    risk = result["risk_label"]
+    recs = _recomendaciones(risk)
 
-            
-            if((len(recomendaciones) == 1 and recomendaciones[0] == 'evaluación general') or prediccion == 'ninguno'):
-                mensajeParaUsuario = "Con base en los datos recabados, no vemos necesario acudir con un especialista, sin embargo puedes acudir con el médico general para un chequeo general."
-            elif len(recomendaciones) == 1:
-                mensajeParaUsuario = f"Con base en tus síntomas, se recomienda consultar al especialista: {recomendaciones[0].replace('_', ' ')}."
-            else:
-                msgEspecialistas = ", ".join([esp.replace('_', ' ') for esp in recomendaciones[:-1]])
-                msgEspecialistas += " y " + recomendaciones[-1].replace('_', ' ')
-                mensajeParaUsuario = f"Con base en tus síntomas, se recomienda consultar a los especialistas: {msgEspecialistas}."
+    if risk == "high":
+        mensaje = "Tu perfil sugiere un riesgo cardiometabólico ALTO. Te comparto consejos generales y considera valoración profesional."
+    elif risk == "medium":
+        mensaje = "Tu perfil sugiere un riesgo cardiometabólico MEDIO. Aquí van recomendaciones para mejorarlo."
+    else:
+        mensaje = "Tu perfil sugiere un riesgo cardiometabólico BAJO. Mantén tus hábitos y monitorea periódicamente."
 
-            return JsonResponse({
-                "mensaje": mensajeParaUsuario,
-                "especialistas_recomendados": recomendaciones,
-                "puntuaciones_difusas": resultados,
-            }, status=200)
+    resp = {
+        "ok": True,
+        "risk_label": risk,
+        "probabilities": result.get("proba"),
+        "recommendations": recs,
+        "mensaje": mensaje,
+        "used_features": {k: payload.get(k) for k in FEATURES}
+    }
 
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Error en el formato JSON."}, status=400)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
-    
-    return JsonResponse({"error": "Método no permitido"}, status=405)
+    # Sanea NaN/Inf → None
+    resp = _sanitize_json(resp)
 
+    return JsonResponse(resp, status=200, json_dumps_params={"ensure_ascii": False})
+
+
+def _sanitize_json(obj):
+    import numpy as _np
+    if isinstance(obj, dict):
+        return {k: _sanitize_json(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_json(v) for v in obj]
+    # numpy escalares
+    if isinstance(obj, (_np.floating,)):
+        val = float(obj)
+        if _np.isnan(val) or _np.isinf(val):
+            return None
+        return val
+    if isinstance(obj, (_np.integer,)):
+        return int(obj)
+    # floats nativos
+    if isinstance(obj, float):
+        if _np.isnan(obj) or _np.isinf(obj):
+            return None
+        return obj
+    return obj

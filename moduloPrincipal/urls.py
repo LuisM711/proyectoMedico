@@ -104,7 +104,9 @@ urlpatterns = [
     path('api/units/', fetch_unidades_data, name='fetch_unidades_data'),
     path('mapa/', visualizarMapa, name='mapa'),
      
-     path('reglasDifusas/', reglasDifusas, name='reglasDifusas'),
+     # path('reglasDifusas/', reglasDifusas, name='reglasDifusas'),
+     # /api/perfil-nutricional/
+     path('api/perfil-nutricional/', perfil_nutricional, name='perfil_nutricional'),
      path('gemini/<str:prompt>', gemini, name='gemini'),
      path('unidades', unidades , name='unidades'),
 
