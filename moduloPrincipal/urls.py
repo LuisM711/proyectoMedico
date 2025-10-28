@@ -122,7 +122,7 @@ urlpatterns = [
     path('informacion/especialista/admin/<int:id_especialista>/<int:id_usuario>/<int:id_user>',
          Informacion_especialista_admin.as_view(), name='info_especialista_admin'),
     path('listarespecialidades/admin', Listar_especialidades_admin.as_view(), name='especialidades_admin'),
-     path("home/ubuntu/jefa", TemplateView.as_view(template_name="index.html"), name="jefa_no_slash"),
-     path("home/ubuntu/jefa/", TemplateView.as_view(template_name="index.html"), name="jefa"),
-     re_path(r"^home/ubuntu/jefa/.*$", TemplateView.as_view(template_name="index.html")),
+     path("jefa", TemplateView.as_view(template_name="index.html"), name="jefa_no_slash"),
+     path("jefa/", TemplateView.as_view(template_name="index.html"), name="jefa"),
+     re_path(r"^jefa/.*$", TemplateView.as_view(template_name="index.html")),
 ]
