@@ -24,6 +24,7 @@ from moduloNutricion.views.viewMenuPaciente import *
 from moduloNutricion.views.viewListaAlimentos import *
 from moduloNutricion.views.viewMapa import *
 from moduloNutricion.views.viewMapa import *
+from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 
@@ -121,4 +122,7 @@ urlpatterns = [
     path('informacion/especialista/admin/<int:id_especialista>/<int:id_usuario>/<int:id_user>',
          Informacion_especialista_admin.as_view(), name='info_especialista_admin'),
     path('listarespecialidades/admin', Listar_especialidades_admin.as_view(), name='especialidades_admin'),
+     path("home/ubuntu/jefa", TemplateView.as_view(template_name="index.html"), name="jefa_no_slash"),
+     path("home/ubuntu/jefa/", TemplateView.as_view(template_name="index.html"), name="jefa"),
+     re_path(r"^home/ubuntu/jefa/.*$", TemplateView.as_view(template_name="index.html")),
 ]
