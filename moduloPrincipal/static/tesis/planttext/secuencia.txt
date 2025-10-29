@@ -1,0 +1,32 @@
+@startuml
+title Diagrama de secuencia - flujo de interacción del paciente
+
+actor Paciente as Usuario
+participant "Login (frontend)" as FELogin
+participant "LoginView (backend)" as BELogin
+participant "Asistente (frontend)" as FEAsistente
+participant "viewAsistenteVirtual (backend)" as BEAsistente
+participant "Modelo ML (scikit-learn)" as Modelo
+
+== Autenticación ==
+Usuario -> FELogin: Ingresa credenciales
+FELogin -> BELogin: POST /login
+BELogin -> BELogin: Validar credenciales
+BELogin --> FELogin: Redirección a inicio (200 OK)
+
+== Evaluación nutricional ==
+Usuario -> FEAsistente: Accede al asistente y responde preguntas
+FEAsistente -> BEAsistente: POST /api/perfil-nutricional\nJSON {features/respuestas}
+BEAsistente -> BEAsistente: _build_payload_from_data()
+BEAsistente -> Modelo: predict(), predict_proba()
+Modelo --> BEAsistente: risk_label, probabilities
+BEAsistente --> FEAsistente: JSON {mensaje,\nrecommendations, probabilities}
+FEAsistente -> Usuario: Muestra resultado y recomendaciones
+
+alt Error de conexión o modelo no cargado
+  BEAsistente --> FEAsistente: 400/500 {error}
+  FEAsistente -> Usuario: Mostrar mensaje de error
+end
+
+@enduml
+

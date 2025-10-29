@@ -1,0 +1,51 @@
+Hola, mira, este es mi proyecto de tesis, pero realmente no todo es mi tesis, solo la parte del asistente virtual nutricional, algunos archivos claves son 
+
+@asistenteVirtual.html 
+@entrenar.py 
+@viewAsistenteVirtual.py 
+y todo lo que esta dentro de la carpeta /tesis
+
+
+# Cursor Rules - Consejo Empresarial Restaurantero (CER)
+
+## Reglas de Capitalización en Español
+
+### REGLA CRÍTICA: Capitalización de Títulos
+- Solo la primera palabra de cada título va en mayúscula.
+- No se deben capitalizar artículos, preposiciones o contracciones como: "de", "del", "la", "el", "los", "las", "un", "una", "en", "con", "por", "para", "al".
+- No se capitalizan sustantivos comunes (por ejemplo: sistema, comité, usuarios, eventos, etc.).
+
+#### CORRECTO:
+- "Gestión de sistema"
+- "Usuarios del sistema"
+- "Configuración del sistema"
+- "Comité ejecutivo"
+- "Miembros del comité"
+- "Fechas importantes"
+- "Generador de reportes"
+- "Administrar operadores"
+
+#### INCORRECTO:
+- "Gestión de Sistema"
+- "Usuarios del Sistema"
+- "Configuración del Sistema"
+- "Comité Ejecutivo"
+- "Miembros del Comité"
+- "Fechas Importantes"
+- "Generador de Reportes"
+- "Administrar Operadores"
+
+### Aplicación de la Regla
+Esta norma aplica a todo texto visible para el usuario, incluyendo:
+- Títulos de páginas y componentes
+- Encabezados de tablas
+- Etiquetas de formularios (labels)
+- Tooltips y mensajes de ayuda
+- Títulos de diálogos o modales
+- Nombres de secciones
+- Títulos definidos en app.routes.ts
+- Cualquier otro texto mostrado en la interfaz
+
+IMPORTANTE: Esta regla es obligatoria y debe cumplirse sin excepción para mantener coherencia, profesionalismo y corrección lingüística.
+
+---

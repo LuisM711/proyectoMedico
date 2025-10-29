@@ -1,0 +1,53 @@
+@startuml
+title Diagrama de clases - asistente virtual nutricional
+
+class LoginView {
+  + get(request)
+  + post(request)
+}
+
+class Usuario {
+  + username: String
+  + password: String
+  + iniciarSesion(): Boolean
+}
+
+class viewAsistenteVirtual {
+  + perfil_nutricional(request): JsonResponse
+  -- helpers --
+  - _build_payload_from_data(data, features): dict
+  - _predict(payload): dict
+  - _recomendaciones(risk_label): list
+}
+
+class RiskProfileModel {
+  + features: List<String>
+  + predict(X): String
+  + predict_proba(X): dict
+}
+
+class ModelArtifacts {
+  + model_path: String
+  + feature_list: List<String>
+  + load(): RiskProfileModel
+}
+
+LoginView --> Usuario : autentica
+viewAsistenteVirtual --> Usuario : usa (sesión)
+viewAsistenteVirtual --> RiskProfileModel : usa para clasificar
+ModelArtifacts ..> RiskProfileModel : crea/carga
+
+note right of viewAsistenteVirtual
+  Archivo: moduloPrincipal/views/viewAsistenteVirtual.py
+  Operación principal: perfil_nutricional(request)
+  Utiliza: PIPE (scikit-learn) y feature_list
+end note
+
+note right of ModelArtifacts
+  Carpeta: moduloPrincipal/static/tesis/model_artifacts/
+  Archivos: risk_profile_model.joblib, preprocessor.joblib,
+            feature_list.txt, label_dist.json
+end note
+
+@enduml
+

@@ -1,0 +1,49 @@
+@startuml
+title Tabla de registros del asistente virtual
+
+entity "asistente_registro" as Registro {
+  + id: UUID [PK]
+  -- referencias --
+  + usuario_id: Integer [FK -> auth_user.id]
+  -- datos de entrada --
+  + edad: Integer (nullable)
+  + sexo: Char(1) ('M'|'F')
+  + bmi: Numeric(5,2)
+  + sbp: Integer
+  + dbp: Integer
+  + kcal: Integer
+  + pct_protein: Numeric(5,2)
+  + pct_carb: Numeric(5,2)
+  + pct_fat: Numeric(5,2)
+  + azucar_g: Numeric(6,2)
+  + fibra_g: Numeric(6,2)
+  + sodio_mg: Integer
+  + is_smoker: Boolean
+  + alcohol_days: Numeric(3,1)
+  + phys_act_days: Numeric(3,1)
+  -- resultados del modelo --
+  + risk_label: Varchar(16)  -- {'saludable','moderado','alto'}
+  + risk_score: Numeric(5,2)
+  + probabilities_json: JSON  -- {'saludable':0.xx,'moderado':0.xx,'alto':0.xx}
+  + recomendaciones: Text     -- lista unida por '\n' o JSON
+  -- metadatos --
+  + modelo: Varchar(32)       -- rf|mlp|logreg (o versión)
+  + version_artefactos: Varchar(32)
+  + created_at: Timestamp [DEFAULT now()]
+}
+
+entity "auth_user" as Usuario {
+  + id: Integer [PK]
+  + username: Varchar(150)
+}
+
+Usuario ||--o{ Registro : "1 a N"
+
+note right of Registro
+  Tabla para auditoría/seguimiento de evaluaciones del asistente.
+  Guarda insumos relevantes, predicción, probabilidades y
+  recomendaciones generadas, con metadatos de versión del modelo.
+end note
+
+@enduml
+

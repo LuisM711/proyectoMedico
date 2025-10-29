@@ -1,0 +1,20 @@
+@startuml
+title Asistente virtual nutricional - Casos de uso
+
+actor "Usuario" as Usuario
+
+rectangle "Sistema: Asistente virtual nutricional" {
+  usecase "Autenticarse" as UC_Login
+  usecase "Responder al\nasistente virtual" as UC_Responder
+  usecase "Ver resultados\ny recomendaciones" as UC_Resultados
+}
+
+Usuario --> UC_Login
+Usuario --> UC_Responder
+Usuario --> UC_Resultados
+
+' Relaciones opcionales (si quieres indicar flujo lógico)
+UC_Responder .> UC_Login : <<include>>
+UC_Resultados .> UC_Responder : <<include>>
+
+@enduml
