@@ -1,5 +1,45 @@
 {
-  "low": 64111,
-  "medium": 18462,
-  "high": 6823
+  "distribucion_etiquetas": {
+    "moderado": 55587,
+    "saludable": 28038,
+    "alto": 5771
+  },
+  "proporcion_etiquetas": {
+    "moderado": 0.622,
+    "saludable": 0.314,
+    "alto": 0.065
+  },
+  "estadisticas_score": {
+    "media": 32.34282507777172,
+    "mediana": 32.5,
+    "desviacion_std": 14.432763603694212,
+    "minimo": 0.0,
+    "maximo": 90.0,
+    "percentiles": {
+      "p25": 22.31205673758865,
+      "p75": 41.5,
+      "p90": 50.83333333333333,
+      "p95": 56.166666666666664
+    }
+  },
+  "score_por_etiqueta": {
+    "alto": {
+      "media": 62.09983362303833,
+      "std": 6.656812579206816,
+      "min": 55.00000000000001,
+      "max": 90.0
+    },
+    "moderado": {
+      "media": 37.473231244412425,
+      "std": 7.570956629932875,
+      "min": 25.00899928005759,
+      "max": 54.76190476190476
+    },
+    "saludable": {
+      "media": 16.046670434081353,
+      "std": 6.433473873684488,
+      "min": 0.0,
+      "max": 25.0
+    }
+  }
 }

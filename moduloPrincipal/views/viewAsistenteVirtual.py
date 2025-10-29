@@ -168,23 +168,37 @@ def _predict(payload: dict):
     return {"risk_label": pred, "proba": proba}, None
 
 def _recomendaciones(risk_label: str):
-    if risk_label == "high":
+    """
+    Recomendaciones basadas en el perfil de riesgo cardiometabólico científico.
+    Nuevas etiquetas: saludable/moderado/alto
+    """
+    if risk_label == "alto":
         return [
-            "Prioriza verduras, frutas y granos integrales en cada comida.",
-            "Reduce bebidas azucaradas y ultraprocesados; limita sodio.",
-            "Incrementa actividad física semanal de forma progresiva.",
-            "Considera valoración profesional para un plan personalizado."
+            "🚨 PRIORIDAD ALTA: Tu perfil requiere atención inmediata.",
+            "🥗 Prioriza verduras, frutas y granos integrales en cada comida.",
+            "🚫 Reduce drásticamente bebidas azucaradas, ultraprocesados y sodio (<2300mg/día).",
+            "🏃‍♂️ Incrementa actividad física: mínimo 150 min/semana actividad moderada.",
+            "👨‍⚕️ IMPORTANTE: Considera valoración médica profesional urgente.",
+            "🚭 Si fumas, busca apoyo profesional para cesación tabáquica."
         ]
-    if risk_label == "medium":
+    elif risk_label == "moderado":
         return [
-            "Aumenta fibra (legumbres, integrales) y reduce azúcares añadidos.",
-            "Apunta a 150–300 min/semana de actividad moderada.",
-            "Hidrátate y cuida porciones."
+            "⚠️ RIESGO INTERMEDIO: Mejoras necesarias para prevenir complicaciones.",
+            "🌾 Aumenta fibra diaria (legumbres, cereales integrales) y reduce azúcares añadidos.",
+            "🏋️‍♀️ Objetivo: 150-300 min/semana de actividad física moderada.",
+            "💧 Hidrátate adecuadamente y controla porciones en las comidas.",
+            "📊 Monitoreo regular: presión arterial, glucosa y perfil lipídico.",
+            "🧘‍♂️ Maneja el estrés con técnicas de relajación y sueño adecuado."
         ]
-    return [
-        "Buen perfil actual; mantén hábitos y monitoreo periódico.",
-        "Varía fuentes de proteína y prioriza integrales."
-    ]
+    else:  # saludable
+        return [
+            "✅ EXCELENTE: Perfil de riesgo cardiovascular bajo.",
+            "🎯 Mantén tus hábitos saludables actuales con monitoreo periódico.",
+            "🍽️ Varía fuentes de proteína (pescado, legumbres, carnes magras).",
+            "🌈 Incluye variedad de colores en frutas y verduras diariamente.",
+            "⚖️ Mantén peso saludable y actividad física regular.",
+            "📅 Evaluaciones preventivas anuales para mantener la salud óptima."
+        ]
 
 
 # ============================================================
@@ -193,7 +207,15 @@ def _recomendaciones(risk_label: str):
 @csrf_exempt
 def perfil_nutricional(request):
     """
-    POST → devuelve perfil de riesgo (low/medium/high) y recomendaciones.
+    POST → devuelve perfil de riesgo cardiometabólico científico (saludable/moderado/alto) 
+    y recomendaciones personalizadas basadas en evidencia médica.
+    
+    Sistema actualizado con algoritmo científico que evalúa:
+    - Factor metabólico (30%): glucosa, perfil lipídico diferenciado por sexo
+    - Factor hemodinámico (25%): presión arterial sistólica/diastólica 
+    - Factor antropométrico (20%): BMI con clasificación WHO
+    - Factor nutricional (15%): calidad dietética, macronutrientes
+    - Factor conductual (10%): tabaquismo, actividad física
     """
     if request.method != "POST":
         return HttpResponseBadRequest("Usa POST")
@@ -214,12 +236,13 @@ def perfil_nutricional(request):
     risk = result["risk_label"]
     recs = _recomendaciones(risk)
 
-    if risk == "high":
-        mensaje = "Tu perfil sugiere un riesgo cardiometabólico ALTO. Te comparto consejos generales y considera valoración profesional."
-    elif risk == "medium":
-        mensaje = "Tu perfil sugiere un riesgo cardiometabólico MEDIO. Aquí van recomendaciones para mejorarlo."
-    else:
-        mensaje = "Tu perfil sugiere un riesgo cardiometabólico BAJO. Mantén tus hábitos y monitorea periódicamente."
+    # Mensajes científicos actualizados para nuevas etiquetas
+    if risk == "alto":
+        mensaje = "🚨 Tu perfil indica un riesgo cardiometabólico ALTO. Requiere atención médica prioritaria y cambios inmediatos en el estilo de vida."
+    elif risk == "moderado":
+        mensaje = "⚠️ Tu perfil indica un riesgo cardiometabólico MODERADO. Con mejoras en hábitos puedes reducir significativamente el riesgo futuro."
+    else:  # saludable
+        mensaje = "✅ Excelente: Tu perfil indica un riesgo cardiometabólico BAJO. Mantén tus hábitos saludables y el monitoreo preventivo."
 
     resp = {
         "ok": True,

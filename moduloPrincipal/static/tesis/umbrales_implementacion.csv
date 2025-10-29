@@ -1,0 +1,50 @@
+Factor,Subfactor,Variable,Umbral_Minimo,Umbral_Maximo,Puntos,Porcentaje_Factor,Clasificacion,Referencia_Cientifica
+Antropométrico,BMI,BMI,18.5,24.9,0,0%,Normal,WHO 2023
+Antropométrico,BMI,BMI,25.0,29.9,6,30%,Sobrepeso,WHO 2023
+Antropométrico,BMI,BMI,30.0,34.9,12,60%,Obesidad I,WHO 2023
+Antropométrico,BMI,BMI,35.0,39.9,16,80%,Obesidad II,WHO 2023
+Antropométrico,BMI,BMI,40.0,999,20,100%,Obesidad III,WHO 2023
+Hemodinámico,Presión,SBP,0,119,0,0%,Normal,AHA/ACC 2017
+Hemodinámico,Presión,SBP,120,129,5,20%,Elevada,AHA/ACC 2017
+Hemodinámico,Presión,SBP,130,139,12.5,50%,Hipertensión I,AHA/ACC 2017
+Hemodinámico,Presión,SBP,140,179,20,80%,Hipertensión II,AHA/ACC 2017
+Hemodinámico,Presión,SBP,180,999,25,100%,Crisis,AHA/ACC 2017
+Hemodinámico,Presión,DBP,0,79,0,0%,Normal,AHA/ACC 2017
+Hemodinámico,Presión,DBP,80,89,12.5,50%,Hipertensión I,AHA/ACC 2017
+Hemodinámico,Presión,DBP,90,119,20,80%,Hipertensión II,AHA/ACC 2017
+Hemodinámico,Presión,DBP,120,999,25,100%,Crisis,AHA/ACC 2017
+Metabólico,Glucosa,GLU,0,99,0,0%,Normal,ADA 2023
+Metabólico,Glucosa,GLU,100,125,3.75,50%,Prediabetes,ADA 2023
+Metabólico,Glucosa,GLU,126,999,7.5,100%,Diabetes,ADA 2023
+Metabólico,HDL_Masculino,HDL,50,999,0,0%,Normal,ATP IV
+Metabólico,HDL_Masculino,HDL,40,49,3,40%,Limítrofe,ATP IV
+Metabólico,HDL_Masculino,HDL,0,39,6,80%,Bajo,ATP IV
+Metabólico,HDL_Femenino,HDL,60,999,0,0%,Normal,ATP IV
+Metabólico,HDL_Femenino,HDL,50,59,3,40%,Limítrofe,ATP IV
+Metabólico,HDL_Femenino,HDL,0,49,6,80%,Bajo,ATP IV
+Metabólico,LDL,LDL,0,99,0,0%,Óptimo,ATP IV
+Metabólico,LDL,LDL,100,129,1.5,20%,Casi óptimo,ATP IV
+Metabólico,LDL,LDL,130,159,3,40%,Limítrofe,ATP IV
+Metabólico,LDL,LDL,160,189,6,80%,Alto,ATP IV
+Metabólico,LDL,LDL,190,999,7.5,100%,Muy alto,ATP IV
+Metabólico,Triglicéridos,TG,0,149,0,0%,Normal,ATP IV
+Metabólico,Triglicéridos,TG,150,199,2.25,30%,Limítrofe,ATP IV
+Metabólico,Triglicéridos,TG,200,499,4.5,60%,Alto,ATP IV
+Metabólico,Triglicéridos,TG,500,999,7.5,100%,Muy alto,ATP IV
+Nutricional,Exceso_Calórico,Porcentaje_TMB,0,110,0,0%,Adecuado,Harris-Benedict
+Nutricional,Exceso_Calórico,Porcentaje_TMB,110,130,2,40%,Moderado,Harris-Benedict
+Nutricional,Exceso_Calórico,Porcentaje_TMB,130,999,4,80%,Excesivo,Harris-Benedict
+Nutricional,Macronutrientes,Proteína_Pct,10,35,0,0%,Óptimo,Dietary Guidelines 2020
+Nutricional,Macronutrientes,Carbohidratos_Pct,45,65,0,0%,Óptimo,Dietary Guidelines 2020
+Nutricional,Macronutrientes,Grasas_Pct,20,35,0,0%,Óptimo,Dietary Guidelines 2020
+Nutricional,Azúcar,Azúcar_Pct_Kcal,0,10,0,0%,Adecuado,WHO 2015
+Nutricional,Azúcar,Azúcar_Pct_Kcal,10,999,2.5,100%,Excesivo,WHO 2015
+Nutricional,Fibra_Masculino,Fibra_g,19,999,0,0%,Adecuado,Dietary Guidelines 2020
+Nutricional,Fibra_Masculino,Fibra_g,0,19,2,80%,Insuficiente,Dietary Guidelines 2020
+Nutricional,Fibra_Femenino,Fibra_g,12.5,999,0,0%,Adecuado,Dietary Guidelines 2020
+Nutricional,Fibra_Femenino,Fibra_g,0,12.5,2,80%,Insuficiente,Dietary Guidelines 2020
+Conductual,Tabaquismo,is_smoker,0,0,0,0%,No fumador,Surgeon General 2020
+Conductual,Tabaquismo,is_smoker,1,1,5,100%,Fumador,Surgeon General 2020
+Conductual,Actividad_Física,Días_semana,3,7,0,0%,Adecuado,Physical Activity Guidelines 2018
+Conductual,Actividad_Física,Días_semana,2,2,2,40%,Insuficiente,Physical Activity Guidelines 2018
+Conductual,Actividad_Física,Días_semana,0,1,4,80%,Sedentario,Physical Activity Guidelines 2018

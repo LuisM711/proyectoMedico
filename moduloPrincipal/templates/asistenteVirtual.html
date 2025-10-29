@@ -366,13 +366,13 @@
             if (loadingAlert) loadingAlert.remove();
 
             if (data && data.mensaje) {
-                // Determinar color según riesgo
-                let riskColor = "#28a745"; // Verde para bajo
+                // Determinar color según riesgo (etiquetas científicas actualizadas)
+                let riskColor = "#28a745"; // Verde para saludable
                 let riskIcon = "bi-check-circle";
-                if (data.risk_label === "medium") {
+                if (data.risk_label === "moderado") {
                     riskColor = "#ffc107";
                     riskIcon = "bi-exclamation-triangle";
-                } else if (data.risk_label === "high") {
+                } else if (data.risk_label === "alto") {
                     riskColor = "#dc3545";
                     riskIcon = "bi-exclamation-circle";
                 }
@@ -412,24 +412,24 @@
                         <div class='alert alert-light p-3 mb-3 border-0 shadow-sm'>
                             <div class='d-flex align-items-center mb-3'>
                                 <i class='bi bi-pie-chart me-2' style='color: #667eea; font-size: 1.2rem;'></i>
-                                <strong>Probabilidades de Riesgo</strong>
+                                <strong>Probabilidades de Riesgo Cardiometabólico</strong>
                             </div>
                             <div class='row text-center'>
                                 <div class='col-4'>
                                     <div class='p-2 rounded' style='background: #28a74520;'>
-                                        <div class='fw-bold text-success'>${pct("low")}</div>
-                                        <small class='text-muted'>Bajo</small>
+                                        <div class='fw-bold text-success'>${pct("saludable")}</div>
+                                        <small class='text-muted'>Saludable</small>
                                     </div>
                                 </div>
                                 <div class='col-4'>
                                     <div class='p-2 rounded' style='background: #ffc10720;'>
-                                        <div class='fw-bold text-warning'>${pct("medium")}</div>
-                                        <small class='text-muted'>Medio</small>
+                                        <div class='fw-bold text-warning'>${pct("moderado")}</div>
+                                        <small class='text-muted'>Moderado</small>
                                     </div>
                                 </div>
                                 <div class='col-4'>
                                     <div class='p-2 rounded' style='background: #dc354520;'>
-                                        <div class='fw-bold text-danger'>${pct("high")}</div>
+                                        <div class='fw-bold text-danger'>${pct("alto")}</div>
                                         <small class='text-muted'>Alto</small>
                                     </div>
                                 </div>
