@@ -42,7 +42,7 @@
 
 ### 🏃‍♂️ **FACTOR 1: ANTROPOMÉTRICO** (Peso: 20%)
 
-#### Índice de Masa Corporal (BMI)
+#### Índice de masa corporal (IMC/BMI; kg/m²)
 | **Clasificación WHO** | **Rango (kg/m²)** | **Puntos Asignados** | **% del Factor** | **Nivel de Riesgo** |
 |:----------------------|:------------------:|:--------------------:|:----------------:|:-------------------:|
 | Peso normal           | 18.5 - 24.9        | 0                    | 0%               | ✅ Saludable       |
@@ -51,13 +51,13 @@
 | Obesidad II           | 35.0 - 39.9        | 16                   | 80%              | 🔶 Severo          |
 | Obesidad III          | ≥ 40.0             | 20                   | 100%             | 🔴 Mórbido         |
 
-**Referencias:** WHO Global Database on Body Mass Index (2023)
+**Referencias:** WHO. Obesity: Preventing and Managing the Global Epidemic. WHO Technical Report Series 894. 2000. DOI: N/D. PMID: 11234459. ISBN-10: 9241208945. ISBN-13: 9789241208949. URL: https://www.ncbi.nlm.nih.gov/books/NBK2004/
 
 ---
 
 ### 🩺 **FACTOR 2: HEMODINÁMICO** (Peso: 25%)
 
-#### Presión Arterial Sistólica y Diastólica
+#### Presión arterial sistólica (SBP) y diastólica (DBP)
 | **Clasificación AHA/ACC** | **SBP (mmHg)** | **DBP (mmHg)** | **Puntos** | **% del Factor** | **Nivel** |
 |:--------------------------|:--------------:|:--------------:|:----------:|:----------------:|:---------:|
 | Normal                    | <120           | <80            | 0          | 0%               | ✅ Óptimo |
@@ -66,7 +66,7 @@
 | Hipertensión Estadio II   | 140-179        | 90-119         | 20         | 80%              | 🔶 Severo |
 | Crisis Hipertensiva       | ≥180           | ≥120           | 25         | 100%             | 🚨 Crítico |
 
-**Referencias:** 2017 AHA/ACC High Blood Pressure Clinical Practice Guideline
+**Referencias:** Whelton PK, Carey RM, Aronow WS, et al. 2017 ACC/AHA Guideline for High Blood Pressure in Adults. J Am Coll Cardiol. 2018;71(19):e127–e248. DOI: 10.1016/j.jacc.2017.11.006. URL: https://www.jacc.org/doi/10.1016/j.jacc.2017.11.006
 
 ---
 
@@ -79,7 +79,9 @@
 | Prediabetes           | 100-125           | 3.75       | 50%                 | ⚠️ Riesgo  |
 | Diabetes              | ≥126              | 7.5        | 100%                | 🔴 Patológico |
 
-#### 3.2 HDL Colesterol (Diferenciado por Sexo)
+**Referencias:** American Diabetes Association. 2. Classification and Diagnosis of Diabetes: Standards of Care in Diabetes—2023. Diabetes Care. 2023;46(Suppl 1):S19–S40. DOI: 10.2337/dc23-S002. URL: https://diabetesjournals.org/care/issue/46/Supplement_1
+
+#### 3.2 Colesterol HDL (lipoproteína de alta densidad; diferenciado por sexo)
 | **Sexo** | **Clasificación** | **Rango (mg/dL)** | **Puntos** | **% del Subfactor** |
 |:---------|:------------------|:-----------------:|:----------:|:-------------------:|
 | **Masculino** | Normal        | ≥50               | 0          | 0%                  |
@@ -89,7 +91,9 @@
 |          | Limítrofe         | 50-59             | 3          | 40%                 |
 |          | Bajo              | <50               | 6          | 80%                 |
 
-#### 3.3 LDL Colesterol
+**Referencias:** Grundy SM, Stone NJ, Bailey AL, et al. 2018 AHA/ACC Guideline on the Management of Blood Cholesterol. Circulation. 2019;139(25):e1082–e1143. DOI: 10.1161/CIR.0000000000000625. URL: https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625
+
+#### 3.3 Colesterol LDL (lipoproteína de baja densidad)
 | **Clasificación ATP IV** | **Rango (mg/dL)** | **Puntos** | **% del Subfactor** | **Riesgo** |
 |:-------------------------|:-----------------:|:----------:|:-------------------:|:----------:|
 | Óptimo                   | <100              | 0          | 0%                  | ✅ Ideal   |
@@ -97,6 +101,8 @@
 | Limítrofe alto           | 130-159           | 3          | 40%                 | 🟡 Moderado |
 | Alto                     | 160-189           | 6          | 80%                 | 🔶 Severo  |
 | Muy alto                 | ≥190              | 7.5        | 100%                | 🔴 Crítico |
+
+**Referencias:** Grundy SM, Stone NJ, Bailey AL, et al. 2018 AHA/ACC Guideline on the Management of Blood Cholesterol. Circulation. 2019;139(25):e1082–e1143. DOI: 10.1161/CIR.0000000000000625. URL: https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625
 
 #### 3.4 Triglicéridos
 | **Clasificación** | **Rango (mg/dL)** | **Puntos** | **% del Subfactor** | **Estado** |
@@ -106,20 +112,22 @@
 | Alto              | 200-499           | 4.5        | 60%                 | 🟡 Elevado |
 | Muy alto          | ≥500              | 7.5        | 100%                | 🔴 Crítico |
 
-**Referencias:** ADA 2023 Standards, ATP III/IV Guidelines
+**Referencias:** Grundy SM, Stone NJ, Bailey AL, et al. 2018 AHA/ACC Guideline on the Management of Blood Cholesterol. Circulation. 2019;139(25):e1082–e1143. DOI: 10.1161/CIR.0000000000000625. URL: https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625
 
 ---
 
 ### 🥗 **FACTOR 4: NUTRICIONAL** (Peso: 15%)
 
-#### 4.1 Exceso Calórico (5% del total)
-| **Clasificación** | **% de Necesidades TMB** | **Puntos** | **Evaluación** |
+#### 4.1 Exceso calórico (5% del total)
+| **Clasificación** | **% de necesidades de tasa metabólica basal (TMB/BMR)** | **Puntos** | **Evaluación** |
 |:------------------|:------------------------:|:----------:|:--------------:|
 | Adecuado          | ≤110%                    | 0          | ✅ Óptimo      |
 | Moderado          | 110-130%                 | 2          | ⚠️ Vigilancia  |
 | Excesivo          | >130%                    | 4          | 🔴 Alto riesgo |
 
-*TMB calculado con Harris-Benedict + Factor actividad física (1.6)*
+*Tasa metabólica basal (TMB/BMR) calculada con la ecuación de Harris-Benedict; factor de actividad física 1.6*
+
+**Referencias:** U.S. Department of Agriculture; U.S. Department of Health and Human Services. Dietary Guidelines for Americans, 2020–2025. 9th ed. 2020. DOI: N/D. ISBN: N/D. URL: https://www.dietaryguidelines.gov/
 
 #### 4.2 Desequilibrio de Macronutrientes (5% del total)
 | **Macronutriente** | **Rango Óptimo (% kcal)** | **Puntos por Desvío** |
@@ -128,6 +136,8 @@
 | Carbohidratos      | 45-65%                    | 1.67                  |
 | Grasas             | 20-35%                    | 1.67                  |
 
+**Referencias:** U.S. Department of Agriculture; U.S. Department of Health and Human Services. Dietary Guidelines for Americans, 2020–2025. 9th ed. 2020. DOI: N/D. ISBN: N/D. URL: https://www.dietaryguidelines.gov/
+
 #### 4.3 Micronutrientes Críticos (5% del total)
 | **Componente** | **Umbral de Riesgo** | **Puntos Máximos** | **Criterio** |
 |:---------------|:--------------------:|:------------------:|:------------:|
@@ -135,7 +145,9 @@
 | Fibra (♂)      | <50% de 38g/día      | 2.0                | Dietary Guidelines |
 | Fibra (♀)      | <50% de 25g/día      | 2.0                | Dietary Guidelines |
 
-**Referencias:** Dietary Guidelines for Americans 2020-2025, WHO Sugar Guidelines
+**Referencias:**
+– U.S. Department of Agriculture; U.S. Department of Health and Human Services. Dietary Guidelines for Americans, 2020–2025. 9th ed. 2020. DOI: N/D. ISBN: N/D. URL: https://www.dietaryguidelines.gov/
+– World Health Organization. Guideline: Sugars Intake for Adults and Children. Geneva: WHO; 2015. DOI: N/D. ISBN-13: 9789241549028. URL: https://www.who.int/publications/i/item/9789241549028
 
 ---
 
@@ -154,7 +166,7 @@
 | 2 días                 | 2          | 40%                 | ⚠️ Insuficiente  |
 | <2 días                | 4          | 80%                 | 🔴 Sedentario    |
 
-**Referencias:** Physical Activity Guidelines for Americans 2018
+**Referencias:** U.S. Department of Health and Human Services. Physical Activity Guidelines for Americans. 2nd ed. 2018. DOI: N/D. ISBN: N/D. URL: https://health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf
 
 ---
 
@@ -202,26 +214,26 @@ Score Final = (Σ Puntos Obtenidos / Σ Puntos Máximos Posibles) × 100
 
 ---
 
-## 📚 Referencias Científicas
+## 📚 Referencias científicas
 
-### Principales Guías Clínicas
-1. **American Heart Association/American College of Cardiology** (2019). *2019 AHA/ACC Primary Prevention of Cardiovascular Disease Clinical Practice Guideline*. Circulation, 140(11), e596-e646.
+1) WHO — índice de masa corporal (adultos)
+   – World Health Organization. Obesity: Preventing and Managing the Global Epidemic. WHO Technical Report Series 894. Geneva: WHO; 2000. DOI: N/D. PMID: 11234459. ISBN-10: 9241208945. ISBN-13: 9789241208949. URL: https://www.ncbi.nlm.nih.gov/books/NBK2004/
 
-2. **American Diabetes Association** (2023). *Standards of Medical Care in Diabetes—2023*. Diabetes Care, 46(Supplement_1).
+2) AHA/ACC — presión arterial
+   – Whelton PK, Carey RM, Aronow WS, et al. 2017 ACC/AHA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults. J Am Coll Cardiol. 2018;71(19):e127–e248. DOI: 10.1016/j.jacc.2017.11.006. URL: https://www.jacc.org/doi/10.1016/j.jacc.2017.11.006
 
-3. **Grundy, S.M., et al.** (2018). *2018 AHA/ACC/AACVPR/APA/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Blood Cholesterol*. Circulation, 139(25), e1082-e1143.
+3) ADA — clasificación y diagnóstico de diabetes (glucosa)
+   – American Diabetes Association. 2. Classification and Diagnosis of Diabetes: Standards of Care in Diabetes—2023. Diabetes Care. 2023;46(Suppl 1):S19–S40. DOI: 10.2337/dc23-S002. URL: https://diabetesjournals.org/care/issue/46/Supplement_1
 
-4. **World Health Organization** (2020). *Healthy diet: Key facts*. WHO Technical Report Series.
+4) Lípidos — AHA/ACC 2018 (HDL/LDL/TG)
+   – Grundy SM, Stone NJ, Bailey AL, et al. 2018 AHA/ACC Guideline on the Management of Blood Cholesterol. Circulation. 2019;139(25):e1082–e1143. DOI: 10.1161/CIR.0000000000000625. URL: https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625
 
-5. **Whelton, P.K., et al.** (2017). *2017 ACC/AHA/AAPA/ABC/ACPM/APS/ASHP/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults*. Hypertension, 71(6), e13-e115.
+5) Guías alimentarias (macronutrientes y fibra) y azúcares libres
+   – U.S. Department of Agriculture; U.S. Department of Health and Human Services. Dietary Guidelines for Americans, 2020–2025. 9th ed. 2020. DOI: N/D. ISBN: N/D. URL: https://www.dietaryguidelines.gov/
+   – World Health Organization. Guideline: Sugars Intake for Adults and Children. Geneva: WHO; 2015. DOI: N/D. ISBN-13: 9789241549028. URL: https://www.who.int/publications/i/item/9789241549028
 
-### Umbrales Nutricionales
-6. **U.S. Department of Health and Human Services and U.S. Department of Agriculture** (2020). *Dietary Guidelines for Americans, 2020-2025. 9th Edition*.
-
-7. **World Health Organization** (2015). *Guideline: Sugars intake for adults and children*. Geneva: World Health Organization.
-
-### Metodología de Riesgo Cardiovascular
-8. **Lloyd-Jones, D.M., et al.** (2019). *Use of Risk Assessment Tools to Guide Decision-Making in the Primary Prevention of Atherosclerotic Cardiovascular Disease*. Circulation, 139(25), e1162-e1177.
+6) Actividad física
+   – U.S. Department of Health and Human Services. Physical Activity Guidelines for Americans. 2nd ed. 2018. DOI: N/D. ISBN: N/D. URL: https://health.gov/sites/default/files/2019-09/Physical_Activity_Guidelines_2nd_edition.pdf
 
 ---
 
