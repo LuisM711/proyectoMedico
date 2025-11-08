@@ -188,9 +188,9 @@
     "conductual": 10
   },
   "clasificacion_final": {
-    "saludable": "Score 0-25 (riesgo cardiovascular bajo)",
-    "moderado": "Score 26-55 (riesgo cardiovascular intermedio)",
-    "alto": "Score 56-100 (riesgo cardiovascular alto)"
+    "saludable": "Score 0-25 (alerta nutricional baja)",
+    "moderado": "Score 26-55 (alerta nutricional intermedia)",
+    "alto": "Score 56-100 (alerta nutricional alta)"
   },
   "info_modelo": {
     "tipo": "rf",
@@ -201,7 +201,7 @@
     "random_state": 42
   },
   "referencias_cientificas": {
-    "guias_cardiovasculares": "AHA/ACC 2019 Guideline on Primary Prevention of CVD",
+    "lineamientos_prevencion": "AHA/ACC 2019 Guideline on Primary Prevention",
     "clasificacion_lipidos": "ATP III & ATP IV Guidelines",
     "criterios_diabetes": "ADA 2023 Standards of Medical Care",
     "clasificacion_nutricional": "WHO/FAO Dietary Guidelines",

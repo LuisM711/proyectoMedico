@@ -16,7 +16,7 @@
                         <i class="bi bi-robot me-2" style="font-size: 1.5rem; color: #1976d2;"></i>
                         <div>
                             <strong>¡Hola {{ request.user.first_name }}!</strong><br>
-                            <small>Soy tu asistente nutricional. Te haré algunas preguntas para evaluar tu perfil de riesgo cardiometabólico y darte recomendaciones personalizadas.</small>
+                            <small>Soy tu asistente nutricional. Te haré algunas preguntas para evaluar tu perfil de riesgo nutricional y darte recomendaciones personalizadas.</small>
                         </div>
                     </div>
                 </div>
@@ -43,173 +43,139 @@
         assistantCard.style.display = assistantCard.style.display === 'none' ? 'block' : 'none';
     }
 
-    // === PREGUNTAS MEJORADAS ===
+    // === CUESTIONARIO NUTRICIONAL (10 Ítems) ===
     const questions = [
         {
-            text: "¿Cuál es tu edad?",
-            type: "age",
-            options: [
-                { value: 18, label: "18-25 años" },
-                { value: 30, label: "26-35 años" },
-                { value: 40, label: "36-45 años" },
-                { value: 50, label: "46-55 años" },
-                { value: 60, label: "56-65 años" },
-                { value: 70, label: "65+ años" }
-            ]
-        },
-        {
-            text: "¿Cuál es tu sexo?",
-            type: "gender",
-            options: [
-                { value: "M", label: "Masculino" },
-                { value: "F", label: "Femenino" }
-            ]
-        },
-        {
-            text: "¿En qué rango está tu IMC (Índice de Masa Corporal)?",
-            type: "bmi",
-            options: [
-                { value: 0, label: "Bajo peso (<18.5)", color: "#4CAF50" },
-                { value: 1, label: "Normal (18.5-24.9)", color: "#8BC34A" },
-                { value: 2, label: "Sobrepeso (25-29.9)", color: "#FFC107" },
-                { value: 3, label: "Obesidad I (30-34.9)", color: "#FF9800" },
-                { value: 4, label: "Obesidad II (35-39.9)", color: "#FF5722" },
-                { value: 5, label: "Obesidad III (≥40)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuál es tu presión arterial sistólica?",
-            type: "sbp",
-            options: [
-                { value: 0, label: "Óptima (<120)", color: "#4CAF50" },
-                { value: 1, label: "Normal (120-129)", color: "#8BC34A" },
-                { value: 2, label: "Normal alta (130-139)", color: "#FFC107" },
-                { value: 3, label: "Hipertensión I (140-159)", color: "#FF9800" },
-                { value: 4, label: "Hipertensión II (160-179)", color: "#FF5722" },
-                { value: 5, label: "Crisis (>180)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuál es tu presión arterial diastólica?",
-            type: "dbp",
-            options: [
-                { value: 0, label: "Óptima (<80)", color: "#4CAF50" },
-                { value: 1, label: "Normal (80-84)", color: "#8BC34A" },
-                { value: 2, label: "Normal alta (85-89)", color: "#FFC107" },
-                { value: 3, label: "Hipertensión I (90-99)", color: "#FF9800" },
-                { value: 4, label: "Hipertensión II (100-109)", color: "#FF5722" },
-                { value: 5, label: "Crisis (>110)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuál se acerca más a tu ingesta calórica diaria?",
-            type: "calories",
-            options: [
-                { value: 0, label: "Muy baja (1200-1500 kcal)", color: "#4CAF50" },
-                { value: 1, label: "Baja (1500-1800 kcal)", color: "#8BC34A" },
-                { value: 2, label: "Moderada (1800-2200 kcal)", color: "#FFC107" },
-                { value: 3, label: "Alta (2200-2600 kcal)", color: "#FF9800" },
-                { value: 4, label: "Muy alta (2600-3000 kcal)", color: "#FF5722" },
-                { value: 5, label: "Excesiva (>3000 kcal)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Qué porcentaje de tus calorías proviene de proteínas?",
-            type: "protein",
-            options: [
-                { value: 0, label: "Muy bajo (5-10%)", color: "#F44336" },
-                { value: 1, label: "Bajo (10-15%)", color: "#FF5722" },
-                { value: 2, label: "Adecuado (15-20%)", color: "#FFC107" },
-                { value: 3, label: "Bueno (20-25%)", color: "#8BC34A" },
-                { value: 4, label: "Alto (25-30%)", color: "#4CAF50" },
-                { value: 5, label: "Muy alto (>30%)", color: "#2196F3" }
-            ]
-        },
-        {
-            text: "¿Qué porcentaje de tus calorías proviene de carbohidratos?",
-            type: "carbs",
-            options: [
-                { value: 0, label: "Muy bajo (<30%)", color: "#F44336" },
-                { value: 1, label: "Bajo (30-40%)", color: "#FF5722" },
-                { value: 2, label: "Adecuado (40-50%)", color: "#FFC107" },
-                { value: 3, label: "Moderado (50-60%)", color: "#8BC34A" },
-                { value: 4, label: "Alto (60-70%)", color: "#FF9800" },
-                { value: 5, label: "Muy alto (>70%)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuántos gramos de azúcares añadidos consumes al día?",
-            type: "sugar",
-            options: [
-                { value: 0, label: "Muy poco (<10g)", color: "#4CAF50" },
-                { value: 1, label: "Poco (10-25g)", color: "#8BC34A" },
-                { value: 2, label: "Moderado (25-50g)", color: "#FFC107" },
-                { value: 3, label: "Alto (50-75g)", color: "#FF9800" },
-                { value: 4, label: "Muy alto (75-100g)", color: "#FF5722" },
-                { value: 5, label: "Excesivo (>100g)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuántos gramos de fibra consumes al día?",
-            type: "fiber",
-            options: [
-                { value: 0, label: "Muy poco (<10g)", color: "#F44336" },
-                { value: 1, label: "Poco (10-15g)", color: "#FF5722" },
-                { value: 2, label: "Moderado (15-20g)", color: "#FFC107" },
-                { value: 3, label: "Bueno (20-25g)", color: "#8BC34A" },
-                { value: 4, label: "Alto (25-30g)", color: "#4CAF50" },
-                { value: 5, label: "Excelente (>30g)", color: "#2196F3" }
-            ]
-        },
-        {
-            text: "¿Cuántos miligramos de sodio consumes al día?",
-            type: "sodium",
-            options: [
-                { value: 0, label: "Muy bajo (<1500mg)", color: "#4CAF50" },
-                { value: 1, label: "Bajo (1500-2000mg)", color: "#8BC34A" },
-                { value: 2, label: "Adecuado (2000-2300mg)", color: "#FFC107" },
-                { value: 3, label: "Alto (2300-3000mg)", color: "#FF9800" },
-                { value: 4, label: "Muy alto (3000-4000mg)", color: "#FF5722" },
-                { value: 5, label: "Excesivo (>4000mg)", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Fumas actualmente?",
-            type: "smoking",
-            options: [
-                { value: 0, label: "Nunca he fumado", color: "#4CAF50" },
-                { value: 1, label: "Fumé pero dejé hace años", color: "#8BC34A" },
-                { value: 2, label: "Fumé pero dejé recientemente", color: "#FFC107" },
-                { value: 3, label: "Fumo ocasionalmente", color: "#FF9800" },
-                { value: 4, label: "Fumo regularmente", color: "#FF5722" },
-                { value: 5, label: "Fumo mucho", color: "#F44336" }
-            ]
-        },
-        {
-            text: "¿Cuántos días a la semana consumes alcohol?",
+            id: "alcohol",
+            text: "En los últimos 12 meses, ¿con qué frecuencia bebiste bebidas alcohólicas (cerveza, vino o licor)?",
             type: "alcohol",
             options: [
-                { value: 0, label: "Nunca", color: "#4CAF50" },
-                { value: 1, label: "1 día", color: "#8BC34A" },
-                { value: 2, label: "2 días", color: "#FFC107" },
-                { value: 3, label: "3 días", color: "#FF9800" },
-                { value: 4, label: "4-5 días", color: "#FF5722" },
-                { value: 5, label: "6-7 días", color: "#F44336" }
+                { value: 0, label: "Nunca", color: "#4CAF50", score: 0 },
+                { value: 3, label: "1-3 veces al mes", color: "#8BC34A", score: 3 },
+                { value: 7, label: "1-3 veces por semana", color: "#FFC107", score: 7 },
+                { value: 10, label: "Casi todos los días", color: "#F44336", score: 10 }
             ]
         },
         {
-            text: "¿Cuántos días a la semana haces actividad física moderada o intensa?",
-            type: "exercise",
+            id: "frutas",
+            text: "¿Cuántas raciones de frutas frescas comes al día?",
+            type: "fruit",
             options: [
-                { value: 0, label: "Nunca", color: "#F44336" },
-                { value: 1, label: "1 día", color: "#FF5722" },
-                { value: 2, label: "2 días", color: "#FF9800" },
-                { value: 3, label: "3 días", color: "#FFC107" },
-                { value: 4, label: "4-5 días", color: "#8BC34A" },
-                { value: 5, label: "6-7 días", color: "#4CAF50" }
+                { value: 0, label: "3 raciones o más", color: "#4CAF50", score: 0 },
+                { value: 3, label: "2 raciones", color: "#8BC34A", score: 3 },
+                { value: 7, label: "1 ración", color: "#FFC107", score: 7 },
+                { value: 10, label: "Menos de 1 ración", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "verduras",
+            text: "¿Cuántas raciones de verduras comes al día?",
+            type: "vegetables",
+            options: [
+                { value: 0, label: "3 raciones o más", color: "#4CAF50", score: 0 },
+                { value: 3, label: "2 raciones", color: "#8BC34A", score: 3 },
+                { value: 7, label: "1 ración", color: "#FFC107", score: 7 },
+                { value: 10, label: "Menos de 1 ración", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "bebidas_azucaradas",
+            text: "¿Cuántas veces por semana tomas refrescos o bebidas azucaradas?",
+            type: "sugary_drinks",
+            options: [
+                { value: 0, label: "Nunca", color: "#4CAF50", score: 0 },
+                { value: 3, label: "1-2 veces", color: "#8BC34A", score: 3 },
+                { value: 7, label: "3-4 veces", color: "#FFC107", score: 7 },
+                { value: 10, label: "5 o más veces", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "comida_rapida",
+            text: "¿Cuántas veces por semana comes comida rápida o ultraprocesada?",
+            type: "fast_food",
+            options: [
+                { value: 0, label: "Nunca", color: "#4CAF50", score: 0 },
+                { value: 4, label: "1-2 veces", color: "#8BC34A", score: 4 },
+                { value: 7, label: "3-4 veces", color: "#FFC107", score: 7 },
+                { value: 10, label: "5 o más veces", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "agua",
+            text: "¿Cuántos vasos o botellas de agua natural bebes al día?",
+            type: "water",
+            options: [
+                { value: 0, label: "5 o más vasos", color: "#4CAF50", score: 0 },
+                { value: 3, label: "3-4 vasos", color: "#8BC34A", score: 3 },
+                { value: 7, label: "1-2 vasos", color: "#FFC107", score: 7 },
+                { value: 10, label: "Menos de 1 vaso", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "granos_integrales",
+            text: "¿Cuántas veces por semana consumes pan, cereal o arroz integral?",
+            type: "whole_grains",
+            options: [
+                { value: 0, label: "5 o más veces", color: "#4CAF50", score: 0 },
+                { value: 3, label: "3-4 veces", color: "#8BC34A", score: 3 },
+                { value: 7, label: "1-2 veces", color: "#FFC107", score: 7 },
+                { value: 10, label: "Nunca", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "sal_mesa",
+            text: "¿Con qué frecuencia agregas sal a tus alimentos ya servidos?",
+            type: "table_salt",
+            options: [
+                { value: 0, label: "Nunca", color: "#4CAF50", score: 0 },
+                { value: 3, label: "Rara vez", color: "#8BC34A", score: 3 },
+                { value: 7, label: "Algunas veces", color: "#FFC107", score: 7 },
+                { value: 10, label: "Siempre", color: "#F44336", score: 10 }
+            ]
+        },
+        {
+            id: "suplementos",
+            text: "¿Tomas suplementos vitamínicos o minerales habitualmente?",
+            type: "supplements",
+            options: [
+                { value: 0, label: "Sí, diariamente o casi diario", color: "#4CAF50", score: 0 },
+                { value: 2, label: "Ocasionalmente", color: "#FFC107", score: 2 },
+                { value: 5, label: "No los tomo", color: "#F44336", score: 5 }
+            ]
+        },
+        {
+            id: "desayuno",
+            text: "¿Cuántos días a la semana desayunas dentro de las 2 horas después de despertar?",
+            type: "breakfast",
+            options: [
+                { value: 0, label: "5-7 días", color: "#4CAF50", score: 0 },
+                { value: 4, label: "3-4 días", color: "#8BC34A", score: 4 },
+                { value: 7, label: "1-2 días", color: "#FFC107", score: 7 },
+                { value: 10, label: "Nunca", color: "#F44336", score: 10 }
             ]
         }
     ];
+
+    const riskLookup = {
+        "saludable": {
+            title: "SALUDABLE",
+            risk: "Alerta baja",
+            summary: "Perfil nutricional equilibrado respaldado por hábitos protectores.",
+            color: "#28a745"
+        },
+        "moderado": {
+            title: "MODERADO",
+            risk: "Alerta intermedia",
+            summary: "Se identifican conductas que requieren ajustes para recuperar el equilibrio.",
+            color: "#ffc107"
+        },
+        "alto": {
+            title: "ALTO",
+            risk: "Alerta alta",
+            summary: "Múltiples conductas no saludables que demandan intervención prioritaria.",
+            color: "#dc3545"
+        }
+    };
 
     let currentQuestionIndex = 0;
     let responses = [];
@@ -231,12 +197,12 @@
             
             question.options.forEach((option, index) => {
                 const color = option.color || "#6c757d";
-                const value = typeof option.value === 'string' ? `"${option.value}"` : option.value;
                 const label = option.label.replace(/"/g, '&quot;');
+                const score = option.score !== undefined ? option.score : option.value;
                 buttonsHtml += `
                     <button class='btn btn-sm mb-2 w-100 text-start' 
                             style='background-color: ${color}; color: white; border: none; border-radius: 8px; padding: 10px 12px; font-size: 0.85rem;'
-                            onclick='handleResponse(${value}, "${label}")'>
+                            onclick='handleResponse("${question.id}", ${score}, "${label}")'>
                         ${option.label}
                     </button>`;
             });
@@ -259,7 +225,7 @@
         scrollToBottom();
     }
 
-    function handleResponse(value, label) {
+    function handleResponse(questionId, score, label) {
         if (currentQuestionIndex < questions.length) {
             const question = questions[currentQuestionIndex];
             document.querySelector(".assistant-messages").innerHTML += `
@@ -268,8 +234,9 @@
                 </div>`;
             
             responses.push({ 
+                id: questionId,
                 pregunta: question.text, 
-                respuesta: value,
+                respuesta: score,
                 label: label,
                 type: question.type
             });
@@ -282,66 +249,18 @@
 
     // === Mapeo mejorado a payload ===
     function mapToPayload(resps) {
-        const getResponse = (type) => {
-            const resp = resps.find(r => r.type === type);
-            return resp ? resp.respuesta : 0;
-        };
-
-        // Mapeo de valores específicos
-        const ageMap = [18, 30, 40, 50, 60, 70];
-        const bmiMap = [17.5, 22.0, 27.0, 32.0, 37.0, 42.0];
-        const sbpMap = [110, 125, 135, 150, 170, 190];
-        const dbpMap = [70, 82, 87, 95, 105, 115];
-        const kcalMap = [1350, 1650, 2000, 2400, 2800, 3200];
-        const protMap = [7.5, 12.5, 17.5, 22.5, 27.5, 32.5];
-        const carbMap = [25, 35, 45, 55, 65, 75];
-        const sugarMap = [5, 17.5, 37.5, 62.5, 87.5, 120];
-        const fiberMap = [8, 12.5, 17.5, 22.5, 27.5, 35];
-        const sodiumMap = [1200, 1750, 2150, 2650, 3500, 4500];
-        const alcoholMap = [0, 1, 2, 3, 4.5, 6.5];
-        const exerciseMap = [0, 1, 2, 3, 4.5, 6.5];
-
-        const age = ageMap[getResponse('age')];
-        const sex = getResponse('gender') === 0 ? 'M' : 'F';
-        const bmi = bmiMap[getResponse('bmi')];
-        const sbp = sbpMap[getResponse('sbp')];
-        const dbp = dbpMap[getResponse('dbp')];
-        const kcal = kcalMap[getResponse('calories')];
-        const protein = protMap[getResponse('protein')];
-        const carbs = carbMap[getResponse('carbs')];
-        const sugar = sugarMap[getResponse('sugar')];
-        const fiber = fiberMap[getResponse('fiber')];
-        const sodium = sodiumMap[getResponse('sodium')];
-        const smoking = getResponse('smoking') >= 3 ? 1 : 0;
-        const alcohol = alcoholMap[getResponse('alcohol')];
-        const exercise = exerciseMap[getResponse('exercise')];
-
-        // Calcular % grasa
-        let fat = 100 - (protein + carbs);
-        if (fat < 0) fat = 0;
-
+        const scores = {};
+        resps.forEach(resp => {
+            scores[resp.id] = resp.respuesta;
+        });
         return {
-            "edad": age,
-            "sexo": sex,
-            "BMI": bmi,
-            "presion_sistolica": sbp,
-            "presion_diastolica": dbp,
-            "DR1TKCAL": kcal,
-            "pct_protein": protein,
-            "pct_carb": carbs,
-            "pct_fat": fat,
-            "DR1TSUGR": sugar,
-            "DR1TFIBE": fiber,
-            "DR1TSODI": sodium,
-            "is_smoker": smoking,
-            "alcohol_days": alcohol,
-            "phys_act_days": exercise
+            scores: scores,
+            respuestas: resps
         };
     }
 
     function sendResponses() {
         const payload = mapToPayload(responses);
-        // Los comentarios no se usan en el modelo, se eliminaron para simplificar
 
         // Mostrar loading
         document.querySelector(".assistant-messages").innerHTML += `
@@ -365,17 +284,23 @@
             const loadingAlert = document.querySelector('.alert-info:last-child');
             if (loadingAlert) loadingAlert.remove();
 
-            if (data && data.mensaje) {
-                // Determinar color según riesgo (etiquetas científicas actualizadas)
-                let riskColor = "#28a745"; // Verde para saludable
-                let riskIcon = "bi-check-circle";
-                if (data.risk_label === "moderado") {
-                    riskColor = "#ffc107";
-                    riskIcon = "bi-exclamation-triangle";
-                } else if (data.risk_label === "alto") {
-                    riskColor = "#dc3545";
-                    riskIcon = "bi-exclamation-circle";
-                }
+            if (data && data.ok) {
+                const riskInfo = riskLookup[data.risk_label] || riskLookup["moderado"];
+                const riskColor = riskInfo.color;
+                const riskIcon = data.risk_label === "alto"
+                    ? "bi-exclamation-circle"
+                    : data.risk_label === "moderado"
+                        ? "bi-exclamation-triangle"
+                        : "bi-check-circle";
+
+                document.querySelector(".assistant-messages").innerHTML += `
+                    <div class='alert p-4 mb-3 border-0 shadow-sm text-center' style='border-radius: 14px; background: linear-gradient(135deg, ${riskColor}25 0%, ${riskColor}12 100%); border: 2px solid ${riskColor}40;'>
+                        <span class='badge' style='background-color: ${riskColor}; color: white; font-size: 0.85rem; letter-spacing: 1px;'>${riskInfo.title}</span>
+                        <h3 class='mt-3 mb-1 fw-bold' style='color: ${riskColor};'>Score: ${data.score.toFixed(1)} / 100</h3>
+                        <p class='mb-1' style='font-size: 1rem;'>Nivel de alerta nutricional: <strong>${riskInfo.risk}</strong></p>
+                        <small class='text-muted d-block mb-2'>Puntaje bruto: ${data.raw_score.toFixed(1)} / ${data.score_max}</small>
+                        <p class='mb-0'>${riskInfo.summary}</p>
+                    </div>`;
 
                 document.querySelector(".assistant-messages").innerHTML += `
                     <div class='alert p-3 mb-3 border-0 shadow-sm' style='background: linear-gradient(135deg, ${riskColor}15 0%, ${riskColor}25 100%); border-left: 4px solid ${riskColor}!important;'>
@@ -398,50 +323,68 @@
                         <div class='alert alert-light p-3 mb-3 border-0 shadow-sm'>
                             <div class='d-flex align-items-center mb-3'>
                                 <i class='bi bi-list-ul me-2' style='color: #667eea; font-size: 1.2rem;'></i>
-                                <strong>Recomendaciones Personalizadas</strong>
+                                <strong>Recomendaciones personalizadas</strong>
                             </div>
                             ${recsHtml}
                         </div>`;
                 }
 
-                if (data.probabilities) {
-                    const probs = data.probabilities;
-                    const pct = k => (probs[k] != null ? (probs[k] * 100).toFixed(1) + "%" : "—");
-                    
+                if (data.detalle) {
+                    const detalleHtml = Object.entries(data.detalle).map(([clave, info]) => `
+                        <div class='d-flex justify-content-between border-bottom py-1'>
+                            <span class='text-muted'>${clave.replace(/_/g, " ")}</span>
+                            <span class='fw-semibold'>${info.puntos.toFixed(1)} / ${info.maximo}</span>
+                        </div>
+                    `).join("");
+
                     document.querySelector(".assistant-messages").innerHTML += `
                         <div class='alert alert-light p-3 mb-3 border-0 shadow-sm'>
                             <div class='d-flex align-items-center mb-3'>
-                                <i class='bi bi-pie-chart me-2' style='color: #667eea; font-size: 1.2rem;'></i>
-                                <strong>Probabilidades de Riesgo Cardiometabólico</strong>
+                                <i class='bi bi-clipboard-data me-2' style='color: #667eea; font-size: 1.2rem;'></i>
+                                <strong>Detalle del puntaje (0-10 por pregunta)</strong>
                             </div>
-                            <div class='row text-center'>
-                                <div class='col-4'>
-                                    <div class='p-2 rounded' style='background: #28a74520;'>
-                                        <div class='fw-bold text-success'>${pct("saludable")}</div>
-                                        <small class='text-muted'>Saludable</small>
-                                    </div>
-                                </div>
-                                <div class='col-4'>
-                                    <div class='p-2 rounded' style='background: #ffc10720;'>
-                                        <div class='fw-bold text-warning'>${pct("moderado")}</div>
-                                        <small class='text-muted'>Moderado</small>
-                                    </div>
-                                </div>
-                                <div class='col-4'>
-                                    <div class='p-2 rounded' style='background: #dc354520;'>
-                                        <div class='fw-bold text-danger'>${pct("alto")}</div>
-                                        <small class='text-muted'>Alto</small>
-                                    </div>
-                                </div>
-                            </div>
+                            ${detalleHtml}
                         </div>`;
                 }
+
+                const riskRows = Object.entries(riskLookup).map(([key, info]) => {
+                    const active = key === data.risk_label;
+                    return `
+                        <tr style='background:${active ? info.color + "15" : "transparent"}'>
+                            <td class='fw-bold' style='color:${info.color};'>${info.title}</td>
+                            <td>${info.risk}</td>
+                            <td>${info.summary}</td>
+                        </tr>
+                    `;
+                }).join("");
+
+                document.querySelector(".assistant-messages").innerHTML += `
+                    <div class='alert alert-light p-3 mb-3 border-0 shadow-sm'>
+                        <div class='d-flex align-items-center mb-3'>
+                            <i class='bi bi-pie-chart me-2' style='color: #667eea; font-size: 1.2rem;'></i>
+                            <strong>Resumen de clasificación</strong>
+                        </div>
+                        <div class='table-responsive'>
+                            <table class='table table-sm mb-0'>
+                                <thead>
+                                    <tr>
+                                        <th>Etiqueta</th>
+                                        <th>Nivel de alerta</th>
+                                        <th>Interpretación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${riskRows}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>`;
 
                 // Botón para reiniciar
                 document.querySelector(".assistant-messages").innerHTML += `
                     <div class='text-center mt-3'>
                         <button class='btn btn-outline-primary' onclick='restartAssessment()' style='border-radius: 25px; padding: 10px 30px;'>
-                            <i class='bi bi-arrow-clockwise me-2'></i>Realizar Nueva Evaluación
+                            <i class='bi bi-arrow-clockwise me-2'></i>Realizar nueva evaluación
                         </button>
                     </div>`;
             } else {
@@ -476,7 +419,7 @@
                     <i class='bi bi-robot me-2' style='font-size: 1.5rem; color: #1976d2;'></i>
                     <div>
                         <strong>¡Hola {{ request.user.first_name }}!</strong><br>
-                        <small>Soy tu asistente nutricional. Te haré algunas preguntas para evaluar tu perfil de riesgo cardiometabólico y darte recomendaciones personalizadas.</small>
+                        <small>Soy tu asistente nutricional. Te haré algunas preguntas para evaluar tu perfil de riesgo nutricional y darte recomendaciones personalizadas.</small>
                     </div>
                 </div>
             </div>`;

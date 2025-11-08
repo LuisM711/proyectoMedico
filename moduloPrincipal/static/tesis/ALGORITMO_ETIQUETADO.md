@@ -1,251 +1,93 @@
-# Algoritmo de Etiquetado de Perfil Nutricional y Riesgo Cardiometabólico
+# algoritmo de etiquetado del cuestionario nutricional
 
-## Resumen Ejecutivo
+## resumen
 
-Sistema de clasificación científicamente fundamentado que evalúa el perfil nutricional y riesgo cardiometabólico de individuos, clasificándolos en tres categorías:
+El asistente nutricional clasifica a cada persona en tres niveles de alerta nutricional según el puntaje total obtenido en un cuestionario de 10 preguntas respaldado por literatura científica:
 
-- **🟢 SALUDABLE** (Score 0-25): Riesgo cardiovascular bajo
-- **🟡 MODERADO** (Score 26-55): Riesgo cardiovascular intermedio  
-- **🔴 ALTO** (Score 56-100): Riesgo cardiovascular alto
+- 🟢 **saludable**   0 – 25 puntos (riesgo bajo)
+- 🟡 **moderado**   26 – 55 puntos (riesgo intermedio)
+- 🔴 **alto**     56 – 100 puntos (riesgo elevado)
 
-## Metodología Científica
+El puntaje bruto máximo es 95 (algunas preguntas valen 5 o 10). Se normaliza a 0‑100 para mantener los umbrales tradicionales, tal como se documenta en `DEFINICION_ETIQUETAS_Y_UMBRALES.md`.
 
-### Fundamentos Teóricos
+## fundamentos científicos
 
-El algoritmo integra múltiples dominios de evidencia científica:
+Cada pregunta se mapea a códigos del NHANES 2017‑2018 y a recomendaciones de guías internacionales:
 
-1. **Guías Cardiovasculares**: AHA/ACC 2019 para prevención primaria
-2. **Criterios Metabólicos**: ADA 2023 para diabetes, ATP III/IV para dislipidemia
-3. **Estándares Nutricionales**: WHO/FAO Dietary Guidelines 2020-2025
-4. **Clasificaciones Antropométricas**: WHO Global Database on BMI
-5. **Framingham Risk Score**: Adaptado para población contemporánea
+| Ítem | Variable NHANES | Referencias clave |
+| --- | --- | --- |
+| 1. Frecuencia de alcohol | `ALQ120Q/ALQ120U` | Dietary Guidelines 2020‑2025 [1] |
+| 2. Raciones de fruta | `DBQ223A/DBQ223U` | Aune et al., 2017 [2] |
+| 3. Raciones de verdura | `DBQ223B/DBQ223U` | WHO, 2020 [3] |
+| 4. Bebidas azucaradas | `DBQ223D/DBQ223U` | Johnson et al., 2009 [4] |
+| 5. Comida rápida | `DBQ330` | National Academies, 2005 [5] |
+| 6. Agua natural | `DBQ197` | Monzani et al., 2019 [6] |
+| 7. Granos integrales | `DBQ235C` | Breslow et al., 2013 [7] |
+| 8. Sal añadida | `CSQ240` | WHO Sodium Guidelines, 2012 [8] |
+| 9. Suplementos | `DSQ010` | Mekary et al., 2012 [9] |
+| 10. Desayuno | `DBQ010` | Uzhova et al., 2017 [10] |
 
-### Sistema de Puntuación Ponderado
+## sistema de puntuación
 
-#### Factores Evaluados y Sus Pesos:
+Cada pregunta se puntúa de 0 (conducta óptima) a 10 (conducta de mayor riesgo). El ítem de suplementos tiene un máximo de 5 puntos porque se penaliza moderadamente la omisión de micronutrientes. La suma se normaliza:
 
 ```
-📊 DISTRIBUCIÓN DE PESOS POR FACTOR
-
-🫀 METABÓLICO (30%)          ████████████████████████████████
-   ├─ Glucosa (7.5%)
-   ├─ HDL diferenciado por sexo (7.5%)  
-   ├─ LDL (7.5%)
-   └─ Triglicéridos (7.5%)
-
-🩺 HEMODINÁMICO (25%)        ████████████████████████████
-   ├─ Presión sistólica
-   └─ Presión diastólica
-
-🏃 ANTROPOMÉTRICO (20%)      ████████████████████████
-   └─ Índice de Masa Corporal (BMI)
-
-🥗 NUTRICIONAL (15%)         ████████████████████
-   ├─ Exceso calórico estimado (5%)
-   ├─ Desequilibrio macronutrientes (5%)
-   └─ Azúcar alto + fibra baja (5%)
-
-🚭 CONDUCTUAL (10%)          ████████████████
-   ├─ Tabaquismo (5%)
-   └─ Sedentarismo (5%)
-```
-
-## Umbrales Científicos Documentados
-
-### 1. Factor Antropométrico (WHO/OMS 2023)
-
-```python
-BMI_CLASSIFICATION = {
-    "Normal":       18.5 - 24.9 kg/m²  →  0 puntos
-    "Sobrepeso":    25.0 - 29.9 kg/m²  →  6 puntos  (30% del factor)
-    "Obesidad I":   30.0 - 34.9 kg/m²  →  12 puntos (60% del factor)
-    "Obesidad II":  35.0 - 39.9 kg/m²  →  16 puntos (80% del factor)  
-    "Obesidad III": ≥40.0 kg/m²        →  20 puntos (100% del factor)
+score_normalizado = (score_bruto / 95) × 100
+etiqueta = {
+    score ≤ 25 → "saludable"
+    25 < score ≤ 55 → "moderado"
+    score > 55 → "alto"
 }
 ```
 
-### 2. Factor Hemodinámico (AHA/ACC 2017)
+### detalle por pregunta
 
-```python
-BLOOD_PRESSURE_CLASSIFICATION = {
-    "Normal":           SBP <120 y DBP <80      →  0 puntos
-    "Elevada":          SBP 120-129 y DBP <80  →  5 puntos  (20% del factor)
-    "Hipertensión I":   SBP 130-139 o DBP 80-89 →  12.5 puntos (50% del factor)
-    "Hipertensión II":  SBP 140-179 o DBP 90-119 → 20 puntos (80% del factor)
-    "Crisis":           SBP ≥180 o DBP ≥120    →  25 puntos (100% del factor)
-}
-```
+| Pregunta | Puntos | Evidencia |
+| --- | --- | --- |
+| Alcohol diario (≥5 días/semana) | 10 | Límites de ingesta responsable [1] |
+| Frutas <1 ración/día | 10 | Meta-análisis sobre consumo de fruta [2] |
+| Verduras <1 ración/día | 10 | OMS “5‑a‑day” [3] |
+| Bebidas azucaradas ≥5 veces/semana | 10 | Alerta nutricional [4] |
+| Comida rápida ≥5 veces/semana | 10 | Exceso calórico ultraprocesado [5] |
+| Agua <1 vaso/día | 10 | Regulación de apetito/hidratación [6] |
+| Granos integrales nulos | 10 | Consumo y salud metabólica [7] |
+| Sal siempre en la mesa | 10 | Guía OMS sodio <2 g/día [8] |
+| No uso de suplementos | 5 | Deficiencias y DM2 [9] |
+| Saltar desayuno toda la semana | 10 | Obesidad/aterosclerosis [10] |
 
-### 3. Factor Metabólico (ADA 2023, ATP III/IV)
+## flujo de cálculo
 
-#### Glucosa:
-```python
-GLUCOSE_THRESHOLDS = {
-    "Normal":       <100 mg/dL     →  0 puntos
-    "Prediabetes":  100-125 mg/dL  →  3.75 puntos (50% del subfactor)
-    "Diabetes":     ≥126 mg/dL     →  7.5 puntos  (100% del subfactor)
-}
-```
+1. El front-end recopila las 10 respuestas y envía los puntajes correspondientes (0‑10/5).
+2. `nutri_scorecard.evaluar_cuestionario` suma los puntos, normaliza a 0‑100 y asigna etiqueta.
+3. El back-end devuelve:
+   - etiqueta final (`saludable`, `moderado`, `alto`)
+   - score normalizado y bruto
+   - detalle por pregunta (puntos obtenidos vs. máximo)
+   - recomendaciones específicas según el nivel de riesgo
 
-#### HDL Colesterol (diferenciado por sexo):
-```python
-HDL_THRESHOLDS = {
-    "Masculino": {
-        "Normal":    ≥50 mg/dL     →  0 puntos
-        "Limítrofe": 40-49 mg/dL   →  3 puntos
-        "Bajo":      <40 mg/dL     →  6 puntos (80% del subfactor)
-    },
-    "Femenino": {
-        "Normal":    ≥60 mg/dL     →  0 puntos  
-        "Limítrofe": 50-59 mg/dL   →  3 puntos
-        "Bajo":      <50 mg/dL     →  6 puntos (80% del subfactor)
-    }
-}
-```
+## validación y distribución
 
-#### LDL Colesterol:
-```python
-LDL_THRESHOLDS = {
-    "Óptimo":       <100 mg/dL     →  0 puntos
-    "Casi óptimo":  100-129 mg/dL  →  1.5 puntos
-    "Limítrofe":    130-159 mg/dL  →  3 puntos   (40% del subfactor)
-    "Alto":         160-189 mg/dL  →  6 puntos   (80% del subfactor)
-    "Muy alto":     ≥190 mg/dL     →  7.5 puntos (100% del subfactor)
-}
-```
+El script `entrenar.py` ya no entrena un modelo estadístico. En su lugar:
 
-#### Triglicéridos:
-```python
-TRIGLYCERIDES_THRESHOLDS = {
-    "Normal":       <150 mg/dL     →  0 puntos
-    "Limítrofe":    150-199 mg/dL  →  2.25 puntos (30% del subfactor)
-    "Alto":         200-499 mg/dL  →  4.5 puntos  (60% del subfactor)
-    "Muy alto":     ≥500 mg/dL     →  7.5 puntos  (100% del subfactor)
-}
-```
+- genera simulaciones Monte Carlo del cuestionario con distribuciones heurísticas,
+- documenta la media, desviación estándar y percentiles del score,
+- estima la proporción esperada de cada etiqueta,
+- guarda la evidencia en `model_artifacts/score_distribution.json`.
 
-### 4. Factor Nutricional (Dietary Guidelines 2020-2025)
+El archivo `verificar_clasificacion.py` incluye casos de prueba que aseguran:
 
-#### Exceso Calórico:
-```python
-# Cálculo TMB Harris-Benedict + Factor Actividad
-CALORIC_EXCESS = {
-    "Normal":       ≤110% TMB × 1.6  →  0 puntos
-    "Moderado":     110-130% TMB × 1.6 → 2 puntos   (40% del subfactor)
-    "Severo":       >130% TMB × 1.6   →  4 puntos   (80% del subfactor)
-}
-```
+- Un perfil saludable produce etiqueta “saludable”.
+- Un perfil adverso produce etiqueta “alto”.
 
-#### Desequilibrio de Macronutrientes:
-```python
-MACRONUTRIENT_BALANCE = {
-    "Proteína":      10-35% calorías totales
-    "Carbohidratos": 45-65% calorías totales  
-    "Grasas":        20-35% calorías totales
-    # Penalización: 1.67 puntos por cada macronutriente fuera de rango
-}
-```
+## referencias
 
-#### Micronutrientes:
-```python
-MICRONUTRIENT_FACTORS = {
-    "Azúcar añadido":  >10% calorías → hasta 2.5 puntos
-    "Fibra insuficiente": {
-        "Masculino": <50% de 38g/día → hasta 2 puntos
-        "Femenino":  <50% de 25g/día → hasta 2 puntos
-    }
-}
-```
-
-### 5. Factor Conductual
-
-#### Tabaquismo:
-```python
-SMOKING_STATUS = {
-    "No fumador":  0 puntos
-    "Fumador":     5 puntos (100% del subfactor)
-}
-```
-
-#### Actividad Física:
-```python
-PHYSICAL_ACTIVITY = {
-    "≥3 días/semana":  0 puntos
-    "2 días/semana":   2 puntos (40% del subfactor)  
-    "<2 días/semana":  4 puntos (80% del subfactor)
-}
-```
-
-## Algoritmo de Clasificación Final
-
-### Cálculo del Score de Riesgo:
-
-```python
-def calculate_risk_score(patient_data):
-    """
-    Calcula score ponderado de 0-100 puntos
-    """
-    total_score = 0
-    max_possible_score = 0
-    
-    # Suma ponderada de todos los factores disponibles
-    for factor in [antropométrico, hemodinámico, metabólico, nutricional, conductual]:
-        if factor.has_data():
-            total_score += factor.calculate_points()
-            max_possible_score += factor.max_points()
-    
-    # Normalización a escala 0-100
-    normalized_score = (total_score / max_possible_score) * 100
-    return min(normalized_score, 100)
-```
-
-### Clasificación por Umbrales:
-
-```python
-def classify_risk_profile(score):
-    """
-    Clasifica el perfil de riesgo basado en percentiles poblacionales
-    y evidencia clínica de outcomes cardiovasculares
-    """
-    if score <= 25:
-        return "saludable"    # Riesgo <10% eventos CV a 10 años
-    elif score <= 55:  
-        return "moderado"     # Riesgo 10-20% eventos CV a 10 años
-    else:
-        return "alto"         # Riesgo >20% eventos CV a 10 años
-```
-
-## Validación Clínica
-
-### Población Objetivo:
-- **Edad**: Adultos ≥18 años
-- **Aplicabilidad**: Población general para screening primario
-- **Exclusiones**: Enfermedad cardiovascular establecida, embarazo
-
-### Limitaciones Reconocidas:
-1. **Especificidad étnica**: Requiere calibración por poblaciones
-2. **Factores genéticos**: No incluye marcadores genéticos
-3. **Historia familiar**: No considera antecedentes familiares
-4. **Biomarcadores avanzados**: No incluye PCR-us, Lp(a), etc.
-
-### Recomendaciones de Uso:
-- **Screening primario**: Identificación de individuos de riesgo
-- **Seguimiento poblacional**: Monitoreo de tendencias de salud
-- **Investigación epidemiológica**: Estudios de cohorte grandes
-- **NO para diagnóstico clínico**: Requiere evaluación médica completa
-
-## Referencias Científicas
-
-1. **Arnett, D.K., et al.** (2019). *2019 AHA/ACC Primary Prevention Guideline*. Circulation, 140(11), e596-e646.
-
-2. **American Diabetes Association** (2023). *Standards of Medical Care in Diabetes—2023*. Diabetes Care, 46(Supplement_1).
-
-3. **Grundy, S.M., et al.** (2018). *2018 AHA/ACC/AACVPR/AAPA/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Blood Cholesterol*. Circulation, 139(25), e1082-e1143.
-
-4. **World Health Organization** (2020). *Healthy diet: Key facts*. WHO Factsheet.
-
-5. **Whelton, P.K., et al.** (2017). *2017 ACC/AHA/AAPA/ABC/ACPM High Blood Pressure Clinical Practice Guideline*. Hypertension, 71(6), e13-e115.
-
----
-
-*Documento técnico generado automáticamente por el sistema de entrenamiento de modelos de Machine Learning para perfil nutricional - Proyecto de tesis en Ingeniería de Software*
+1. **U.S. Department of Agriculture & Department of Health and Human Services.** *Dietary Guidelines for Americans 2020‑2025.* ISBN 978‑1734383140.  
+2. **Aune D, Giovannucci E, et al.** *Int J Epidemiol.* 2017;46(3):1029‑1056. doi:10.1093/ije/dyw319.  
+3. **World Health Organization.** *Healthy diet: Key facts.* WHA65.6, 2020.  
+4. **Johnson RK, et al.** *Circulation.* 2009;120:1011‑1020. doi:10.1161/CIRCULATIONAHA.109.192627.  
+5. **National Academies of Sciences.** *Dietary Reference Intakes for Water, Potassium, Sodium, Chloride, and Sulfate.* doi:10.17226/10925.  
+6. **Monzani A, et al.** *Nutrients.* 2019;11(6):1316. doi:10.3390/nu11061316.  
+7. **Breslow RA, et al.** *NCHS Data Brief.* 2013;(112):1‑8.  
+8. **World Health Organization.** *Guideline: Sodium Intake for Adults and Children.* ISBN 9789241547628.  
+9. **Mekary RA, et al.** *Am J Clin Nutr.* 2012;95(5):1182‑1189. doi:10.3945/ajcn.111.028209.  
+10. **Uzhova I, et al.** *J Am Coll Cardiol.* 2017;70(15):1833‑1842. doi:10.1016/j.jacc.2017.08.027.
