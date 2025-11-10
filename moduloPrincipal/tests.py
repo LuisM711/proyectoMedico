@@ -36,6 +36,10 @@ class PerfilNutricionalAPITests(TestCase):
         data = response.json()
         self.assertEqual(data["risk_label"], "saludable")
         self.assertAlmostEqual(data["score"], 0.0, places=1)
+        self.assertIn("model_probabilities", data)
+        self.assertGreater(data["model_probabilities"]["saludable"], 0.8)
+        self.assertIn("model_features", data)
+        self.assertEqual(data["model_features"]["alcohol"], 0.0)
 
     def test_score_alto(self):
         payload = {
@@ -57,3 +61,6 @@ class PerfilNutricionalAPITests(TestCase):
         data = response.json()
         self.assertEqual(data["risk_label"], "alto")
         self.assertGreaterEqual(data["score"], 90)
+        self.assertIn("model_probabilities", data)
+        self.assertGreater(data["model_probabilities"]["alto"], 0.9)
+        self.assertIn("model_metadata", data)

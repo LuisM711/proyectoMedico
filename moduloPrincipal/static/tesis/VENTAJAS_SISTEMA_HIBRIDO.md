@@ -2,11 +2,11 @@
 
 ## resumen ejecutivo
 
-La nueva versión del asistente se apoya en un cuestionario nutricional con respaldo científico. El componente de machine learning quedó como **línea de investigación futura**. Mantener la noción de “sistema híbrido” sigue siendo útil porque:
+El asistente combina **score científico + Random Forest**. El cuestionario de 10 ítems asegura trazabilidad y el modelo entrenado con NHANES aporta aprendizaje sobre conductas reales. Esto consolida la propuesta de “sistema híbrido” porque:
 
-- el score clásico garantiza trazabilidad y está listo para producción;
-- se puede acoplar un modelo estadístico en caso de contar con datos adicionales;
-- la comparación entre ambos enfoques fortalece la tesis.
+- el score clásico explica cada recomendación con citas verificables;
+- el modelo aprende patrones conjuntos (por ejemplo, alto sodio + poco desayuno);
+- las probabilidades del Random Forest priorizan casos que requieren intervención inmediata.
 
 ## beneficios de la capa clásica
 
@@ -17,28 +17,26 @@ La nueva versión del asistente se apoya en un cuestionario nutricional con resp
 | Implementación | No requiere datasets sensibles ni entrenamiento periódico. |
 | Cumplimiento | Facilita revisiones éticas y regulatorias porque todo el cálculo es determinístico. |
 
-## por qué conservar la idea de híbrido
+## por qué mantener la arquitectura híbrida
 
-1. **Flexibilidad futura**  
-   El módulo `nutri_scorecard` funciona como capa base. Si se desean incluir biomarcadores o señales clínicas, basta con entrenar un modelo supervisado y comparar su salida contra el score clásico.
+1. **Explicabilidad garantizada**  
+   `nutri_scorecard` sigue siendo la fuente de verdad auditada: cada valor está respaldado por DOI/ISBN y se normaliza a 0‑100. El modelo nunca sobrescribe el detalle por pregunta.
 
-2. **Metodología clara para la tesis**  
-   En la memoria se puede explicar que se evaluaron dos rutas (reglas vs. ML) y se eligió la que garantiza evidencia y reproducibilidad. Documentar esta decisión es valioso académicamente.
+2. **Aprendizaje sobre patrones reales**  
+   El Random Forest absorbe relaciones que la tabla de puntuaciones no modela (interacciones entre azúcar, fibra y suplementos, por ejemplo) y entrega probabilidades calibradas para priorizar seguimiento.
 
-3. **Proceso de validación dual (opcional)**  
-   - El script `entrenar.py` genera estadísticas sintéticas para el score clásico.  
-   - Si en el futuro se entrena un modelo, bastaría con añadir un bloque que compare la etiqueta del modelo con la etiqueta científica y reporte discrepancias.
+3. **Evidencia completa para la tesis**  
+   Se documenta el pipeline de entrenamiento (NHANES → feature engineering → Random Forest) y se muestran métricas de validación. Esto demuestra dominio tanto de reglas como de machine learning.
 
-## pasos propuestos si se reactiva la capa ML
+## pasos propuestos para futuras ampliaciones
 
-1. Recolectar un dataset propio con respuestas al cuestionario y etiquetas clínicas.  
-2. Entrenar un modelo (por ejemplo, `RandomForest` o `LogisticRegression`) usando el mismo pipeline de normalización.  
-3. Validar con métricas (`balanced_accuracy`, `f1_macro`) y comparar contra el score clásico.  
-4. Decidir reglas de conciliación: priorizar la etiqueta más conservadora o usar thresholds de confianza.  
-5. Documentar los casos de discrepancia y las acciones recomendadas.
+1. Incorporar biomarcadores o datos propios e incluirlos en `entrenar.py` como nuevas características.  
+2. Evaluar técnicas de interpretabilidad (feature importance, SHAP) para profundizar en la contribución de cada hábito.  
+3. Implementar monitorización periódica de métricas y reentrenamiento cuando existan suficientes datos locales.  
+4. Definir políticas de conciliación si se agregan nuevas capas: por ejemplo, priorizar la etiqueta más conservadora cuando el modelo tenga baja confianza (<0.6).
 
 ## conclusión
 
-- El sistema actual es totalmente funcional con el score científico.  
-- La arquitectura sigue preparada para un enfoque híbrido gracias a la separación entre la capa de puntuación (`nutri_scorecard`) y los scripts auxiliares (`entrenar.py`, `sistema_hibrido_clasico_ml.py`).  
-- La tesis puede argumentar que se evaluaron ambas estrategias y que la versión estable prioriza la transparencia, sin descartar futuros experimentos con machine learning.
+- El sistema productivo opera con dos capas sincronizadas: puntuación científica + Random Forest entrenado con NHANES.  
+- La separación por capas (`nutri_scorecard` vs. artefactos en `model_artifacts/`) facilita mantenimiento, auditoría y futuras extensiones.  
+- La tesis puede argumentar que el enfoque híbrido maximiza transparencia y aprendizaje, cumpliendo con el objetivo de recomendaciones nutricionales basadas en Random Forest.

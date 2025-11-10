@@ -1,6 +1,7 @@
 # Definición de Etiquetas y Umbrales del Perfil Nutricional
 
-Este documento resume la nueva lógica de puntuación construida a partir del cuestionario nutricional de 10 ítems que deriva de los módulos dietarios y de comportamiento alimentario de NHANES 2017-2018. Cada pregunta aporta hasta 10 puntos (100 puntos en total) y refleja el grado de adherencia a las guías alimentarias vigentes. A menor puntaje, mejor patrón nutricional.
+Este documento resume la nueva lógica de puntuación construida a partir del cuestionario nutricional de 10 ítems que deriva de los módulos dietarios y de comportamiento alimentario de NHANES 2017-2018. Cada pregunta aporta hasta 10 puntos (100 puntos en total) y refleja el grado de adherencia a las guías alimentarias vigentes. A menor puntaje, mejor patrón nutricional.  
+La etiqueta comunicada al usuario se obtiene combinando este score con un modelo `RandomForestClassifier` entrenado sobre NHANES; así se mantienen la trazabilidad del cálculo y la capacidad de aprendizaje sobre patrones reales.
 
 ## 📊 Etiquetas de adherencia dietaria
 

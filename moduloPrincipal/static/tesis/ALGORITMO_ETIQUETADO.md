@@ -12,20 +12,20 @@ El puntaje bruto máximo es 95 (algunas preguntas valen 5 o 10). Se normaliza a 
 
 ## fundamentos científicos
 
-Cada pregunta se mapea a códigos del NHANES 2017‑2018 y a recomendaciones de guías internacionales:
+Cada pregunta se mapea a variables observadas en NHANES 2017‑2018 (recordatorio dietario + cuestionario) y se respalda con literatura científica vigente:
 
-| Ítem | Variable NHANES | Referencias clave |
+| Ítem | Variables NHANES aprovechadas | Referencias clave |
 | --- | --- | --- |
-| 1. Frecuencia de alcohol | `ALQ120Q/ALQ120U` | Dietary Guidelines 2020‑2025 [1] |
-| 2. Raciones de fruta | `DBQ223A/DBQ223U` | Aune et al., 2017 [2] |
-| 3. Raciones de verdura | `DBQ223B/DBQ223U` | WHO, 2020 [3] |
-| 4. Bebidas azucaradas | `DBQ223D/DBQ223U` | Johnson et al., 2009 [4] |
-| 5. Comida rápida | `DBQ330` | National Academies, 2005 [5] |
-| 6. Agua natural | `DBQ197` | Monzani et al., 2019 [6] |
-| 7. Granos integrales | `DBQ235C` | Breslow et al., 2013 [7] |
-| 8. Sal añadida | `CSQ240` | WHO Sodium Guidelines, 2012 [8] |
-| 9. Suplementos | `DSQ010` | Mekary et al., 2012 [9] |
-| 10. Desayuno | `DBQ010` | Uzhova et al., 2017 [10] |
+| 1. Frecuencia de alcohol | `ALQ120Q`, `ALQ120U`, `DR1TALCO` | Dietary Guidelines 2020‑2025 [1] |
+| 2. Raciones de fruta | `DBQ197`, vitamina C (`DR1TVC`) | Aune et al., 2017 [2] |
+| 3. Raciones de verdura | `DBD381`, fibra total (`DR1TFIBE`) | WHO “5-a-day” [3] |
+| 4. Bebidas azucaradas | Azúcares totales (`DR1TSUGR`) | Johnson et al., 2009 [4] |
+| 5. Comida rápida / ultraprocesada | Grasa saturada (`DR1TSFAT`) | Dietary Guidelines 2020‑2025 [1] |
+| 6. Agua natural | Agua simple (`DR1TWS`) | National Academies, 2005 [5] |
+| 7. Granos integrales | Ratio fibra/carbohidratos (`DR1TFIBE` / `DR1TCARB`) | Dietary Guidelines 2020‑2025 [1] |
+| 8. Sal añadida | Sodio ingerido (`DR1TSODI`) | WHO Sodium Guidelines, 2012 [8] |
+| 9. Suplementos | Registro farmacológico (`RXDDRUG`) con palabras clave vitamínicas | Breslow et al., 2013 [7] |
+| 10. Desayuno | `DBQ010` + energía diaria (`DR1TKCAL`) | Mekary et al., 2012 [9]; Uzhova et al., 2017 [10] |
 
 ## sistema de puntuación
 
@@ -57,27 +57,25 @@ etiqueta = {
 
 ## flujo de cálculo
 
-1. El front-end recopila las 10 respuestas y envía los puntajes correspondientes (0‑10/5).
-2. `nutri_scorecard.evaluar_cuestionario` suma los puntos, normaliza a 0‑100 y asigna etiqueta.
-3. El back-end devuelve:
-   - etiqueta final (`saludable`, `moderado`, `alto`)
-   - score normalizado y bruto
+1. El front captura las 10 respuestas y envía los puntajes asociados (0‑10/5).
+2. El back-end construye un vector ordenado con esas 10 características, calcula la puntuación normalizada con `nutri_scorecard` para transparencia y lo procesa con el modelo Random Forest entrenado sobre NHANES.
+3. La respuesta expone:
+   - etiqueta final (`saludable`, `moderado`, `alto`) predicha por el Random Forest
+   - score bruto y normalizado calculados con la regla científica
    - detalle por pregunta (puntos obtenidos vs. máximo)
-   - recomendaciones específicas según el nivel de riesgo
+   - probabilidades de cada clase y metadatos del modelo
+   - recomendaciones específicas según el nivel de alerta
 
-## validación y distribución
+## validación y entrenamiento con nhanes
 
-El script `entrenar.py` ya no entrena un modelo estadístico. En su lugar:
+El script `entrenar.py` fusiona los módulos `questionnaire.csv`, `diet.csv` y `medications.csv` de NHANES 2017‑2018, transforma cada registro a los 10 puntajes científicos y etiqueta los ejemplos con `nutri_scorecard`. Con ese dataset realiza:
 
-- genera simulaciones Monte Carlo del cuestionario con distribuciones heurísticas,
-- documenta la media, desviación estándar y percentiles del score,
-- estima la proporción esperada de cada etiqueta,
-- guarda la evidencia en `model_artifacts/score_distribution.json`.
+- división entrenamiento/prueba estratificada (80/20),
+- entrenamiento de un `RandomForestClassifier` (400 árboles, `class_weight="balanced"`),
+- reporte de métricas (accuracy, precision, recall, F1 por clase),
+- almacenamiento de artefactos (`risk_profile_model.joblib`, `preprocessor.joblib`, `feature_list.txt`, `label_dist.json`, `scientific_metadata.json`).
 
-El archivo `verificar_clasificacion.py` incluye casos de prueba que aseguran:
-
-- Un perfil saludable produce etiqueta “saludable”.
-- Un perfil adverso produce etiqueta “alto”.
+El script `verificar_clasificacion.py` y las pruebas unitarias en `moduloPrincipal/tests.py` validan casos extremos para asegurar coherencia entre la puntuación científica y la predicción del modelo.
 
 ## referencias
 

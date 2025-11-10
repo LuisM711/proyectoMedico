@@ -1,13 +1,33 @@
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 import json
+from pathlib import Path
+import joblib
 import numpy as np
+import pandas as pd
+from sklearn.pipeline import Pipeline
 from moduloPrincipal.utils.nutri_scorecard import QUESTIONS, evaluar_cuestionario
 
 
-# ============================================================
-# Utilidades
-# ============================================================
+ARTIFACTS_DIR = (
+    Path(__file__).resolve().parents[1] / "static" / "tesis" / "model_artifacts"
+)
+_MODEL_CACHE: Pipeline | None = None
+_FEATURES_CACHE: list[str] | None = None
+_METADATA_CACHE: dict | None = None
+
+
+def _debug_print(label: str, payload):
+    try:
+        printable = json.dumps(payload, ensure_ascii=True, default=str)
+    except TypeError:
+        printable = str(payload)
+    print(f"[perfil_nutricional] {label}: {printable}")
+
+
+
+
+
 def _to_float(value, default=0.0):
     try:
         if value is None or value == "":
@@ -50,6 +70,47 @@ def _extract_scores(data: dict):
         scores.setdefault(q.id, 0.0)
 
     return scores
+
+
+def _load_model_artifacts():
+    global _MODEL_CACHE, _FEATURES_CACHE, _METADATA_CACHE
+
+    if _MODEL_CACHE is None:
+        _MODEL_CACHE = joblib.load(ARTIFACTS_DIR / "risk_profile_model.joblib")
+        model_info = {
+            "pipeline_steps": list(_MODEL_CACHE.named_steps.keys()),
+        }
+        clf = _MODEL_CACHE.named_steps.get("clf")
+        if clf is not None:
+            model_info["estimator"] = {
+                "type": clf.__class__.__name__,
+                "n_estimators": getattr(clf, "n_estimators", None),
+                "min_samples_leaf": getattr(clf, "min_samples_leaf", None),
+                "class_weight": getattr(clf, "class_weight", None),
+                "classes": getattr(clf, "classes_", []),
+            }
+        _debug_print("modelo_cargado", model_info)
+
+    if _FEATURES_CACHE is None:
+        feature_file = ARTIFACTS_DIR / "feature_list.txt"
+        _FEATURES_CACHE = [
+            line.strip() for line in feature_file.read_text(encoding="utf-8").splitlines() if line.strip()
+        ]
+        _debug_print(
+            "caracteristicas_cargadas",
+            {"orden": _FEATURES_CACHE, "total": len(_FEATURES_CACHE)},
+        )
+
+    if _METADATA_CACHE is None:
+        metadata_file = ARTIFACTS_DIR / "scientific_metadata.json"
+        try:
+            _METADATA_CACHE = json.loads(metadata_file.read_text(encoding="utf-8"))
+            _debug_print("metadata_modelo", _METADATA_CACHE)
+        except FileNotFoundError:
+            _METADATA_CACHE = {}
+            _debug_print("metadata_modelo", "Archivo scientific_metadata.json no encontrado")
+
+    return _MODEL_CACHE, _FEATURES_CACHE, _METADATA_CACHE
 
 
 def _recomendaciones(risk_label: str):
@@ -96,21 +157,19 @@ def _sanear(obj):
     return obj
 
 
-# ============================================================
-# Vista principal del asistente
-# ============================================================
-@csrf_exempt
-def perfil_nutricional(request):
-    """
+
+
+"""
     Analiza el cuestionario nutricional de 10 ítems y devuelve:
         - Etiqueta final (saludable/moderado/alto)
         - Score normalizado 0-100
         - Detalle por pregunta (puntos obtenidos y máximos)
         - Recomendaciones personalizadas
     """
+@csrf_exempt
+def perfil_nutricional(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Usa POST")
-
     try:
         if request.content_type and "application/json" in request.content_type:
             data = json.loads(request.body.decode("utf-8"))
@@ -118,11 +177,45 @@ def perfil_nutricional(request):
             data = request.POST.dict()
     except Exception:
         data = request.POST.dict()
-
+    _debug_print("payload_recibido", data)
     scores = _extract_scores(data or {})
+    _debug_print("puntajes_normalizados", scores)
     resultado = evaluar_cuestionario(scores)
+    _debug_print(
+        "score_cientifico",
+        {
+            "label": resultado["label"],
+            "score_normalizado": resultado["score_normalizado"],
+            "score_raw": resultado["score_raw"],
+        },
+    )
+    model, feature_names, metadata = _load_model_artifacts()
+    feature_vector = {name: _to_float(scores.get(name, 0.0)) for name in feature_names}
+    _debug_print("vector_caracteristicas", feature_vector)
+    X = pd.DataFrame([feature_vector])
+    try:
+        pred = model.predict(X)
+        risk = pred[0]
+        if hasattr(model, "predict_proba"):
+            classes = list(getattr(model, "classes_", []))
+            probabilities = model.predict_proba(X)[0] if classes else []
+            proba_map = {
+                label: float(prob) for label, prob in zip(classes, probabilities)
+            }
+        else:
+            proba_map = {}
+        _debug_print(
+            "salida_modelo",
+            {
+                "prediccion": risk,
+                "probabilidades": proba_map,
+            },
+        )
+    except Exception:
+        risk = resultado["label"]
+        proba_map = {}
+        _debug_print("salida_modelo_error", {"label_fallback": risk})
 
-    risk = resultado["label"]
     mensaje = {
         "alto": "🚨 Alerta nutricional ALTA. Busca apoyo profesional y realiza cambios inmediatos.",
         "moderado": "⚠️ Alerta nutricional MODERADA. Ajusta hábitos para recuperar el equilibrio.",
@@ -138,6 +231,9 @@ def perfil_nutricional(request):
         "detalle": resultado["detalle"],
         "recommendations": _recomendaciones(risk),
         "mensaje": mensaje,
+        "model_features": feature_vector,
+        "model_probabilities": proba_map,
+        "model_metadata": metadata.get("modelo", {}) if metadata else {},
     }
 
     return JsonResponse(_sanear(respuesta), status=200, json_dumps_params={"ensure_ascii": False})

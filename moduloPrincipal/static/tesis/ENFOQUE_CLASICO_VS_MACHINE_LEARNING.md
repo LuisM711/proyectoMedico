@@ -2,37 +2,37 @@
 
 ## contexto del proyecto
 
-La primera iteración del asistente combinaba reglas fijas (IMC, presión arterial, lípidos) con un modelo `RandomForest`. Durante la validación bibliográfica se decidió sustituir ese esquema por un **cuestionario nutricional de 10 ítems** respaldado por NHANES 2017‑2018 y guías internacionales. La versión actual utiliza únicamente reglas explícitas:
+La iteración actual del asistente implementa un **enfoque híbrido**:
 
-- Cada respuesta se convierte en puntos (0‑10 máximo, 5 para suplementos).
-- La suma se normaliza a 0‑100 y se clasifica en saludable / moderado / alto.
-- El detalle por pregunta permite auditar la recomendación.
+- El cuestionario nutricional de 10 ítems (NHANES 2017‑2018 + guías científicas) se transforma en un score explicable mediante `nutri_scorecard`.
+- El mismo vector de puntajes alimenta un `RandomForestClassifier` entrenado con registros NHANES para obtener la etiqueta final y probabilidades por clase.
+- La respuesta JSON expone ambos niveles (score científico + predicción ML) para maximizar transparencia y capacidad de generalización.
 
-## ventajas del enfoque basado en reglas
+## reglas + random forest: fortalezas complementarias
 
-| criterio | reglas explícitas | modelos de machine learning |
+| criterio | score científico | random forest |
 | --- | --- | --- |
-| transparencia | ✅ 100 % explicable | ⚠️ depende del algoritmo |
-| evidencia | ✅ citas directas por pregunta | ⚠️ requiere justificar dataset |
-| mantenimiento | ✅ cambios editando tablas | ⚠️ reentrenamiento / replicación |
-| requisitos de datos | ✅ no necesita datos sensibles | ⚠️ exige dataset balanceado |
-| trazabilidad | ✅ mismo resultado para misma entrada | ⚠️ posible deriva del modelo |
+| transparencia | ✅ tablas y referencias por pregunta | ⚠️ modelo de caja gris (requiere métricas) |
+| evidencia | ✅ citas DOI/ISBN por ítem | ✅ dataset público documentado (NHANES) |
+| personalización | ⚠️ pesos fijos (10 % c/u) | ✅ aprende patrones multivariados |
+| robustez ante ruido | ⚠️ sensible a respuestas extremas | ✅ promedia con 400 árboles balanceados |
+| entrega al usuario | ✅ detalle por pregunta | ✅ probabilidad por clase para priorizar seguimiento |
 
-## cuándo considerar un modelo de aprendizaje
+## cuándo ampliar el componente ml
 
-- Si se incorporan **biomarcadores** (glucosa, HDL, triglicéridos) y se cuenta con registros etiquetados.
-- Si se desea **personalizar pesos** según sexo, edad o comorbilidades.
-- Cuando la institución disponga de un dataset propio ≥5 000 observaciones para entrenar y validar.
+- Al incorporar **nuevas señales** (biomarcadores, actividad física, calidad del sueño) que exceden el score original.
+- Si se recolectan **datasets propios** que permitan reentrenar con distribución local o equilibrar clases minoritarias.
+- Cuando se requiera **personalizar recomendaciones** por grupos (por ejemplo adultos mayores vs. jóvenes) sin perder interpretabilidad.
 
-En ese escenario se recomienda:
+Buenas prácticas para futuras iteraciones:
 
-1. Mantener el score clásico como capa base (explicabilidad).
-2. Entrenar un modelo supervisado que prediga la misma etiqueta.
-3. Comparar métricas (F1 macro, balanced accuracy) y realizar validación cruzada.
-4. Documentar el pipeline, el conjunto de entrenamiento y el control de versiones del modelo.
+1. Mantener `nutri_scorecard` como baseline auditable.
+2. Versionar datasets y artefactos (`model_artifacts/`) con metadatos completos.
+3. Monitorear métricas de desempeño (F1 macro, balanced accuracy) y recalibrar con nuevos datos.
+4. Documentar cualquier ajuste de ingeniería de características o tuning del Random Forest.
 
 ## resumen para la tesis
 
-- **Estado actual:** sistema 100 % determinístico basado en guías (ver `nutri_scorecard.py`).
-- **Beneficio clave:** evita alucinaciones, facilita auditorías y ahorra mantenimiento.
-- **Trabajo a futuro:** incorporar un módulo ML opcional para investigación o benchmarking, manteniendo el score científico como referencia.
+- **Estado actual:** enfoque híbrido (score científico + Random Forest entrenado en NHANES).
+- **Valor diferencial:** combina evidencia nutricional explícita con capacidad de aprendizaje sobre patrones reales de la población.
+- **Camino a futuro:** extender el pipeline al integrar variables clínicas, validar en datasets propios y explorar interpretabilidad (SHAP, feature importance) manteniendo la trazabilidad del score base.

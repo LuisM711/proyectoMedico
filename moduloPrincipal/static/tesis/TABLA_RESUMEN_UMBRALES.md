@@ -12,42 +12,42 @@ El score se obtiene sumando los 10 ítems (máx. 95 puntos) y normalizando: `(sc
 
 | # | variable NHANES | pregunta | respuesta | puntos | evidencia |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `ALQ120Q/U` | Frecuencia de bebidas alcohólicas (12 meses) | Nunca | 0 | [1] |
+| 1 | `ALQ120Q`, `ALQ120U`, `DR1TALCO` | Frecuencia de bebidas alcohólicas (12 meses) | Nunca | 0 | [1] |
 | | | | 1‑3 veces/mes | 3 | |
 | | | | 1‑3 veces/semana | 7 | |
 | | | | ≥4 veces/semana | 10 | |
-| 2 | `DBQ223A/U` | Raciones de fruta al día | ≥3 | 0 | [2] |
+| 2 | `DBQ197`, `DR1TVC` | Raciones de fruta al día | ≥3 | 0 | [2] |
 | | | | 2 | 3 | |
 | | | | 1 | 7 | |
 | | | | <1 | 10 | |
-| 3 | `DBQ223B/U` | Raciones de verdura al día | ≥3 | 0 | [3] |
+| 3 | `DBD381`, `DR1TFIBE` | Raciones de verdura al día | ≥3 | 0 | [3] |
 | | | | 2 | 3 | |
 | | | | 1 | 7 | |
 | | | | <1 | 10 | |
-| 4 | `DBQ223D/U` | Bebidas azucaradas por semana | 0 | 0 | [4] |
+| 4 | `DR1TSUGR` | Bebidas azucaradas por semana | 0 | 0 | [4] |
 | | | | 1‑2 | 3 | |
 | | | | 3‑4 | 7 | |
 | | | | ≥5 | 10 | |
-| 5 | `DBQ330` | Comida rápida/ultraprocesada (semana) | 0 | 0 | [5] |
+| 5 | `DR1TSFAT` | Comida rápida/ultraprocesada (semana) | 0 | 0 | [5] |
 | | | | 1‑2 | 4 | |
 | | | | 3‑4 | 7 | |
 | | | | ≥5 | 10 | |
-| 6 | `DBQ197` | Vasos de agua natural al día | ≥5 | 0 | [6] |
+| 6 | `DR1TWS` | Vasos de agua natural al día | ≥5 | 0 | [5] |
 | | | | 3‑4 | 3 | |
 | | | | 1‑2 | 7 | |
 | | | | <1 | 10 | |
-| 7 | `DBQ235C` | Consumo semanal de granos integrales | ≥5 | 0 | [7] |
+| 7 | `DR1TFIBE/DR1TCARB` | Consumo semanal de granos integrales | ≥5 | 0 | [1] |
 | | | | 3‑4 | 3 | |
 | | | | 1‑2 | 7 | |
 | | | | 0 | 10 | |
-| 8 | `CSQ240` | Añadir sal a la comida servida | Nunca | 0 | [8] |
+| 8 | `DR1TSODI` | Añadir sal a la comida servida | Nunca | 0 | [8] |
 | | | | Rara vez | 3 | |
 | | | | Algunas veces | 7 | |
 | | | | Siempre | 10 | |
-| 9 | `DSQ010` | Uso habitual de suplementos | Sí | 0 | [9] |
+| 9 | `RXDDRUG` (palabras clave vitamínicas) | Uso habitual de suplementos | Sí | 0 | [7] |
 | | | | Ocasional | 2 | |
 | | | | No | 5 | |
-| 10 | `DBQ010` | Días a la semana que se desayuna | 5‑7 | 0 | [10] |
+| 10 | `DBQ010`, `DR1TKCAL` | Días a la semana que se desayuna | 5‑7 | 0 | [9][10] |
 | | | | 3‑4 | 4 | |
 | | | | 1‑2 | 7 | |
 | | | | 0 | 10 | |
@@ -59,11 +59,12 @@ score_bruto = Σ puntos_i
 score_normalizado = (score_bruto / 95) × 100
 ```
 
-### distribución simulada (10 000 muestras, `entrenar.py`)
+### distribución observada en nhanes (entrenar.py)
 
-- Media ± DE: 41.8 ± 18.5
-- Percentiles: P25=27.2 · P50=41.0 · P75=56.4
-- Etiquetas: saludable 32%, moderado 46%, alto 22% (aprox.)
+- Muestras utilizadas: 8 531 registros NHANES 2017‑2018.
+- Score normalizado — media 59.29, DE 11.12, rango [22.11, 93.68].
+- Percentiles: P25=51.58 · P50=58.95 · P75=66.32.
+- Etiquetas generadas: saludable 0.1 %, moderado 35.4 %, alto 64.5 %.
 
 ## referencias
 
