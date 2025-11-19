@@ -1,0 +1,92 @@
+================================================================================
+TABLAS DE RESULTADOS - MODELO RANDOM FOREST
+Generado: 2025-11-18 22:12:18
+================================================================================
+
+TABLA 1: RESULTADOS EN ENTRENAMIENTO
+--------------------------------------------------------------------------------
+
+\begin{table}[h]
+\centering
+\caption{Resultados en Entrenamiento del Modelo Random Forest}
+\label{tab:resultados_entrenamiento}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Alto} & \textbf{Moderado} & \textbf{Saludable} & \textbf{Promedio} \\
+\hline
+\textbf{Precisión} & 98.19\% & 97.34\% & 100.00\% & 98.51\% \\
+\hline
+\textbf{Recall} & 98.55\% & 96.69\% & 100.00\% & 98.41\% \\
+\hline
+\textbf{F1-Score} & 98.37\% & 97.01\% & 100.00\% & 98.46\% \\
+\hline
+\textbf{Accuracy Global} & \multicolumn{4}{c|}{97.89\%} \\
+\hline
+\end{tabular}
+\end{table}
+
+
+================================================================================
+
+TABLA 2: CONFIGURACIÓN DEL MODELO Y DATASET
+--------------------------------------------------------------------------------
+
+\begin{table}[h]
+\centering
+\caption{Configuración del Modelo y Características del Dataset}
+\label{tab:configuracion_modelo}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Parámetro} & \textbf{Valor} \\
+\hline
+\textbf{Tipo de Modelo} & RandomForestClassifier \\
+\hline
+\textbf{Número de Estimadores} & 400 \\
+\hline
+\textbf{min\_samples\_leaf} & 2 \\
+\hline
+\textbf{class\_weight} & balanced \\
+\hline
+\textbf{random\_state} & 42 \\
+\hline
+\textbf{Total de Muestras} & 8,531 \\
+\hline
+\textbf{Muestras - Alto} & 5,504 (64.5\%%) \\
+\hline
+\textbf{Muestras - Moderado} & 3,022 (35.4\%%) \\
+\hline
+\textbf{Muestras - Saludable} & 5 (0.06\%%) \\
+\hline
+\textbf{División Train/Test} & 80\% / 20\% \\
+\hline
+\textbf{Fuente de Datos} & NHANES 2017-2018 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+================================================================================
+
+TABLA 3: RESULTADOS CON CÓDIGO EN PYTHON
+--------------------------------------------------------------------------------
+
+\begin{table}[h]
+\centering
+\caption{Resultados de Métricas por Clase del Modelo Random Forest}
+\label{tab:metricas_python}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Clase} & \textbf{Precisión} & \textbf{Recall} & \textbf{F1-Score} \\
+\hline
+Alto & 98.19\% & 98.55\% & 98.37\% \\
+\hline
+Moderado & 97.34\% & 96.69\% & 97.01\% \\
+\hline
+Saludable & 100.00\% & 100.00\% & 100.00\% \\
+\hline
+\textbf{Promedio (Macro)} & \textbf{98.51\%} & \textbf{98.41\%} & \textbf{98.46\%} \\
+\hline
+\textbf{Accuracy Global} & \multicolumn{3}{c|}{97.89\%} \\
+\hline
+\end{tabular}
+\end{table}

@@ -1,19 +1,17 @@
-<div class="assistant-container position-fixed bottom-0 end-0 mb-3 me-3">
-    <div class="card shadow-lg assistant-card" id="assistantCard"
-        style="min-width: 450px; width: 450px; min-height: 400px; height: 500px; display: block; max-width: 500px; max-height: 600px; resize: both; overflow: hidden; border-radius: 15px;">
-        <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center" 
-             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px 15px 0 0;">
+<div class="assistant-container position-fixed bottom-0 end-0 mb-2 me-2 mb-md-3 me-md-3">
+    <div class="card shadow-lg assistant-card" id="assistantCard">
+        <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center assistant-header">
             <div class="d-flex align-items-center">
-                <i class="bi bi-heart-pulse me-2" style="font-size: 1.2rem;"></i>
-                <span class="fw-bold">Asistente nutricional</span>
+                <i class="bi bi-heart-pulse me-2 assistant-icon"></i>
+                <span class="fw-bold assistant-title">Asistente nutricional</span>
             </div>
             <button type="button" class="btn-close btn-close-white" onclick="toggleAssistant()"></button>
         </div>
-        <div class="card-body p-3" style="height: calc(100% - 60px); background: #f8f9fa;">
-            <div class="assistant-messages mb-3" style="height: 85%; overflow-y: auto; border-radius: 10px;">
-                <div class="alert alert-info p-3 mb-3 border-0 shadow-sm" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+        <div class="card-body assistant-body">
+            <div class="assistant-messages mb-3">
+                <div class="alert alert-info p-2 p-md-3 mb-3 border-0 shadow-sm assistant-welcome">
                     <div class="d-flex align-items-center">
-                        <i class="bi bi-robot me-2" style="font-size: 1.5rem; color: #1976d2;"></i>
+                        <i class="bi bi-robot me-2 assistant-robot-icon"></i>
                         <div>
                             <strong>¡Hola {{ request.user.first_name }}!</strong><br>
                             <small>Soy tu asistente nutricional. Te haré algunas preguntas para evaluar tu perfil de riesgo nutricional y darte recomendaciones personalizadas.</small>
@@ -23,7 +21,7 @@
             </div>
             
             <!-- Progress Bar -->
-            <div class="progress mb-2" style="height: 4px; border-radius: 2px;">
+            <div class="progress mb-2 assistant-progress">
                 <div class="progress-bar bg-gradient" id="progressBar" role="progressbar" style="width: 0%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
             </div>
             
@@ -31,9 +29,8 @@
         </div>
     </div>
 
-    <button class="btn btn-primary rounded-circle shadow-lg" onclick="toggleAssistant()" 
-            style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-        <i class="bi bi-heart-pulse" style="font-size: 1.8rem;"></i>
+    <button class="btn btn-primary rounded-circle shadow-lg assistant-toggle-btn" onclick="toggleAssistant()">
+        <i class="bi bi-heart-pulse assistant-toggle-icon"></i>
     </button>
 </div>
 
@@ -191,6 +188,15 @@
     }
 
     function askNextQuestion() {
+        // Deshabilitar todos los botones de preguntas anteriores
+        const allButtons = document.querySelectorAll('.response-options button');
+        allButtons.forEach(btn => {
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+            btn.onclick = null; // Remover el onclick para prevenir clics
+        });
+        
         if (currentQuestionIndex < questions.length) {
             const question = questions[currentQuestionIndex];
             let buttonsHtml = "";
@@ -201,8 +207,9 @@
                 const score = option.score !== undefined ? option.score : option.value;
                 buttonsHtml += `
                     <button class='btn btn-sm mb-2 w-100 text-start' 
+                            data-question-index='${currentQuestionIndex}'
                             style='background-color: ${color}; color: white; border: none; border-radius: 8px; padding: 10px 12px; font-size: 0.85rem;'
-                            onclick='handleResponse("${question.id}", ${score}, "${label}")'>
+                            onclick='handleResponse("${question.id}", ${score}, "${label}", ${currentQuestionIndex})'>
                         ${option.label}
                     </button>`;
             });
@@ -214,7 +221,7 @@
                         <strong style='font-size: 0.9rem;'>Pregunta ${currentQuestionIndex + 1} de ${questions.length}</strong>
                     </div>
                     <p class='mb-2 fw-semibold' style='font-size: 0.95rem;'>${question.text}</p>
-                    <div class='response-options'>${buttonsHtml}</div>
+                    <div class='response-options' data-question-index='${currentQuestionIndex}'>${buttonsHtml}</div>
                 </div>`;
             
             updateProgress();
@@ -225,9 +232,24 @@
         scrollToBottom();
     }
 
-    function handleResponse(questionId, score, label) {
+    function handleResponse(questionId, score, label, questionIndex) {
+        // Validar que la pregunta respondida sea la actual
+        if (questionIndex !== currentQuestionIndex) {
+            return; // Ignorar si no es la pregunta actual
+        }
+        
         if (currentQuestionIndex < questions.length) {
             const question = questions[currentQuestionIndex];
+            
+            // Deshabilitar todos los botones de esta pregunta
+            const currentQuestionButtons = document.querySelectorAll(`.response-options[data-question-index="${questionIndex}"] button`);
+            currentQuestionButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+                btn.onclick = null;
+            });
+            
             document.querySelector(".assistant-messages").innerHTML += `
                 <div class='alert alert-secondary p-2 mb-2 text-end border-0 shadow-sm' style='background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);'>
                     <strong style='font-size: 0.9rem;'>${label}</strong>
@@ -438,13 +460,144 @@
         z-index: 1000;
     }
 
+    /* Estilos base del card */
     .assistant-card {
+        min-width: calc(100vw - 1rem);
+        width: calc(100vw - 1rem);
+        min-height: 60vh;
+        height: 70vh;
+        max-width: 500px;
+        max-height: calc(100vh - 120px);
+        display: block;
+        resize: none;
+        overflow: hidden;
+        border-radius: 15px;
         transition: all 0.3s ease;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
     }
 
+    @media (min-width: 576px) {
+        .assistant-card {
+            min-width: 90vw;
+            width: 90vw;
+        }
+    }
+
+    /* Desktop: permite resize y ajusta tamaño */
+    @media (min-width: 768px) {
+        .assistant-card {
+            min-width: 450px;
+            width: 450px;
+            min-height: 400px;
+            height: 500px;
+            max-height: 600px;
+            resize: both;
+        }
+    }
+
     .assistant-card:hover {
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Header */
+    .assistant-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px 15px 0 0;
+        padding: 0.75rem 1rem;
+    }
+
+    @media (max-width: 767px) {
+        .assistant-header {
+            padding: 0.5rem 0.75rem;
+        }
+    }
+
+    .assistant-icon {
+        font-size: 1rem;
+    }
+
+    @media (min-width: 768px) {
+        .assistant-icon {
+            font-size: 1.2rem;
+        }
+    }
+
+    .assistant-title {
+        font-size: 0.9rem;
+    }
+
+    @media (min-width: 768px) {
+        .assistant-title {
+            font-size: 1rem;
+        }
+    }
+
+    /* Body */
+    .assistant-body {
+        height: calc(100% - 60px);
+        background: #f8f9fa;
+        padding: 0.75rem;
+    }
+
+    @media (max-width: 767px) {
+        .assistant-body {
+            height: calc(100% - 50px);
+            padding: 0.5rem;
+        }
+    }
+
+    /* Messages container */
+    .assistant-messages {
+        height: 85%;
+        overflow-y: auto;
+        border-radius: 10px;
+    }
+
+    .assistant-welcome {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    }
+
+    .assistant-robot-icon {
+        font-size: 1.2rem;
+        color: #1976d2;
+    }
+
+    @media (min-width: 768px) {
+        .assistant-robot-icon {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* Progress bar */
+    .assistant-progress {
+        height: 4px;
+        border-radius: 2px;
+    }
+
+    /* Toggle button */
+    .assistant-toggle-btn {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 0;
+    }
+
+    @media (min-width: 768px) {
+        .assistant-toggle-btn {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    .assistant-toggle-icon {
+        font-size: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .assistant-toggle-icon {
+            font-size: 1.8rem;
+        }
     }
 
     .response-options .btn:hover {
@@ -453,22 +606,78 @@
         transition: all 0.2s ease;
     }
 
+    /* Ajustes de botones en móvil */
+    @media (max-width: 767px) {
+        .response-options .btn {
+            font-size: 0.8rem !important;
+            padding: 8px 10px !important;
+        }
+        
+        /* Ajustes de texto en alertas */
+        .assistant-messages .alert {
+            font-size: 0.85rem;
+        }
+        
+        .assistant-messages .alert strong {
+            font-size: 0.85rem !important;
+        }
+        
+        .assistant-messages .alert p {
+            font-size: 0.9rem !important;
+        }
+        
+        .assistant-messages .alert small {
+            font-size: 0.75rem;
+        }
+        
+        /* Iconos más pequeños en móvil */
+        .assistant-messages .bi {
+            font-size: 1rem !important;
+        }
+    }
+
+    /* Estilos de scrollbar para máxima compatibilidad */
+    .assistant-messages {
+        /* Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 #f1f1f1;
+        
+        /* Edge Legacy (antes de Chromium) */
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    /* Chrome, Safari, Edge Chromium, Opera (WebKit/Blink) */
     .assistant-messages::-webkit-scrollbar {
-        width: 6px;
+        width: 4px;
+        height: 4px;
     }
 
     .assistant-messages::-webkit-scrollbar-track {
         background: #f1f1f1;
-        border-radius: 3px;
+        border-radius: 2px;
+        -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1);
     }
 
     .assistant-messages::-webkit-scrollbar-thumb {
         background: #c1c1c1;
-        border-radius: 3px;
+        border-radius: 2px;
+        -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     }
 
     .assistant-messages::-webkit-scrollbar-thumb:hover {
         background: #a8a8a8;
+    }
+
+    .assistant-messages::-webkit-scrollbar-thumb:active {
+        background: #909090;
+    }
+
+    /* Fallback para navegadores que no soportan personalización */
+    @supports not (scrollbar-width: thin) and not selector(::-webkit-scrollbar) {
+        .assistant-messages {
+            overflow-y: auto;
+            /* Usa la scrollbar nativa del navegador */
+        }
     }
 
     .bg-gradient {
