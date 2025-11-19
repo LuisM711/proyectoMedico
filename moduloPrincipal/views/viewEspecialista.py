@@ -18,10 +18,15 @@ from moduloPrincipal.decorators import guest_or_login_required
 
 # Clase para enviar al especialista a su ventana de inicio
 class InicioEspecialista(View):
-    @method_decorator(guest_or_login_required, name='dispatch')
-    def get(self, request):        
+    def get(self, request):
+        # Si no hay usuario autenticado ni sesión de invitado, establecer automáticamente como invitado
+        if not request.user.is_authenticated and not request.session.get('guest'):
+            request.session['guest'] = True
+            request.session['user_type'] = 'P'
+            return render(request, 'inicio.html',{"user_type": 'P'})
+        
         if request.session.get('guest'):
-            return render(request, 'inicio.html',{"user_type": 'guest'})
+            return render(request, 'inicio.html',{"user_type": 'P'})
         
         if (request.user.is_staff == 0):
             aux_usuario = Usuario.objects.get(id_usuario_id=request.user.id)

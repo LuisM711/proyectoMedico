@@ -73,9 +73,12 @@ class LoginInvitado(View):
 
 # Clase para borrar la sesion del usuario
 class CerrarSesion(View):
-    @method_decorator(login_required(login_url='login'), name='dispatch')
     def post(self, request):
-        logout(request)
+        # Si es invitado, limpiar la sesión manualmente
+        if request.session.get('guest'):
+            request.session.flush()
+        else:
+            logout(request)
         return redirect('login')
 # Clase para redirigir a los distintos tipos de usaurio a su respectivo inicio
 class Redirigir(View):
