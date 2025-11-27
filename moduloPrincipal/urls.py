@@ -23,11 +23,15 @@ from moduloNutricion.views.viewAlimentos import *
 from moduloNutricion.views.viewMenuPaciente import *
 from moduloNutricion.views.viewListaAlimentos import *
 from moduloNutricion.views.viewMapa import *
+from django.urls import path, re_path
+from django.views.generic import TemplateView, RedirectView
+from django.views.static import serve as static_serve
+
 from moduloNutricion.views.viewMapa import *
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
-
+ANGULAR_ROOT = "/home/ubuntu/jefa"
 urlpatterns = [
 
     # Urls Generales
@@ -122,7 +126,28 @@ urlpatterns = [
     path('informacion/especialista/admin/<int:id_especialista>/<int:id_usuario>/<int:id_user>',
          Informacion_especialista_admin.as_view(), name='info_especialista_admin'),
     path('listarespecialidades/admin', Listar_especialidades_admin.as_view(), name='especialidades_admin'),
-     path("jefa", TemplateView.as_view(template_name="index.html"), name="jefa_no_slash"),
-     path("jefa/", TemplateView.as_view(template_name="index.html"), name="jefa"),
-     re_path(r"^jefa/.*$", TemplateView.as_view(template_name="index.html")),
+     re_path(
+        r"^jefa/(?P<path>.*\.(js|css|png|jpg|jpeg|gif|svg|ico|map))$",
+        static_serve,
+        {"document_root": ANGULAR_ROOT},
+        name="jefa_static_files",
+    ),
+
+    # (Opcional) si Angular usa /jefa/assets/...
+    re_path(
+        r"^jefa/assets/(?P<path>.*)$",
+        static_serve,
+        {"document_root": f"{ANGULAR_ROOT}/assets"},
+        name="jefa_assets",
+    ),
+
+    # 2) /jefa -> redirige a /jefa/ (por orden)
+    path("jefa", RedirectView.as_view(url="/jefa/", permanent=True), name="jefa_no_slash"),
+
+    # 3) Cualquier otra cosa que empiece por /jefa/ -> index.html (Angular SPA)
+    re_path(
+        r"^jefa/.*$",
+        TemplateView.as_view(template_name="index.html"),
+        name="jefa",
+    ),
 ]
