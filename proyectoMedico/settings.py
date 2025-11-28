@@ -70,7 +70,7 @@ ROOT_URLCONF = 'proyectoMedico.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["/home/ubuntu/jefa"],
+        'DIRS': [],  # Vacío para que las apps tengan prioridad
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,7 +1,5 @@
 from django.urls import path, re_path
-
 from django.contrib import admin
-from django.urls import path, re_path
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from moduloPrincipal import *
 from moduloPrincipal.views.viewGeneral import *
@@ -23,15 +21,20 @@ from moduloNutricion.views.viewAlimentos import *
 from moduloNutricion.views.viewMenuPaciente import *
 from moduloNutricion.views.viewListaAlimentos import *
 from moduloNutricion.views.viewMapa import *
-from django.urls import path, re_path
 from django.views.generic import TemplateView, RedirectView
 from django.views.static import serve as static_serve
+from django.template.loader import get_template
+from django.http import HttpResponse
+import os
 
-from moduloNutricion.views.viewMapa import *
-from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
 ANGULAR_ROOT = "/home/ubuntu/jefa"
+
+# Vista personalizada para servir el index.html de Angular
+def angular_index(request):
+    template_path = os.path.join(ANGULAR_ROOT, "index.html")
+    with open(template_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HttpResponse(content, content_type='text/html')
 urlpatterns = [
 
     # Urls Generales
@@ -147,7 +150,7 @@ urlpatterns = [
     # 3) Cualquier otra cosa que empiece por /jefa/ -> index.html (Angular SPA)
     re_path(
         r"^jefa/.*$",
-        TemplateView.as_view(template_name="index.html"),
+        angular_index,
         name="jefa",
     ),
 ]
